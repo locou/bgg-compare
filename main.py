@@ -1,6 +1,7 @@
 import collections
 import statistics
 
+import os
 import xmltodict
 from bottle import route, run, view, request, static_file, get
 import urllib.request
@@ -207,7 +208,7 @@ def stylesheets(filename):
 
 
 @route("/bgg/<username>")
-@view("view/result")
+@view("views/result")
 def bgg(username="locou"):
     collection, loading_status = create_user_collection(username)
     users_to_compare = request.GET.getall('add_user')
@@ -218,5 +219,7 @@ def bgg(username="locou"):
     loading_status = build_collection_url(loading_status)
     return dict(collection=collection, loading_status=loading_status)
 
-
-run(host='localhost', port=80)
+if os.environ.get('APP_LOCATION') == 'heroku':
+    run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+else:
+    run(host='localhost', port=8080, debug=True)
