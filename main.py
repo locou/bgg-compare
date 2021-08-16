@@ -207,6 +207,7 @@ def stylesheets(filename):
     return static_file(filename, root='static/')
 
 
+@route("/")
 @route("/bgg/<username>")
 @view("views/result")
 def bgg(username="locou"):
