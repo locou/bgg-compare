@@ -34,31 +34,57 @@ def create_user_collection(username):
     loading_status = list()
     api_result = request_user_collection(["username="+username])
     collection = collections.OrderedDict()
-    try:
-        total_items = 0
-        match_items_comment = 0
-        for item in api_result.get("items").get("item"):
-            total_items += 1
-            collection[item["@objectid"]] = {
-                "type": item.get("@subtype", ""),
-                "name": item.get("originalname", ""),
-                "display_name": item.get("name", "").get("#text", ""),
-                "yearpublished": item.get("yearpublished", ""),
-                "thumbnail": item.get("thumbnail", ""),
-                "stats": {
-                    "minplayers": make_int(item.get("stats").get("@minplayers", None)),
-                    "maxplayers": make_int(item.get("stats").get("@maxplayers", None)),
-                    "minplaytime": make_int(item.get("stats").get("@minplaytime", None)),
-                    "maxplaytime": make_int(item.get("stats").get("@maxplaytime", None)),
-                    "numowned": make_int(item.get("stats").get("@numowned", None)),
-                    "numrating": make_int(item.get("stats").get("rating").get("usersrated").get("@value", None)),
-                    "average": make_float(item.get("stats").get("rating").get("average").get("@value", None)),
-                    "bayesaverage": make_float(item.get("stats").get("rating").get("bayesaverage").get("@value", None)),
-                },
-                "users": {
-                    username: {
+    if "message" in api_result:
+        loading_status.append({"username": username, "status": 0, "message": api_result.get("message", "")})
+    elif "errors" in api_result:
+        try:
+            loading_status.append({"username": username, "status": 0, "errors": api_result.get("errors").get("error").get("message")})
+        except:
+            loading_status.append({"username": username, "status": 0, "message": "Unknown error"})
+    elif "items" in api_result:
+        try:
+            total_items = 0
+            match_items_comment = 0
+            for item in api_result.get("items").get("item"):
+
+                total_items += 1
+                collection[item["@objectid"]] = {
+                    "type": item.get("@subtype", ""),
+                    "name": item.get("originalname", ""),
+                    "display_name": item.get("name", "").get("#text", ""),
+                    "yearpublished": item.get("yearpublished", ""),
+                    "thumbnail": item.get("thumbnail", ""),
+                    "stats": {
+                        "minplayers": make_int(item.get("stats").get("@minplayers", None)),
+                        "maxplayers": make_int(item.get("stats").get("@maxplayers", None)),
+                        "minplaytime": make_int(item.get("stats").get("@minplaytime", None)),
+                        "maxplaytime": make_int(item.get("stats").get("@maxplaytime", None)),
+                        "numowned": make_int(item.get("stats").get("@numowned", None)),
+                        "numrating": make_int(item.get("stats").get("rating").get("usersrated").get("@value", None)),
+                        "average": make_float(item.get("stats").get("rating").get("average").get("@value", None)),
+                        "bayesaverage": make_float(item.get("stats").get("rating").get("bayesaverage").get("@value", None)),
+                    },
+                    "users": {
+                        username: {
+                            "rating": make_int(item.get("stats").get("rating").get("@value", None)),
+                            "diff_rating": None,
+                            "numplays": make_int(item.get("numplays", None)),
+                            "comment": item.get("comment", ""),
+                            "status": {
+                                "own": item.get("status").get("@own", 0),
+                                "prevowned": item.get("status").get("@prevowned", 0),
+                                "fortrade": item.get("status").get("@fortrade", 0),
+                                "want": item.get("status").get("@want", 0),
+                                "wanttoplay": item.get("status").get("@wanttoplay", 0),
+                                "wanttobuy": item.get("status").get("@wanttobuy", 0),
+                                "wishlist": item.get("status").get("@wishlist", 0),
+                                "preordered": item.get("status").get("@preordered", 0),
+                                "lastmodified": item.get("status").get("@lastmodified", 0),
+                            }
+                        }
+                    },
+                    "user": {
                         "rating": make_int(item.get("stats").get("rating").get("@value", None)),
-                        "diff_rating": None,
                         "numplays": make_int(item.get("numplays", None)),
                         "comment": item.get("comment", ""),
                         "status": {
@@ -73,88 +99,82 @@ def create_user_collection(username):
                             "lastmodified": item.get("status").get("@lastmodified", 0),
                         }
                     }
-                },
-                "user": {
-                    "rating": make_int(item.get("stats").get("rating").get("@value", None)),
-                    "numplays": make_int(item.get("numplays", None)),
-                    "comment": item.get("comment", ""),
-                    "status": {
-                        "own": item.get("status").get("@own", 0),
-                        "prevowned": item.get("status").get("@prevowned", 0),
-                        "fortrade": item.get("status").get("@fortrade", 0),
-                        "want": item.get("status").get("@want", 0),
-                        "wanttoplay": item.get("status").get("@wanttoplay", 0),
-                        "wanttobuy": item.get("status").get("@wanttobuy", 0),
-                        "wishlist": item.get("status").get("@wishlist", 0),
-                        "preordered": item.get("status").get("@preordered", 0),
-                        "lastmodified": item.get("status").get("@lastmodified", 0),
-                    }
                 }
-            }
-            if item.get("comment"):
-                match_items_comment += 1
-        loading_status.append({
-            "username": username,
-            "status": 1,
-            "total_items": total_items,
-            "match_items": 0,
-            "match_items_comment": match_items_comment,
-        })
-    except:
-        loading_status.append({"username": username, "status": 0})
+                if item.get("comment"):
+                    match_items_comment += 1
+            loading_status.append({
+                "username": username,
+                "status": 1,
+                "total_items": total_items,
+                "match_items": 0,
+                "match_items_comment": match_items_comment,
+            })
+        except:
+            loading_status.append({"username": username, "status": 0, "message": "Unknown error"})
+
     return collection, loading_status
 
 
 def add_user_to_collection(collection, loading_status, username):
     api_result = request_user_collection(["username="+username, "rated=1"])
-    try:
-        diff_ratings = list()
-        total_items = 0
-        match_items = 0
-        match_items_comment = 0
-        for item in api_result.get("items").get("item"):
-            total_items += 1
-            if item["@objectid"] in collection.keys():
-                match_items += 1
-                diff_rating = calc_diff(make_int(item.get("stats").get("rating").get("@value", None)), collection[item["@objectid"]]["user"]["rating"])
-                collection[item["@objectid"]]["users"][username] = {
-                    "rating": make_int(item.get("stats").get("rating").get("@value", None)),
-                    "diff_rating": diff_rating,
-                    "numplays": make_int(item.get("numplays", None)),
-                    "comment": item.get("comment", ""),
-                    "status": {
-                        "own": item.get("status").get("@own", 0),
-                        "prevowned": item.get("status").get("@prevowned", 0),
-                        "fortrade": item.get("status").get("@fortrade", 0),
-                        "want": item.get("status").get("@want", 0),
-                        "wanttoplay": item.get("status").get("@wanttoplay", 0),
-                        "wanttobuy": item.get("status").get("@wanttobuy", 0),
-                        "wishlist": item.get("status").get("@wishlist", 0),
-                        "preordered": item.get("status").get("@preordered", 0),
-                        "lastmodified": item.get("status").get("@lastmodified", 0),
-                    }
-                }
-                if item.get("comment"):
-                    match_items_comment += 1
-                if diff_rating:
-                    diff_ratings.append(diff_rating)
-        loading_status.append({
-            "username": username,
-            "status": 1,
-            "mean_diff_rating": make_float(statistics.mean(diff_ratings)),
-            "total_items": total_items,
-            "match_items": match_items,
-            "match_items_comment": match_items_comment,
-        })
-    except:
-        loading_status.append({"username": username, "status": 0})
+    if "message" in api_result:
+        loading_status.append({"username": username, "status": 0, "message": api_result.get("message", "")})
+    elif "errors" in api_result:
+        try:
+            loading_status.append({"username": username, "status": 0, "errors": api_result.get("errors").get("error").get("message")})
+        except:
+            loading_status.append({"username": username, "status": 0, "message": "Unknown error"})
+    elif "items" in api_result:
+        try:
+            diff_ratings = list()
+            total_items = 0
+            match_items = 0
+            match_items_comment = 0
+            if make_int(api_result.get("items").get("@totalitems")) > 0:
+                for item in api_result.get("items").get("item"):
+                    total_items += 1
+                    if item["@objectid"] in collection.keys():
+                        match_items += 1
+                        diff_rating = calc_diff(make_int(item.get("stats").get("rating").get("@value", None)), collection[item["@objectid"]]["user"]["rating"])
+                        collection[item["@objectid"]]["users"][username] = {
+                            "rating": make_int(item.get("stats").get("rating").get("@value", None)),
+                            "diff_rating": diff_rating,
+                            "numplays": make_int(item.get("numplays", None)),
+                            "comment": item.get("comment", ""),
+                            "status": {
+                                "own": item.get("status").get("@own", 0),
+                                "prevowned": item.get("status").get("@prevowned", 0),
+                                "fortrade": item.get("status").get("@fortrade", 0),
+                                "want": item.get("status").get("@want", 0),
+                                "wanttoplay": item.get("status").get("@wanttoplay", 0),
+                                "wanttobuy": item.get("status").get("@wanttobuy", 0),
+                                "wishlist": item.get("status").get("@wishlist", 0),
+                                "preordered": item.get("status").get("@preordered", 0),
+                                "lastmodified": item.get("status").get("@lastmodified", 0),
+                            }
+                        }
+                        if item.get("comment"):
+                            match_items_comment += 1
+                        if diff_rating:
+                            diff_ratings.append(diff_rating)
+            loading_status.append({
+                "username": username,
+                "status": 1,
+                "mean_diff_rating": make_float(statistics.mean(diff_ratings)),
+                "total_items": total_items,
+                "match_items": match_items,
+                "match_items_comment": match_items_comment,
+            })
+        except:
+            loading_status.append({"username": username, "status": 0})
 
     return collection, loading_status
 
 
 def request_user_collection(params):
     try:
-        with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/collection?stats=1&" + "&".join(params)) as response:
+        param_str = "&".join(params).replace(" ", "%20")
+        with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/collection?stats=1&" + param_str) as response:
             xml = response.read()
         return xmltodict.parse(xml)
     except:
@@ -219,6 +239,7 @@ def bgg(username="locou"):
     collection = calc_ratings(collection)
     loading_status = build_collection_url(loading_status)
     return dict(collection=collection, loading_status=loading_status)
+
 
 if os.environ.get('APP_LOCATION') == 'heroku':
     run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

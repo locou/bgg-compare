@@ -32,8 +32,10 @@
         % end
     </div>
     % end
-    % else:
-    <div class="grid_title">Loading <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a> ...</div>
+    % elif "errors" in user:
+    <div class="grid_message">Error loading "{{user['username']}}": <span>{{user['errors']}}</span></div>
+    % elif "message" in user:
+    <div class="grid_message">Loading <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>: <span>{{user['message']}}</span></div>
     % end
     % end
 </div>
