@@ -157,15 +157,16 @@ def add_user_to_collection(collection, loading_status, username):
                             match_items_comment += 1
                         if diff_rating:
                             diff_ratings.append(diff_rating)
+
             loading_status.append({
                 "username": username,
                 "status": 1,
-                "mean_diff_rating": make_float(statistics.mean(diff_ratings)),
+                "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if len(diff_ratings) > 0 else 0,
                 "total_items": total_items,
                 "match_items": match_items,
                 "match_items_comment": match_items_comment,
             })
-        except:
+        except KeyError:
             loading_status.append({"username": username, "status": 0})
 
     return collection, loading_status
@@ -227,7 +228,7 @@ def stylesheets(filename):
     return static_file(filename, root='static/')
 
 
-@route("/")
+@route("/<username>")
 @route("/bgg/<username>")
 @view("views/result")
 def bgg(username="locou"):
