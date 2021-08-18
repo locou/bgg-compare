@@ -14,17 +14,17 @@
     <div class="grid_header block-primary">
         Displaying the collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>
         <div>
-            {{user['total_items']}} games with {{user['match_items_comment']}} comments
+            <i class="fas fa-cubes"></i> {{user['total_items']}} games with <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
         </div>
     </div>
     % else:
     <div class="grid_title">
-        Added collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>
+        Added collection of <a href="https://boardgamegeek.com/user/{{user['username']}}"><i class="fas fa-user"></i> {{user['username']}}</a>
         <a class="button" href="{{user['collection_url']}}" title="switch to collection"><i class="fas fa-random"></i></a>
         <a class="button" href="{{user['remove_collection_url']}}" title="remove user"><i class="fas fa-times"></i></a>
     </div>
     <div class="grid_collection">
-        matched {{user['match_items']}} of {{user['total_items']}} games providing {{user['match_items_comment']}} comments
+        matched <i class="fas fa-cubes"></i> {{user['match_items']}} of {{user['total_items']}} games providing <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
     </div>
     <div class="grid_rating">
         % if user['mean_diff_rating']:
