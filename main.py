@@ -157,7 +157,7 @@ def add_user_to_collection(collection, loading_status, username):
                         }
                         if item.get("comment"):
                             match_items_comment += 1
-                        if diff_rating:
+                        if isinstance(diff_rating, int) and diff_rating >= 0:
                             diff_ratings.append(diff_rating)
 
             loading_status.append({
