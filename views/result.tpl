@@ -11,11 +11,11 @@
     % for key, user in enumerate(loading_status):
     % if user['status'] == 1:
     % if key == 0:
-    <div class="grid_title">
+    <div class="grid_header block-primary">
         Displaying the collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>
-    </div>
-    <div class="grid_collection">
-        {{user['total_items']}} games with {{user['match_items_comment']}} comments
+        <div>
+            {{user['total_items']}} games with {{user['match_items_comment']}} comments
+        </div>
     </div>
     % else:
     <div class="grid_title">
@@ -29,6 +29,11 @@
     <div class="grid_rating">
         % if user['mean_diff_rating']:
         mean difference in ratings: <div class="tag rating diff-rating-{{int(user['mean_diff_rating'])}}">{{user['mean_diff_rating']}}</div>
+        % end
+    </div>
+    <div class="grid_diff_ratings">
+        % for diff in user['diff_ratings']:
+        <div class="tag rating diff-rating-{{diff}}"></div>
         % end
     </div>
     % end
@@ -68,7 +73,7 @@
             </ul>
         </div>
     </div>
-    <div class="user_calc">
+    <div class="user_calc block-primary">
         <div class="wrapper_user_stats">
             <div class="user_name">
                 Combined
@@ -115,7 +120,7 @@
             % if stats['comment']:
             <div class="user_comment">
                 <div class="comment-arrow"></div>
-                <div class="comment">{{stats['comment']}}</div>
+                <div class="comment">{{stats['comment']}}<span class="comment_timestamp">{{stats['status']['lastmodified']}}</span></div>
             </div>
             % end
         </div>

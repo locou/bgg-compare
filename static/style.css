@@ -22,7 +22,21 @@ color: white;
 text-decoration: none;
 }
 
+.block-primary {
+background: var(--primary-color);
+color: var(--primary-color-lighter);
+}
+
+.block-primary a,
+.block-primary a:hover,
+.block-primary a:active,
+.block-primary a:focus,
+.block-primary a:visited {
+color: var(--primary-color-lighter);
+}
+
 a.button,
+a.button:hover,
 a.button:active,
 a.button:focus,
 a.button:visited {
@@ -44,7 +58,9 @@ text-decoration: none;
 font-weight: 700;
 }
 
-a:hover, .bg_head a:hover {
+a:hover,
+.bg_head a:hover,
+.block-primary a:hover {
 text-decoration: underline;
 }
 
@@ -75,6 +91,13 @@ margin: 0 0 -20px 10px;
 height: 20px;
 width: 20px;
 transform: rotate(45deg);
+}
+
+.comment_timestamp {
+font-size: .7em;
+margin-top: .5em;
+float: right;
+color: var(--primary-color-dark);
 }
 
 .bg_title {
@@ -135,27 +158,59 @@ font-weight: 700;
 
 .wrapper_loading_status {
 display: grid;
-grid-template-columns: 1fr 1fr 1fr;
-width: 80%;
+grid-template-columns: 1fr 1fr 1fr .5fr;
 margin: 2em auto 2em auto;
 background: var(--secondary-color);
 padding: .5em;
+grid-gap: 2px;
+width: calc(80% - 1em);
+}
+
+.wrapper_loading_status .grid_header {
+grid-column: 1/5;
+text-align: center;
+font-size: 2em;
+padding: .3em;
+}
+
+.wrapper_loading_status .grid_header div {
+text-align:center;
+font-size: .5em;
 }
 
 .wrapper_loading_status .grid_message {
-grid-column: 1/4;
+grid-column: 1/5;
+margin: auto 0 auto 0;
 }
 .wrapper_loading_status .grid_message span {
 font-family: monospace;
 }
 .wrapper_loading_status .grid_title {
 grid-column: 1;
+margin: auto 0 auto 0;
 }
 .wrapper_loading_status .grid_collection {
 grid-column: 2;
+margin: auto 0 auto 0;
 }
 .wrapper_loading_status .grid_rating {
 grid-column: 3;
+margin: auto 0 auto 0;
+text-align: right;
+}
+
+.wrapper_loading_status .grid_diff_ratings {
+grid-column: 4;
+margin: auto 0 auto 0;
+}
+
+.grid_diff_ratings div {
+margin: 1;
+padding: 0;
+width: 10px;
+height: 10px;
+display: block;
+float: left;
 }
 
 .wrapper {
@@ -193,8 +248,6 @@ max-width: 150px;
 .user_calc {
 grid-column: 3;
 grid-row: 1;
-background: var(--primary-color);
-color: var(--primary-color-lighter);
 }
 .user_info {
 grid-column: 3;

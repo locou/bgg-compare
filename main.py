@@ -2,6 +2,8 @@ import collections
 import statistics
 
 import os
+from datetime import datetime
+
 import xmltodict
 from bottle import route, run, view, request, static_file, get
 import urllib.request
@@ -79,7 +81,7 @@ def create_user_collection(username):
                                 "wanttobuy": item.get("status").get("@wanttobuy", 0),
                                 "wishlist": item.get("status").get("@wishlist", 0),
                                 "preordered": item.get("status").get("@preordered", 0),
-                                "lastmodified": item.get("status").get("@lastmodified", 0),
+                                "lastmodified": datetime.strptime(item.get("status").get("@lastmodified", 0), '%Y-%m-%d %H:%M:%S').strftime("%b %Y"),
                             }
                         }
                     },
@@ -150,7 +152,7 @@ def add_user_to_collection(collection, loading_status, username):
                                 "wanttobuy": item.get("status").get("@wanttobuy", 0),
                                 "wishlist": item.get("status").get("@wishlist", 0),
                                 "preordered": item.get("status").get("@preordered", 0),
-                                "lastmodified": item.get("status").get("@lastmodified", 0),
+                                "lastmodified": datetime.strptime(item.get("status").get("@lastmodified", 0), '%Y-%m-%d %H:%M:%S').strftime("%b %Y"),
                             }
                         }
                         if item.get("comment"):
@@ -162,11 +164,12 @@ def add_user_to_collection(collection, loading_status, username):
                 "username": username,
                 "status": 1,
                 "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if len(diff_ratings) > 0 else 0,
+                "diff_ratings": sorted(diff_ratings),
                 "total_items": total_items,
                 "match_items": match_items,
                 "match_items_comment": match_items_comment,
             })
-        except KeyError:
+        except TypeError:
             loading_status.append({"username": username, "status": 0})
 
     return collection, loading_status
@@ -188,9 +191,9 @@ def calc_ratings(collection):
         diff_ratings = list()
         numplays = list()
         for _, user in item["users"].items():
-            if user["rating"] in range(1, 11):
+            if user["rating"] in range(1, 10):
                 ratings.append(user["rating"])
-            if user["diff_rating"] in range(1, 11):
+            if user["diff_rating"] in range(0, 10):
                 diff_ratings.append(user["diff_rating"])
             if user["numplays"]:
                 numplays.append(user["numplays"])
@@ -238,6 +241,39 @@ def bgg(username="locou"):
         for user_to_compare in users_to_compare:
             collection, loading_status = add_user_to_collection(collection, loading_status, user_to_compare)
     collection = calc_ratings(collection)
+    sort_by = request.GET.get('sort_by')
+    if sort_by:
+        if "ASC" in sort_by:
+            order_by = False
+        else:
+            order_by = True
+        if "boardgame_numowned" in sort_by:
+            collection = dict(sorted(collection.items(), key=lambda item: item[1].get("stats").get("numowned"), reverse=order_by))
+        elif "boardgame_rating" in sort_by:
+            collection = dict(sorted(collection.items(), key=lambda item: item[1].get("stats").get("average"), reverse=order_by))
+        elif "boardgame_title" in sort_by:
+            collection = dict(sorted(collection.items(), key=lambda item: item[1].get("display_name"), reverse=order_by))
+        elif "boardgame_year" in sort_by:
+            collection = dict(sorted(collection.items(), key=lambda item: item[1].get("yearpublished"), reverse=order_by))
+        elif "my_rating" in sort_by:
+            collection = dict(sorted(collection.items(), key=lambda item: item[1].get("user").get("rating"), reverse=order_by))
+        elif "my_numplays" in sort_by:
+            collection = dict(sorted(collection.items(), key=lambda item: item[1].get("user").get("numplays"), reverse=order_by))
+        elif "combined_numplays" in sort_by:
+            collection = dict(sorted(collection.items(), key=lambda item: item[1].get("calc").get("sum_numplays"), reverse=order_by))
+            for key in list(collection):
+                if collection[key].get("calc").get("sum_numplays") == 0:
+                    del collection[key]
+        elif "combined_mean_rating" in sort_by:
+            collection = dict(sorted(collection.items(), key=lambda item: item[1].get("calc").get("mean_rating"), reverse=order_by))
+            for key in list(collection):
+                if collection[key].get("calc").get("mean_rating") == 0:
+                    del collection[key]
+        elif "combined_mean_diff_rating" in sort_by:
+            for key in list(collection):
+                if collection[key].get("calc").get("mean_diff_rating") == 0:
+                    del collection[key]
+            collection = dict(sorted(collection.items(), key=lambda item: item[1].get("calc").get("mean_diff_rating"), reverse=order_by))
     loading_status = build_collection_url(loading_status)
     return dict(collection=collection, loading_status=loading_status)
 
