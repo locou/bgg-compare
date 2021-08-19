@@ -191,7 +191,7 @@ def calc_ratings(collection):
         diff_ratings = list()
         numplays = list()
         for _, user in item["users"].items():
-            if user["rating"] in range(1, 10):
+            if user["rating"] in range(1, 11):
                 ratings.append(user["rating"])
             if user["diff_rating"] in range(0, 10):
                 diff_ratings.append(user["diff_rating"])
