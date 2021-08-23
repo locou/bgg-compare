@@ -35,7 +35,7 @@ def get_or_create_collection(username):
                 .fetch_one()
         )
     if query_result:
-        if divmod((datetime.now() - query_result.updated_at).total_seconds(), 3600)[0] > os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS"):
+        if divmod((datetime.now() - query_result.updated_at).total_seconds(), 3600)[0] > int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS")):
             result = request_user_collection(username)
             if result["message"]["status"] == 1:
                 with connect() as connection:
