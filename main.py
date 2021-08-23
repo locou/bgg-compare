@@ -208,7 +208,8 @@ def stylesheets(filename):
     return static_file(filename, root='static/')
 
 
-@route("/db/<username>")
+@route("/<username>")
+@route("/bgg/<username>")
 @view("views/result")
 def bgg(username):
     collection, loading_status = create_user_collection(username)

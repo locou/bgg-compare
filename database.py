@@ -4,6 +4,9 @@ import json
 from datetime import datetime
 from bottle_postgresql import Configuration, Database
 from request import request_user_collection
+from dotenv import load_dotenv
+
+load_dotenv()
 
 configuration_dict = {
     "database": os.environ.get("DATABASE_NAME"),
