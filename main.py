@@ -1,12 +1,9 @@
 import collections
 import statistics
-
 import os
 from datetime import datetime
-
-import xmltodict
+from database import get_or_create_collection
 from bottle import route, run, view, request, static_file, get
-import urllib.request
 
 
 def make_int(number):
@@ -34,20 +31,15 @@ def calc_diff(left, right):
 
 def create_user_collection(username):
     loading_status = list()
-    api_result = request_user_collection(["username="+username])
+    result = get_or_create_collection(username)
     collection = collections.OrderedDict()
-    if "message" in api_result:
-        loading_status.append({"username": username, "status": 0, "message": api_result.get("message", "")})
-    elif "errors" in api_result:
-        try:
-            loading_status.append({"username": username, "status": 0, "errors": api_result.get("errors").get("error").get("message")})
-        except:
-            loading_status.append({"username": username, "status": 0, "message": "Unknown error"})
-    elif "items" in api_result:
+    if result["message"]["status"] == 0:
+        loading_status.append(result["message"])
+    elif result["message"]["status"] == 1:
         try:
             total_items = 0
             match_items_comment = 0
-            for item in api_result.get("items").get("item"):
+            for item in result["collection"].get("items").get("item"):
 
                 total_items += 1
                 collection[item["@objectid"]] = {
@@ -118,22 +110,17 @@ def create_user_collection(username):
 
 
 def add_user_to_collection(collection, loading_status, username):
-    api_result = request_user_collection(["username="+username, "rated=1"])
-    if "message" in api_result:
-        loading_status.append({"username": username, "status": 0, "message": api_result.get("message", "")})
-    elif "errors" in api_result:
-        try:
-            loading_status.append({"username": username, "status": 0, "errors": api_result.get("errors").get("error").get("message")})
-        except:
-            loading_status.append({"username": username, "status": 0, "message": "Unknown error"})
-    elif "items" in api_result:
+    result = get_or_create_collection(username)
+    if result["message"]["status"] == 0:
+        loading_status.append(result["message"])
+    elif result["message"]["status"] == 1:
         try:
             diff_ratings = list()
             total_items = 0
             match_items = 0
             match_items_comment = 0
-            if make_int(api_result.get("items").get("@totalitems")) > 0:
-                for item in api_result.get("items").get("item"):
+            if make_int(result["collection"].get("items").get("@totalitems")) > 0:
+                for item in result["collection"].get("items").get("item"):
                     total_items += 1
                     if item["@objectid"] in collection.keys():
                         match_items += 1
@@ -173,16 +160,6 @@ def add_user_to_collection(collection, loading_status, username):
             loading_status.append({"username": username, "status": 0})
 
     return collection, loading_status
-
-
-def request_user_collection(params):
-    try:
-        param_str = "&".join(params).replace(" ", "%20")
-        with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/collection?stats=1&" + param_str) as response:
-            xml = response.read()
-        return xmltodict.parse(xml)
-    except:
-        return
 
 
 def calc_ratings(collection):
@@ -231,10 +208,9 @@ def stylesheets(filename):
     return static_file(filename, root='static/')
 
 
-@route("/<username>")
-@route("/bgg/<username>")
+@route("/db/<username>")
 @view("views/result")
-def bgg(username="locou"):
+def bgg(username):
     collection, loading_status = create_user_collection(username)
     users_to_compare = request.GET.getall('add_user')
     if users_to_compare:
@@ -281,4 +257,4 @@ def bgg(username="locou"):
 if os.environ.get('APP_LOCATION') == 'heroku':
     run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 else:
-    run(host='localhost', port=8080, debug=True)
+    run(host='localhost', port=8081, debug=True, reloader=True)
