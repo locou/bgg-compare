@@ -3,7 +3,7 @@ import uuid
 import json
 from datetime import datetime
 from bottle_postgresql import Configuration, Database
-from bgg_request import handle_collection_request, request_collection
+from bgg_request import handle_collection_request
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,6 +26,7 @@ def connect():
 
 def select_collection(username):
     with connect() as connection:
+        # TODO: make where conditions not case sensitive
         return (
             connection
                 .select('"bgg-compare".user_collection')
