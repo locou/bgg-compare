@@ -3,3 +3,5 @@ xmltodict==0.12.0
 requests==2.12.4
 bottle-postgresql==1.0.0
 python-dotenv
+pytest
+pytest-mock

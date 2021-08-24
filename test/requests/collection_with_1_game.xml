@@ -1,0 +1,26 @@
+<items totalitems="1" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse" pubdate="Tue, 24 Aug 2021 10:18:56 +0000">
+<item objecttype="thing" objectid="20063" subtype="boardgame" collid="84755536">
+<name sortindex="1">Regicide</name>
+<yearpublished>2005</yearpublished>
+<image>
+https://cf.geekdo-images.com/1YU-52NTwvnyna1PY3F64w__original/img/i9zUX0eig6GgeOMzWH8zhlb2lYA=/0x0/filters:format(jpeg)/pic107581.jpg
+</image>
+<thumbnail>
+https://cf.geekdo-images.com/1YU-52NTwvnyna1PY3F64w__thumb/img/VUV2dXV3qGLhm6IgEdLkcyCSmpA=/fit-in/200x150/filters:strip_icc()/pic107581.jpg
+</thumbnail>
+<stats minplayers="2" maxplayers="8" numowned="5">
+<rating value="N/A">
+<usersrated value="3"/>
+<average value="4.33333"/>
+<bayesaverage value="0"/>
+<stddev value="2.35702"/>
+<median value="0"/>
+<ranks>
+<rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="Not Ranked" bayesaverage="Not Ranked"/>
+</ranks>
+</rating>
+</stats>
+<status own="0" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0" lastmodified="2021-08-15 11:32:26"/>
+<numplays>0</numplays>
+</item>
+</items>
