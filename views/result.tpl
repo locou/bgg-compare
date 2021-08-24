@@ -4,6 +4,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link href="/style.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <script src="https://kit.fontawesome.com/9e34df6d41.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -87,7 +88,7 @@
             </div>
             <div class="user_diff_rating">
                 % if item['calc']['mean_diff_rating']:
-                <div class="tag rating diff-rating-{{int(item['calc']['mean_diff_rating'])}}">{{item['calc']['mean_diff_rating']}}</div> Difference
+                <div class="tag rating diff-rating-{{item['calc']['mean_diff_rating']}}">{{item['calc']['mean_diff_rating']}}</div> Difference
                 % end
             </div>
         </div>

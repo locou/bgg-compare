@@ -34,10 +34,12 @@ def create_user_collection(username):
     collection = collections.OrderedDict()
     if result["message"]["status"] == 0:
         loading_status.append(result["message"])
-    elif result["message"]["status"] == 1:
+    elif result["message"]["status"] == 1 and "item" in result["collection"]["items"]:
         try:
             total_items = 0
             match_items_comment = 0
+            if isinstance(result["collection"].get("items").get("item"), dict):
+                result["collection"]["items"]["item"] = [result["collection"].get("items").get("item")]
             for item in result["collection"].get("items").get("item"):
 
                 total_items += 1
@@ -174,9 +176,9 @@ def calc_ratings(collection):
             if user["numplays"]:
                 numplays.append(user["numplays"])
         item["calc"] = {
-            "mean_rating": make_float(statistics.mean(ratings)) if ratings else None,
-            "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if diff_ratings else None,
-            "median_rating": make_float(statistics.median(ratings)) if ratings else None,
+            "mean_rating": make_float(statistics.mean(ratings)) if ratings else 0,
+            "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if diff_ratings else 0,
+            "median_rating": make_float(statistics.median(ratings)) if ratings else 0,
             "sum_numplays": sum(numplays),
         }
     return collection

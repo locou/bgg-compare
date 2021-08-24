@@ -1,14 +1,19 @@
 import re
 import urllib.request
 import json
+import socket
+
 import xmltodict
 
 
 def request_collection(username):
     username = re.sub("[^a-zA-Z0-9 ]", "_", username)
-    with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/collection?stats=1&username=" +
-                                username.replace(" ", "%20")) as response:
-        return xmltodict.parse(response.read())
+    try:
+        with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/collection?stats=1&username=" +
+                                    username.replace(" ", "%20"), timeout=1) as response:
+            return xmltodict.parse(response.read())
+    except socket.timeout:
+        print("connection's timeout expired")
 
 
 def handle_collection_request(username):

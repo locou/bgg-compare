@@ -1,5 +1,6 @@
 from bgg_request import handle_collection_request
 
+# TODO: test for rate_limit_exeeded.xml
 
 def test_handle_request_smoke(mocker, fixture_wait_for_access):
     mocker.patch('bgg_request.request_collection', return_value=fixture_wait_for_access)

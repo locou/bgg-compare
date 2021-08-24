@@ -66,14 +66,14 @@ def get_or_create_collection(username):
     query_result = select_collection(username)
     if query_result:
         if divmod((datetime.now() - query_result.updated_at).total_seconds(), 3600)[0] > int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS")):
-            result = handle_collection_request(request_collection(username), username)
+            result = handle_collection_request(username)
             if result["message"]["status"] == 1:
                 update_collection(username, result)
                 result["collection"] = json.loads(result["result"])
         else:
             result = {"username": username, "message": {"username": username, "status": 1}, "collection": query_result.collection}
     else:
-        result = handle_collection_request(request_collection(username), username)
+        result = handle_collection_request(username)
         if result["message"]["status"] == 1:
             query_result = insert_collection(username, result)
             result["collection"] = query_result.collection

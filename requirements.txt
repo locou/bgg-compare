@@ -5,3 +5,4 @@ bottle-postgresql==1.0.0
 python-dotenv
 pytest
 pytest-mock
+pytest-lazy-fixture==0.6.3
