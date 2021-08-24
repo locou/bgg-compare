@@ -2,7 +2,7 @@ import collections
 import statistics
 import os
 from datetime import datetime
-from database import get_or_create_collection
+from database import get_or_create_collection, get_cached_usernames
 from bottle import route, run, view, request, static_file, get
 
 
@@ -206,6 +206,13 @@ def build_collection_url(loading_status):
 @get('/<filename:re:.*\.css>')
 def stylesheets(filename):
     return static_file(filename, root='static/')
+
+
+@route("/cache")
+@view("views/cache")
+def cache():
+    result = get_cached_usernames()
+    return dict(result=result)
 
 
 @route("/<username>")

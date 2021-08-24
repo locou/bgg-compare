@@ -68,3 +68,19 @@ def get_or_create_collection(username):
             result["collection"] = query_result.collection
 
     return result
+
+
+def get_cached_usernames():
+    try:
+        with connect() as connection:
+            query_result = (
+                connection
+                    .select('"bgg-compare".user_collection')
+                    .fields('username', 'created_at', 'updated_at')
+                    .order_by("updated_at")
+                    .execute()
+                    .fetch_all()
+            )
+            return query_result
+    except:
+        return
