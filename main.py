@@ -17,6 +17,13 @@ def cache():
     return dict(result=result)
 
 
+@route("/")
+@view("views/index")
+def index():
+    # TODO: welcome page + select a username
+    return
+
+
 @route("/<username>")
 @route("/bgg/<username>")
 @view("views/result")
@@ -28,6 +35,7 @@ def bgg(username):
             collection, loading_status = add_user_to_collection(collection, loading_status, user_to_compare)
     collection = calc_ratings(collection)
     sort_by = request.GET.get('sort_by')
+    # TODO: sort by my_rating by default
     if sort_by:
         if "ASC" in sort_by:
             order_by = False

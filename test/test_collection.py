@@ -7,6 +7,8 @@ from bottle_postgresql import DictWrapper
 
 from bgg_collection import create_user_collection
 
+# TODO: construct xml collection with each possible rating configuration
+# TODO: test rating calc
 
 @pytest.mark.parametrize(
     "context, gameid, expected",
