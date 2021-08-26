@@ -21,7 +21,7 @@ def cache():
 @view("views/index")
 def index():
     # TODO: welcome page + select a username
-    return
+    return {}
 
 
 @route("/<username>")
