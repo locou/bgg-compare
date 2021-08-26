@@ -6,9 +6,11 @@ from database import get_or_create_collection
 
 
 def make_int(number):
-    if number:
-        return int(number) if number.isnumeric() else 0
-    return
+    try:
+        float(number)
+        return int(float(number))
+    except:
+        return
 
 
 def make_float(number):
