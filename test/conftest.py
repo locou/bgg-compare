@@ -24,6 +24,13 @@ def request_invalid_username():
 
 
 @pytest.fixture
+def request_rate_limit_exceeded():
+    with open('test/requests/rate_limit_exceeded.xml', 'r', encoding="utf8") as f:
+        data = f.read()
+    return xmltodict.parse(data)
+
+
+@pytest.fixture
 def request_collection_with_0_games():
     with open('test/requests/collection_with_0_games.xml', 'r', encoding="utf8") as f:
         data = f.read()

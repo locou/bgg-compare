@@ -26,7 +26,10 @@ def handle_collection_request(username):
             message = {"username": username, "status": 0, "message": request.get("message", "")}
         else:
             try:
-                message = {"username": username, "status": 0, "errors": request.get("errors").get("error").get("message")}
+                if "errors" in request:
+                    message = {"username": username, "status": 0, "errors": request.get("errors").get("error").get("message")}
+                if "error" in request:
+                    message = {"username": username, "status": 0, "errors": request.get("error").get("message")}
             except:
                 message = {"username": username, "status": 0, "message": "API error"}
         return {"username": username, "result": json.dumps(request), "message": message}

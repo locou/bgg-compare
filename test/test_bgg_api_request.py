@@ -1,7 +1,5 @@
 from bgg_request import handle_collection_request
 
-# TODO: test for rate_limit_exeeded.xml
-
 
 def test_handle_request_smoke(mocker, request_wait_for_access):
     mocker.patch('bgg_request.request_collection', return_value=request_wait_for_access)
@@ -17,6 +15,12 @@ def test_handle_request_invalid_username(mocker, request_invalid_username):
     mocker.patch('bgg_request.request_collection', return_value=request_invalid_username)
     assert handle_collection_request("foo")["message"]["status"] == 0
     assert handle_collection_request("foo")["message"]["errors"] == "Invalid username specified"
+
+
+def test_handle_request_rate_limit_exceeded(mocker, request_rate_limit_exceeded):
+    mocker.patch('bgg_request.request_collection', return_value=request_rate_limit_exceeded)
+    assert handle_collection_request("foo")["message"]["status"] == 0
+    assert handle_collection_request("foo")["message"]["errors"] == "Rate limit exceeded."
 
 
 def test_handle_request_with_no_games_status_1(mocker, request_collection_with_0_games):

@@ -185,20 +185,32 @@ def calc_ratings(collection):
 
 
 def build_collection_url(loading_status):
-    for main_user in loading_status:
-        collection_url = main_user["username"]
-        remove_collection_url = ""
-        for key, user in enumerate(loading_status):
-            if key == 0:
-                collection_url += "?add_user="+user["username"]
-            elif user["username"] != main_user["username"]:
-                collection_url += "&add_user="+user["username"]
-        for key, user in enumerate([i for i in loading_status if not (i['username'] == main_user["username"])]):
-            if key == 0:
-                remove_collection_url += user["username"]
-            else:
-                remove_collection_url += "?add_user="+user["username"]
 
-        main_user["collection_url"] = collection_url
-        main_user["remove_collection_url"] = remove_collection_url
-    return loading_status
+    def build_url(user_list):
+        url = ""
+        for key, username in enumerate(user_list):
+            if key == 0:
+                url += username
+            elif key == 1:
+                url += "?add_user=" + username
+            else:
+                url += "&add_user=" + username
+        return url
+
+    if len(loading_status) > 1:
+        for user_status in loading_status:
+
+            # move the user to the front of the list
+            user_list = [u["username"] for u in loading_status]
+            user_list.insert(0, user_list.pop(user_list.index(user_status["username"])))
+
+            # remove user from list
+            remove_list = [u["username"] for u in loading_status]
+            remove_list.pop(remove_list.index(user_status["username"]))
+            user_status["collection_url"] = build_url(user_list)
+            user_status["remove_collection_url"] = build_url(remove_list)
+        return loading_status
+    else:
+        loading_status[0]["collection_url"] = None
+        loading_status[0]["remove_collection_url"] = None
+        return loading_status

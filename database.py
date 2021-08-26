@@ -66,7 +66,7 @@ def insert_collection(username, result):
 def get_or_create_collection(username):
     query_result = select_collection(username)
     if query_result:
-        if divmod((datetime.now() - query_result.updated_at).total_seconds(), 3600)[0] > int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS")):
+        if divmod((datetime.now() - query_result.updated_at).total_seconds(), 3600)[0] > int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)):
             result = handle_collection_request(username)
             if result["message"]["status"] == 1:
                 update_collection(username, result)

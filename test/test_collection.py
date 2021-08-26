@@ -65,12 +65,22 @@ def test_collection_calc_ratings(collection_foo_bar, gameid, field, expected):
     assert collection[gameid]["calc"][field] == expected
 
 
-def test_collection_build_url():
-    loading_status = [
-        {"username": "foo"},
-        {"username": "bar"},
+@pytest.mark.parametrize(
+    "key, loading_status, field, expected",
+    [
+        (0, [{"username": "foo"}], "collection_url", None),
+        (0, [{"username": "foo"}], "remove_collection_url", None),
+        (0, [{"username": "foo"}, {"username": "bar"}], "collection_url", "foo?add_user=bar"),
+        (0, [{"username": "foo"}, {"username": "bar"}], "remove_collection_url", "bar"),
+        (1, [{"username": "foo"}, {"username": "bar"}], "collection_url", "bar?add_user=foo"),
+        (1, [{"username": "foo"}, {"username": "bar"}], "remove_collection_url", "foo"),
+        (0, [{"username": "foo"}, {"username": "bar"}, {"username": "baz"}], "remove_collection_url", "bar?add_user=baz"),
+        (1, [{"username": "foo"}, {"username": "bar"}, {"username": "baz"}], "collection_url", "bar?add_user=foo&add_user=baz"),
+        (1, [{"username": "foo"}, {"username": "bar"}, {"username": "baz"}], "remove_collection_url", "foo?add_user=baz"),
+        (2, [{"username": "foo"}, {"username": "bar"}, {"username": "baz"}], "collection_url", "baz?add_user=foo&add_user=bar"),
+        (2, [{"username": "foo"}, {"username": "bar"}, {"username": "baz"}], "remove_collection_url", "foo?add_user=bar"),
     ]
+)
+def test_collection_build_url_foo_bar_baz(key, loading_status, field, expected):
     loading_status = build_collection_url(loading_status)
-    assert loading_status[0]["remove_collection_url"] == "bar"
-    assert loading_status[1]["collection_url"] == "bar?add_user=foo"
-    assert loading_status[1]["remove_collection_url"] == "foo"
+    assert loading_status[key][field] == expected
