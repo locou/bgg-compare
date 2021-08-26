@@ -156,14 +156,17 @@ font-weight: 700;
 .rating-0,
 .rating-none {background: #666e75; color: var(--primary-color-lighter)}
 
+.container {
+margin: 2em auto 2em auto;
+padding: .5em;
+width: calc(80% - 1em);
+background: var(--secondary-color);
+}
+
 .wrapper_loading_status {
 display: grid;
 grid-template-columns: 1fr 1fr 1fr .5fr;
-margin: 2em auto 2em auto;
-background: var(--secondary-color);
-padding: .5em;
 grid-gap: 2px;
-width: calc(80% - 1em);
 }
 
 .wrapper_loading_status .grid_header {

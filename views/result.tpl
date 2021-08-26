@@ -9,42 +9,44 @@
 </head>
 % from bgg_collection import make_int
 <body>
-<div class="wrapper_loading_status">
-    % for key, user in enumerate(loading_status):
-    % if user['status'] == 1:
-    % if key == 0:
-    <div class="grid_header block-primary">
-        Displaying the collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>
-        <div>
-            <i class="fas fa-cubes"></i> {{user['total_items']}} games with <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
+<div class="container">
+    <div class="wrapper_loading_status">
+        % for key, user in enumerate(loading_status):
+        % if user['status'] == 1:
+        % if key == 0:
+        <div class="grid_header block-primary">
+            Displaying the collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>
+            <div>
+                <i class="fas fa-cubes"></i> {{user['total_items']}} games with <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
+            </div>
         </div>
-    </div>
-    % else:
-    <div class="grid_title">
-        Added collection of <a href="https://boardgamegeek.com/user/{{user['username']}}"><i class="fas fa-user"></i> {{user['username']}}</a>
-        <a class="button" href="{{user['collection_url']}}" title="switch to collection"><i class="fas fa-random"></i></a>
-        <a class="button" href="{{user['remove_collection_url']}}" title="remove user"><i class="fas fa-times"></i></a>
-    </div>
-    <div class="grid_collection">
-        matched <i class="fas fa-cubes"></i> {{user['match_items']}} of {{user['total_items']}} games providing <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
-    </div>
-    <div class="grid_rating">
-        % if user['mean_diff_rating']:
-        mean difference in ratings: <div class="tag rating diff-rating-{{make_int(user['mean_diff_rating'])}}">{{user['mean_diff_rating']}}</div>
+        % else:
+        <div class="grid_title">
+            Added collection of <a href="https://boardgamegeek.com/user/{{user['username']}}"><i class="fas fa-user"></i> {{user['username']}}</a>
+            <a class="button" href="{{user['collection_url']}}" title="switch to collection"><i class="fas fa-random"></i></a>
+            <a class="button" href="{{user['remove_collection_url']}}" title="remove user"><i class="fas fa-times"></i></a>
+        </div>
+        <div class="grid_collection">
+            matched <i class="fas fa-cubes"></i> {{user['match_items']}} of {{user['total_items']}} games providing <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
+        </div>
+        <div class="grid_rating">
+            % if user['mean_diff_rating']:
+            mean difference in ratings: <div class="tag rating diff-rating-{{make_int(user['mean_diff_rating'])}}">{{user['mean_diff_rating']}}</div>
+            % end
+        </div>
+        <div class="grid_diff_ratings">
+            % for diff in user['diff_ratings']:
+            <div class="tag rating diff-rating-{{diff}}"></div>
+            % end
+        </div>
+        % end
+        % elif "errors" in user:
+        <div class="grid_message">Error loading "{{user['username']}}": <span>{{user['errors']}}</span></div>
+        % elif "message" in user:
+        <div class="grid_message">Loading <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>: <span>{{user['message']}}</span></div>
+        % end
         % end
     </div>
-    <div class="grid_diff_ratings">
-        % for diff in user['diff_ratings']:
-        <div class="tag rating diff-rating-{{diff}}"></div>
-        % end
-    </div>
-    % end
-    % elif "errors" in user:
-    <div class="grid_message">Error loading "{{user['username']}}": <span>{{user['errors']}}</span></div>
-    % elif "message" in user:
-    <div class="grid_message">Loading <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>: <span>{{user['message']}}</span></div>
-    % end
-    % end
 </div>
 % for key, item in collection.items():
 <div class="wrapper">
