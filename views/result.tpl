@@ -7,6 +7,7 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <script src="https://kit.fontawesome.com/9e34df6d41.js" crossorigin="anonymous"></script>
 </head>
+% from bgg_collection import make_int
 <body>
 <div class="wrapper_loading_status">
     % for key, user in enumerate(loading_status):
@@ -29,7 +30,7 @@
     </div>
     <div class="grid_rating">
         % if user['mean_diff_rating']:
-        mean difference in ratings: <div class="tag rating diff-rating-{{int(user['mean_diff_rating'])}}">{{user['mean_diff_rating']}}</div>
+        mean difference in ratings: <div class="tag rating diff-rating-{{make_int(user['mean_diff_rating'])}}">{{user['mean_diff_rating']}}</div>
         % end
     </div>
     <div class="grid_diff_ratings">
@@ -52,7 +53,7 @@
     </div>
     <div class="bg_head wrapper_bg_head">
         <div class="grid_bg_rating">
-            <div class="tag rating rating-{{int(item['stats']['average'])}}">{{item['stats']['average'] if item['stats']['average'] > 0 else '-'}}</div>
+            <div class="tag rating rating-{{make_int(item['stats']['average'])}}">{{item['stats']['average'] if item['stats']['average'] > 0 else '-'}}</div>
         </div>
         <div class="grid_bg_title">
             <a class="bg_title" href="https://boardgamegeek.com/{{item['type']}}/{{key}}/">{{item['display_name']}}</a> (<i>{{item['yearpublished']}}</i>)
@@ -80,8 +81,8 @@
                 Combined
             </div>
             <div class="user_rating">
-                <div class="tag rating rating-{{int(item['calc']['mean_rating'])}}">
-                    {{item['calc']['mean_rating'] if item['calc']['mean_rating'] > 0 else '-'}}
+                <div class="tag rating rating-{{make_int(item['calc']['mean_rating'])}}">
+                    {{item['calc']['mean_rating'] if item['calc']['mean_rating'] and item['calc']['mean_rating'] > 0 else '-'}}
                 </div>
                 Rating with <b>{{item['calc']['sum_numplays']}}</b> Play/s
 
@@ -109,7 +110,7 @@
             </div>
             <div class="user_rating">
                 <div class="tag rating rating-{{stats['rating']}}">
-                    {{stats['rating'] if stats['rating'] > 0 else '-'}}
+                    {{stats['rating'] if stats['rating'] and stats['rating'] > 0 else '-'}}
                 </div>
                 Rating with <b>{{stats['numplays']}}</b> Play/s
             </div>
