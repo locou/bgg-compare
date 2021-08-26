@@ -74,6 +74,7 @@ def test_collection_calc_ratings(collection_foo_bar, gameid, field, expected):
         (0, [{"username": "foo"}, {"username": "bar"}], "remove_collection_url", "bar"),
         (1, [{"username": "foo"}, {"username": "bar"}], "collection_url", "bar?add_user=foo"),
         (1, [{"username": "foo"}, {"username": "bar"}], "remove_collection_url", "foo"),
+        (0, [{"username": "foo"}, {"username": "bar"}, {"username": "baz"}], "collection_url", "foo?add_user=bar&add_user=baz"),
         (0, [{"username": "foo"}, {"username": "bar"}, {"username": "baz"}], "remove_collection_url", "bar?add_user=baz"),
         (1, [{"username": "foo"}, {"username": "bar"}, {"username": "baz"}], "collection_url", "bar?add_user=foo&add_user=baz"),
         (1, [{"username": "foo"}, {"username": "bar"}, {"username": "baz"}], "remove_collection_url", "foo?add_user=baz"),
