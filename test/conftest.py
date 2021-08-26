@@ -1,37 +1,73 @@
+import json
+from datetime import datetime
+
 import pytest
 import xmltodict
+from bottle_postgresql import DictWrapper
+from pytest_mock import mocker
+
+from bgg_collection import create_user_collection, add_user_to_collection
 
 
 @pytest.fixture
-def fixture_wait_for_access():
+def request_wait_for_access():
     with open('test/requests/wait_for_access.xml', 'r', encoding="utf8") as f:
         data = f.read()
     return xmltodict.parse(data)
 
 
 @pytest.fixture
-def fixture_invalid_username():
+def request_invalid_username():
     with open('test/requests/invalid_username.xml', 'r', encoding="utf8") as f:
         data = f.read()
     return xmltodict.parse(data)
 
 
 @pytest.fixture
-def fixture_request_with_0_games():
+def request_collection_with_0_games():
     with open('test/requests/collection_with_0_games.xml', 'r', encoding="utf8") as f:
         data = f.read()
     return xmltodict.parse(data)
 
 
 @pytest.fixture
-def fixture_request_with_1_game():
+def request_collection_with_1_game():
     with open('test/requests/collection_with_1_game.xml', 'r', encoding="utf8") as f:
         data = f.read()
     return xmltodict.parse(data)
 
 
 @pytest.fixture
-def fixture_request_with_56_games():
+def request_collection_with_56_games():
     with open('test/requests/collection_with_56_games.xml', 'r', encoding="utf8") as f:
         data = f.read()
     return xmltodict.parse(data)
+
+
+@pytest.fixture
+def request_collection_with_ratings_asc():
+    with open('test/requests/collection_with_ratings_asc.xml', 'r', encoding="utf8") as f:
+        data = f.read()
+    return xmltodict.parse(data)
+
+
+@pytest.fixture
+def request_collection_with_ratings_random():
+    with open('test/requests/collection_with_ratings_random.xml', 'r', encoding="utf8") as f:
+        data = f.read()
+    return xmltodict.parse(data)
+
+
+@pytest.fixture
+def collection_foo_bar(mocker, request_collection_with_ratings_asc, request_collection_with_ratings_random):
+    mocker.patch('bgg_request.request_collection', return_value=request_collection_with_ratings_asc)
+    mocker.patch('database.select_collection', return_value=DictWrapper(
+        {"username": "foo", "updated_at": datetime.now(),
+         "collection": json.loads(json.dumps(request_collection_with_ratings_asc))}))
+    collection, loading_status = create_user_collection("foo")
+    mocker.patch('bgg_request.request_collection', return_value=request_collection_with_ratings_random)
+    mocker.patch('database.select_collection', return_value=DictWrapper(
+        {"username": "bar", "updated_at": datetime.now(),
+         "collection": json.loads(json.dumps(request_collection_with_ratings_random))}))
+    collection, loading_status = add_user_to_collection(collection, loading_status, "bar")
+    return collection, loading_status

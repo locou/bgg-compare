@@ -176,9 +176,9 @@ def calc_ratings(collection):
             if user["numplays"]:
                 numplays.append(user["numplays"])
         item["calc"] = {
-            "mean_rating": make_float(statistics.mean(ratings)) if ratings else 0,
-            "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if diff_ratings else 0,
-            "median_rating": make_float(statistics.median(ratings)) if ratings else 0,
+            "mean_rating": make_float(statistics.mean(ratings)) if ratings else None,
+            "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if diff_ratings else None,
+            "median_rating": make_float(statistics.median(ratings)) if ratings else None,
             "sum_numplays": sum(numplays),
         }
     return collection

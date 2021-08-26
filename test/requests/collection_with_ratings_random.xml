@@ -1,0 +1,339 @@
+<items totalitems="56" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse"
+       pubdate="Tue, 24 Aug 2021 20:29:06 +0000">
+    <item objecttype="thing" objectid="0" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated N/A</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="2">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>11</numplays>
+    </item>
+    <item objecttype="thing" objectid="1" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 1</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="3">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>200</numplays>
+    </item>
+    <item objecttype="thing" objectid="2" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 2</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="N/A">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>3</numplays>
+    </item>
+    <item objecttype="thing" objectid="3" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 3</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="4">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>1</numplays>
+    </item>
+    <item objecttype="thing" objectid="4" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 4</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="10">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>1</numplays>
+    </item>
+    <item objecttype="thing" objectid="5" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 5</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="5">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>1</numplays>
+    </item>
+    <item objecttype="thing" objectid="6" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 6</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="9">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>1</numplays>
+    </item>
+    <item objecttype="thing" objectid="7" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 7</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="7">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>1</numplays>
+    </item>
+    <item objecttype="thing" objectid="8" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 8</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="3">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>1</numplays>
+    </item>
+    <item objecttype="thing" objectid="9" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 9</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="9.5">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>1</numplays>
+    </item>
+    <item objecttype="thing" objectid="10" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated 10</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="1.1">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>1</numplays>
+    </item>
+    <item objecttype="thing" objectid="11" subtype="boardgame" collid="55611534">
+        <name sortindex="1">Game Rated N/A</name>
+        <yearpublished>2018</yearpublished>
+        <image>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__original/img/COBaRqsMDsILepjsTkdbF5Avkn4=/0x0/filters:format(jpeg)/pic4200779.jpg
+        </image>
+        <thumbnail>
+            https://cf.geekdo-images.com/lUM58zOOq18nocyVi548vQ__thumb/img/gBtrGDeUBQABx4trHBBUyXHlwm0=/fit-in/200x150/filters:strip_icc()/pic4200779.jpg
+        </thumbnail>
+        <stats minplayers="1" maxplayers="2" minplaytime="30" maxplaytime="60" playingtime="60" numowned="1592">
+            <rating value="N/A">
+                <usersrated value="629"/>
+                <average value="7.12279"/>
+                <bayesaverage value="5.91143"/>
+                <stddev value="1.4432"/>
+                <median value="0"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="2938"
+                          bayesaverage="5.91143"/>
+                    <rank type="family" id="4664" name="wargames" friendlyname="War Game Rank" value="457"
+                          bayesaverage="6.49823"/>
+                </ranks>
+            </rating>
+        </stats>
+        <status own="1" prevowned="0" fortrade="0" want="0" wanttoplay="0" wanttobuy="0" wishlist="0" preordered="0"
+                lastmodified="2019-10-28 04:28:30"/>
+        <numplays>10</numplays>
+    </item>
+</items>
