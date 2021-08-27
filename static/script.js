@@ -15,6 +15,9 @@ $(document).ready(function() {
     });
 
     $('#reset_fields').click(function() {
+        icon = $('.checkbox').find('i');
+        icon.removeClass("fas fa-check-circle");
+        icon.addClass("far fa-circle");
         $('.add_user_field').each(function() {
             $(this).remove();
         });
@@ -29,7 +32,6 @@ $(document).ready(function() {
 
 function send_user_form() {
     var form = document.getElementById("form_build_collection")
-    form.action = "bgg\\" + document.getElementById("main_user").value;
     $('input.add_user_input').each(function( index ) {
     if (this.value == "") {
         this.remove();

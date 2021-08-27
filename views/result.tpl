@@ -28,7 +28,7 @@
             <a class="button icon-only" href="{{user['remove_collection_url']}}" title="remove user"><i class="fas fa-times"></i></a>
         </div>
         <div class="grid_collection">
-            matched <i class="fas fa-cubes"></i> {{user['match_items']}} of {{user['total_items']}} games providing <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
+            matched <i class="fas fa-cubes"></i> {{user['match_items']}} of {{user['total_items']}} games providing <i class="far fa-comment"></i> {{user['match_items_comment']}} of {{user['total_items_comment']}} comments
         </div>
         <div class="grid_rating">
             % if user['mean_diff_rating']:
@@ -91,8 +91,8 @@
 
             </div>
             <div class="user_diff_rating">
-                % if item['calc']['mean_diff_rating']:
-                <div class="tag rating diff-rating-{{item['calc']['mean_diff_rating']}}">{{make_int(item['calc']['mean_diff_rating'])}}</div> Difference
+                % if item['calc']['mean_diff_rating'] is not None:
+                <div class="tag rating diff-rating-{{make_int(item['calc']['mean_diff_rating'])}}">{{item['calc']['mean_diff_rating']}}</div> Difference
                 % end
             </div>
         </div>

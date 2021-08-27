@@ -1,0 +1,49 @@
+<user id="20000" name="foo" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">
+    <firstname value="foo"/>
+    <lastname value="oof"/>
+    <avatarlink value="https://cf.geekdo-static.com/avatars/avatar_id168678.png"/>
+    <yearregistered value="2015"/>
+    <lastlogin value="2021-08-27"/>
+    <stateorprovince value=""/>
+    <country value="Germany"/>
+    <webaddress value=""/>
+    <xboxaccount value=""/>
+    <wiiaccount value=""/>
+    <psnaccount value=""/>
+    <battlenetaccount value=""/>
+    <steamaccount value=""/>
+    <traderating value="0"/>
+    <marketrating value="0"/>
+    <buddies total="30" page="1">
+        <buddy id="10" name="bar1"/>
+        <buddy id="20" name="baz2"/>
+        <buddy id="30" name="foz3"/>
+        <buddy id="10" name="bar4"/>
+        <buddy id="20" name="baz5"/>
+        <buddy id="30" name="foz6"/>
+        <buddy id="10" name="bar7"/>
+        <buddy id="20" name="baz8"/>
+        <buddy id="30" name="foz9"/>
+        <buddy id="30" name="foz10"/>
+        <buddy id="10" name="bar11"/>
+        <buddy id="20" name="baz12"/>
+        <buddy id="30" name="foz13"/>
+        <buddy id="10" name="bar14"/>
+        <buddy id="20" name="baz15"/>
+        <buddy id="30" name="foz16"/>
+        <buddy id="10" name="bar17"/>
+        <buddy id="20" name="baz18"/>
+        <buddy id="30" name="foz19"/>
+        <buddy id="30" name="foz20"/>
+        <buddy id="30" name="foz21"/>
+        <buddy id="30" name="foz22"/>
+        <buddy id="30" name="foz23"/>
+        <buddy id="30" name="foz24"/>
+        <buddy id="30" name="foz25"/>
+        <buddy id="30" name="foz26"/>
+        <buddy id="30" name="foz27"/>
+        <buddy id="30" name="foz28"/>
+        <buddy id="30" name="foz29"/>
+        <buddy id="30" name="foz30"/>
+    </buddies>
+</user>

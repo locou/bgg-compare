@@ -1,0 +1,18 @@
+<user id="10000" name="foo" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">
+<firstname value="foo"/>
+<lastname value="f"/>
+<avatarlink value="https://cf.geekdo-static.com/avatars/avatar_id118917.png"/>
+<yearregistered value="2012"/>
+<lastlogin value="2021-08-27"/>
+<stateorprovince value=""/>
+<country value=""/>
+<webaddress value=""/>
+<xboxaccount value=""/>
+<wiiaccount value=""/>
+<psnaccount value=""/>
+<battlenetaccount value=""/>
+<steamaccount value=""/>
+<traderating value="0"/>
+<marketrating value="33"/>
+<buddies total="0" page="1"/>
+</user>

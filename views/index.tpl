@@ -13,14 +13,34 @@
 <div class="container">
     <div class="block block-primary">
         <h1><i class="fas fa-dice-d20"></i> Welcome to bgg-compare</h1>
-        <p>This tool makes it possible to compare your collection with the ratings and comments of other selected users. Sort by number of plays, ratings and difference between your and their ratings.</p>
-        <p>Start by typing your <a href="https://boardgamegeek.com/">boardgamegeek.com</a>/user/Username into the input textfield and hit <i class="fas fa-cubes"></i> <b>Submit</b>. It takes some time for the bgg-api to fetch your collection, so be patient. Usually you can refresh the page after a minute to view the results.</p>
-        <p>You may add any amount of additional users by clicking <i class="fas fa-user-plus"></i> <b>Add User</b>. Requested user collections are cached for 48h, so future requests are handled faster. <a href="/cache"><i class="fas fa-database"></i> View cached collections</a></p>
+        <p>
+            This tool makes it possible to compare your collection with the ratings and comments of other selected
+            users. Sort by number of plays, ratings and difference between your and their ratings.
+        </p>
+        <p>
+            Start by typing your <a href="https://boardgamegeek.com/">boardgamegeek.com</a>/user/Username into the
+            input textfield and hit <i class="fas fa-cubes"></i> <b>Submit</b>. It takes some time for the bgg-api to
+            fetch your collection, so be patient. Usually you can refresh the page after a minute to view the results.
+        </p>
+        <p>
+            <ul>
+                <li>
+                    You may add any amount of additional users by clicking <i class="fas fa-user-plus"></i> <b>Add User</b>.
+                </li>
+                <li>
+                    You may add a random set of up to 5 buddies by enabling <i class="far fa-circle"></i> <b>Include Buddies</b>.
+                </li>
+                <li>
+                    Requested user collections are cached for {{ cache_hours }}h, so future requests are handled faster.
+                    <a href="/cache"><i class="fas fa-database"></i> View cached collections</a>
+                </li>
+            </ul>
+        </p>
     </div>
 
-    <form id="form_build_collection" method="get" action="idk" onsubmit="send_user_form()">
-        <input id="main_user" type="text" placeholder="Username" required>
-        <input id="include_buddies" type="checkbox" hidden>
+    <form id="form_build_collection" method="post" action="process" onsubmit="send_user_form()">
+        <input id="main_user" type="text" placeholder="Username" name="main_user" required>
+        <input id="include_buddies" type="checkbox" name="include_buddies" hidden>
         <label for="include_buddies" class="button checkbox">
             <i class="far fa-circle"></i> Include Buddies
         </label>

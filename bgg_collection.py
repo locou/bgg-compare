@@ -30,6 +30,18 @@ def calc_diff(left, right):
         return
 
 
+def build_url(user_list):
+    url = ""
+    for key, username in enumerate(user_list):
+        if key == 0:
+            url += username
+        elif key == 1:
+            url += "?add_user=" + username
+        else:
+            url += "&add_user=" + username
+    return url
+
+
 def create_user_collection(username):
     loading_status = list()
     result = get_or_create_collection(username)
@@ -122,9 +134,12 @@ def add_user_to_collection(collection, loading_status, username):
             total_items = 0
             match_items = 0
             match_items_comment = 0
+            total_items_comment = 0
             if make_int(result["collection"].get("items").get("@totalitems")) > 0:
                 for item in result["collection"].get("items").get("item"):
                     total_items += 1
+                    if item.get("comment"):
+                        total_items_comment += 1
                     if item["@objectid"] in collection.keys():
                         match_items += 1
                         diff_rating = calc_diff(make_int(item.get("stats").get("rating").get("@value", None)), collection[item["@objectid"]]["user"]["rating"])
@@ -158,6 +173,7 @@ def add_user_to_collection(collection, loading_status, username):
                 "total_items": total_items,
                 "match_items": match_items,
                 "match_items_comment": match_items_comment,
+                "total_items_comment": total_items_comment,
             })
         except TypeError:
             loading_status.append({"username": username, "status": 0})
@@ -179,7 +195,7 @@ def calc_ratings(collection):
                 numplays.append(user["numplays"])
         item["calc"] = {
             "mean_rating": make_float(statistics.mean(ratings)) if ratings else None,
-            "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if diff_ratings else None,
+            "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if len(diff_ratings) > 0 else None,
             "median_rating": make_float(statistics.median(ratings)) if ratings else None,
             "sum_numplays": sum(numplays),
         }
@@ -187,18 +203,6 @@ def calc_ratings(collection):
 
 
 def build_collection_url(loading_status):
-
-    def build_url(user_list):
-        url = ""
-        for key, username in enumerate(user_list):
-            if key == 0:
-                url += username
-            elif key == 1:
-                url += "?add_user=" + username
-            else:
-                url += "&add_user=" + username
-        return url
-
     if len(loading_status) > 1:
         for user_status in loading_status:
 

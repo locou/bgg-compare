@@ -10,6 +10,34 @@ from bgg_collection import create_user_collection, add_user_to_collection
 
 
 @pytest.fixture
+def request_user_not_found():
+    with open('test/requests/user_not_found.xml', 'r', encoding="utf8") as f:
+        data = f.read()
+    return xmltodict.parse(data)
+
+
+@pytest.fixture
+def request_user_with_0_buddies():
+    with open('test/requests/user_with_0_buddies.xml', 'r', encoding="utf8") as f:
+        data = f.read()
+    return xmltodict.parse(data)
+
+
+@pytest.fixture
+def request_user_with_3_buddies():
+    with open('test/requests/user_with_3_buddies.xml', 'r', encoding="utf8") as f:
+        data = f.read()
+    return xmltodict.parse(data)
+
+
+@pytest.fixture
+def request_user_with_30_buddies():
+    with open('test/requests/user_with_30_buddies.xml', 'r', encoding="utf8") as f:
+        data = f.read()
+    return xmltodict.parse(data)
+
+
+@pytest.fixture
 def request_wait_for_access():
     with open('test/requests/wait_for_access.xml', 'r', encoding="utf8") as f:
         data = f.read()

@@ -36,7 +36,7 @@ button {
 }
 
 .block {
-    padding: .5em;
+    padding: .5em 1em;
     margin-bottom: .5em;
 }
 
@@ -190,6 +190,7 @@ display: inline-block;
     min-width: 25px;
     padding: 0;
     font-size: 1em;
+    min-height: auto;
 }
 
 .tag {
@@ -252,7 +253,7 @@ display: inline-block;
 
 .wrapper_loading_status .grid_header {
     grid-column: 1/5;
-    padding: .3em;
+    padding: .5em 1em;
 }
 
 .wrapper_loading_status .grid_message {

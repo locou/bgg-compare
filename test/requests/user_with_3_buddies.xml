@@ -1,4 +1,4 @@
-<user id="1142631" name="foo" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">
+<user id="20000" name="foo" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">
     <firstname value="foo"/>
     <lastname value="oof"/>
     <avatarlink value="https://cf.geekdo-static.com/avatars/avatar_id168678.png"/>
@@ -15,8 +15,8 @@
     <traderating value="0"/>
     <marketrating value="0"/>
     <buddies total="3" page="1">
-        <buddy id="63428" name="bar"/>
-        <buddy id="739" name="baz"/>
-        <buddy id="1127931" name="foz"/>
+        <buddy id="10" name="bar"/>
+        <buddy id="20" name="baz"/>
+        <buddy id="30" name="foz"/>
     </buddies>
 </user>

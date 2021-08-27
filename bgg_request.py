@@ -1,3 +1,5 @@
+import os
+import random
 import re
 import urllib.request
 import json
@@ -24,6 +26,16 @@ def request_user(username):
             return xmltodict.parse(response.read())
     except socket.timeout:
         print("connection's timeout expired")
+
+
+def handle_user_request(username):
+    try:
+        user_data = request_user(username)
+        buddies = [user["@name"] for user in user_data["user"]["buddies"]["buddy"] if len(user["@name"]) > 0]
+        random.shuffle(buddies)
+        return buddies[:5]
+    except:
+        return []
 
 
 def handle_collection_request(username):
