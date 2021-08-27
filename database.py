@@ -95,4 +95,4 @@ def get_cached_usernames():
             )
             return query_result
     except:
-        return
+        return []

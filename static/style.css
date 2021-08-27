@@ -178,6 +178,7 @@ display: inline-block;
     color: var(--primary-color-lighter);
     font-weight: 700;
     font-size: 1.2em;
+    min-height: 1.2em;
 }
 
 .button.icon-only {

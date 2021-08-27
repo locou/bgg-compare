@@ -18,6 +18,7 @@
             Displaying the collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>
             <div>
                 <i class="fas fa-cubes"></i> {{user['total_items']}} games with <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
+                <p><a href="/">Back to Main Page</a></p>
             </div>
         </div>
         % else:
