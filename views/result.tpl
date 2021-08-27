@@ -15,7 +15,7 @@
         % if user['status'] == 1:
         % if key == 0:
         <div class="grid_header block-primary">
-            Displaying the collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>
+            <h1><i class="fas fa-dice-d20"></i> Displaying the collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a></h1>
             <div>
                 <i class="fas fa-cubes"></i> {{user['total_items']}} games with <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
                 <p><a href="/">Back to Main Page</a></p>

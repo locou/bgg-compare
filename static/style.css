@@ -13,6 +13,10 @@ body {
     font-family: 'Fira Sans', sans-serif;
 }
 
+h1 i {
+    color: #ec4f08;
+}
+
 button {
     font-family: 'Fira Sans', sans-serif;
 }
@@ -247,14 +251,7 @@ display: inline-block;
 
 .wrapper_loading_status .grid_header {
     grid-column: 1/5;
-    text-align: center;
-    font-size: 2em;
     padding: .3em;
-}
-
-.wrapper_loading_status .grid_header div {
-    text-align:center;
-    font-size: .5em;
 }
 
 .wrapper_loading_status .grid_message {

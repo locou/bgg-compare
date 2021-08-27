@@ -8,8 +8,11 @@
 </head>
 <body>
 <div class="container">
-    <div class="wrapper_loading_status">
+    <div class="block block-primary">
+        <h1><i class="fas fa-database"></i> Cached Collections</h1>
         <p><a href="/">Back to Main Page</a></p>
+    </div>
+    <div class="wrapper_loading_status">
         <div class="grid_title">Username</div>
         <div class="grid_collection">Created At</div>
         <div class="grid_rating">Updated At</div>
