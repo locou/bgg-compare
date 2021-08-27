@@ -200,11 +200,12 @@ display: inline-block;
 }
 
 .tag-own        {color: var(--dark-color); background: var(--primary-color-lighter);}
-.tag-preordered {color: var(--dark-color); background: var(--primary-color-light);}
+.tag-fortrade,
+.tag-preordered,
 .tag-prevowned  {color: var(--dark-color); background: var(--primary-color-light);}
 .tag-want,
 .tag-wanttoplay,
-.tag-wanttobuy  {color: var(--primary-color); background: var(--primary-color-light);}
+.tag-wanttobuy,
 .tag-wishlist   {color: var(--primary-color); background: var(--primary-color-light);}
 
 .rating {

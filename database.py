@@ -26,25 +26,24 @@ def connect():
 
 def select_collection(username):
     with connect() as connection:
-        # TODO: make where conditions not case sensitive
         return (
             connection
-                .select('"bgg-compare".user_collection')
-                .where("username", username)
-                .execute()
-                .fetch_one()
+            .execute("SELECT * FROM \"bgg-compare\".user_collection WHERE LOWER(username) = LOWER(%(username)s)",
+                     {"username": username})
+            .fetch_one()
         )
 
 
 def update_collection(username, result):
+    # TODO: make update where not case sensitive
     with connect() as connection:
         (
             connection
-                .update('"bgg-compare".user_collection')
-                .where("username", username)
-                .set("updated_at", datetime.now())
-                .set("collection", result["result"])
-                .execute()
+            .update('"bgg-compare".user_collection')
+            .where("username", username)
+            .set("updated_at", datetime.now())
+            .set("collection", result["result"])
+            .execute()
         )
 
 
@@ -52,14 +51,14 @@ def insert_collection(username, result):
     with connect() as connection:
         return (
             connection
-                .insert('"bgg-compare".user_collection')
-                .set("id", str(uuid.uuid4()))
-                .set("username", username)
-                .set("collection", result["result"])
-                .set("created_at", datetime.now())
-                .set("updated_at", datetime.now())
-                .execute()
-                .fetch_one()
+            .insert('"bgg-compare".user_collection')
+            .set("id", str(uuid.uuid4()))
+            .set("username", username)
+            .set("collection", result["result"])
+            .set("created_at", datetime.now())
+            .set("updated_at", datetime.now())
+            .execute()
+            .fetch_one()
         )
 
 
@@ -87,11 +86,11 @@ def get_cached_usernames():
         with connect() as connection:
             query_result = (
                 connection
-                    .select('"bgg-compare".user_collection')
-                    .fields('username', 'created_at', 'updated_at')
-                    .order_by("updated_at")
-                    .execute()
-                    .fetch_all()
+                .select('"bgg-compare".user_collection')
+                .fields('username', 'created_at', 'updated_at')
+                .order_by("updated_at")
+                .execute()
+                .fetch_all()
             )
             return query_result
     except:

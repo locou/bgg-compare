@@ -92,7 +92,7 @@
             </div>
             <div class="user_diff_rating">
                 % if item['calc']['mean_diff_rating']:
-                <div class="tag rating diff-rating-{{item['calc']['mean_diff_rating']}}">{{item['calc']['mean_diff_rating']}}</div> Difference
+                <div class="tag rating diff-rating-{{item['calc']['mean_diff_rating']}}">{{make_int(item['calc']['mean_diff_rating'])}}</div> Difference
                 % end
             </div>
         </div>
