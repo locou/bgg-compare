@@ -5,7 +5,7 @@ from database import get_cached_usernames
 from bottle import route, run, view, request, static_file, get
 
 
-@get('/<filename:re:.*\.css>')
+@get('/<filename:re:.*(\.css|\.js)>')
 def stylesheets(filename):
     return static_file(filename, root='static/')
 
