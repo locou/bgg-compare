@@ -20,6 +20,10 @@
 
     <form id="form_build_collection" method="get" action="idk" onsubmit="send_user_form()">
         <input id="main_user" type="text" placeholder="Username" required>
+        <input id="include_buddies" type="checkbox" hidden>
+        <label for="include_buddies" class="button checkbox">
+            <i class="far fa-circle"></i> Include Buddies
+        </label>
         <p>
             <button class="button" type="submit"><i class="fas fa-cubes"></i> Submit</button>
             <button id="reset_fields" class="button reverse-color" type="reset"><i class="fas fa-redo-alt"></i> Reset</button>

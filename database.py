@@ -28,22 +28,21 @@ def select_collection(username):
     with connect() as connection:
         return (
             connection
-            .execute("SELECT * FROM \"bgg-compare\".user_collection WHERE LOWER(username) = LOWER(%(username)s)",
+            .execute("SELECT * FROM \"bgg-compare\".user_collection WHERE LOWER(username) = LOWER(%(username)s);",
                      {"username": username})
             .fetch_one()
         )
 
 
 def update_collection(username, result):
-    # TODO: make update where not case sensitive
     with connect() as connection:
         (
             connection
-            .update('"bgg-compare".user_collection')
-            .where("username", username)
-            .set("updated_at", datetime.now())
-            .set("collection", result["result"])
-            .execute()
+            .execute("UPDATE \"bgg-compare\".user_collection "
+                     "SET updated_at = %(updated_at)s, collection = %(collection)s "
+                     "WHERE LOWER(username) = LOWER(%(username)s)",
+                     {"username": username, "updated_at": datetime.now(), "collection": result["result"]}
+                     )
         )
 
 
@@ -69,6 +68,7 @@ def get_or_create_collection(username):
             result = handle_collection_request(username)
             if result["message"]["status"] == 1:
                 update_collection(username, result)
+                # TODO: add updated_at to result
                 result["collection"] = json.loads(result["result"])
         else:
             result = {"username": username, "message": {"username": username, "status": 1}, "collection": query_result.collection}

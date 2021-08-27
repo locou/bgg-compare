@@ -16,6 +16,16 @@ def request_collection(username):
         print("connection's timeout expired")
 
 
+def request_user(username):
+    username = re.sub("[^a-zA-Z0-9 ]", "_", username)
+    try:
+        with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/user?buddies=1&name=" +
+                                    username.replace(" ", "%20"), timeout=1) as response:
+            return xmltodict.parse(response.read())
+    except socket.timeout:
+        print("connection's timeout expired")
+
+
 def handle_collection_request(username):
     message = {"username": username, "status": 0, "message": "Unknown error"}
     try:

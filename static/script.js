@@ -19,6 +19,12 @@ $(document).ready(function() {
             $(this).remove();
         });
     });
+
+    $('.checkbox').click(function() {
+        var icon = $(this).find('i');
+        icon.toggleClass("fas fa-check-circle");
+        icon.toggleClass("far fa-circle");
+    });
 });
 
 function send_user_form() {
