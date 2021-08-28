@@ -9,7 +9,7 @@ import xmltodict
 
 
 def request_collection(username):
-    username = re.sub("[^a-zA-Z0-9 ]", "_", username)
+    username = re.sub("[^a-zA-Z0-9-_ ]", "_", username)
     try:
         with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/collection?stats=1&username=" +
                                     username.replace(" ", "%20"), timeout=1) as response:
@@ -19,7 +19,7 @@ def request_collection(username):
 
 
 def request_user(username):
-    username = re.sub("[^a-zA-Z0-9 ]", "_", username)
+    username = re.sub("[^a-zA-Z0-9-_ ]", "_", username)
     try:
         with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/user?buddies=1&name=" +
                                     username.replace(" ", "%20"), timeout=1) as response:
