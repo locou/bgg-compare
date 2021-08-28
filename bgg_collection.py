@@ -48,6 +48,14 @@ def create_user_collection(username):
     collection = collections.OrderedDict()
     if result["message"]["status"] == 0:
         loading_status.append(result["message"])
+    elif result["message"]["status"] == 1 and "item" not in result["collection"]["items"]:
+        loading_status.append({
+            "username": username,
+            "status": 1,
+            "total_items": 0,
+            "match_items": 0,
+            "match_items_comment": 0,
+        })
     elif result["message"]["status"] == 1 and "item" in result["collection"]["items"]:
         try:
             total_items = 0
@@ -216,7 +224,7 @@ def build_collection_url(loading_status):
             user_status["collection_url"] = build_url(user_list)
             user_status["remove_collection_url"] = build_url(remove_list)
         return loading_status
-    else:
+    elif loading_status:
         loading_status[0]["collection_url"] = None
         loading_status[0]["remove_collection_url"] = None
-        return loading_status
+    return loading_status
