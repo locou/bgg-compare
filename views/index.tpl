@@ -38,7 +38,7 @@
         </p>
     </div>
 
-    <form id="form_build_collection" method="post" action="process" onsubmit="send_user_form()">
+    <form id="form_build_collection" method="post" action="process" onsubmit="send_user_form()" class="is-large">
         <input id="main_user" type="text" placeholder="Username" name="main_user" required>
         <input id="include_buddies" type="checkbox" name="include_buddies" hidden>
         <label for="include_buddies" class="button checkbox">

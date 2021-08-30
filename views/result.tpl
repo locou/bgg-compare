@@ -6,6 +6,8 @@
     <link href="/style.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <script src="https://kit.fontawesome.com/9e34df6d41.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/script.js"></script>
 </head>
 % from bgg_collection import make_int
 <body>
@@ -20,6 +22,26 @@
                 <i class="fas fa-cubes"></i> {{user['total_items']}} games with <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
                 <p><a href="/">Back to Main Page</a></p>
             </div>
+        </div>
+
+        <div class="grid_add_user block-primary">
+            <p>Add additional users to the current collection.</p>
+            <form id="form_build_collection" method="post" action="/process" onsubmit="send_user_form()">
+                <input id="main_user" type="text" name="main_user" value="{{user['username']}}" hidden>
+                % for key, a_user in enumerate(loading_status):
+                % if key != 0:
+                <input type="text" class="add_user_input" name="add_user" value="{{a_user['username']}}" hidden>
+                % end
+                % end
+                <input id="include_buddies" type="checkbox" name="include_buddies" hidden>
+                <label for="include_buddies" class="button checkbox reverse-color">
+                    <i class="far fa-circle"></i> Include 5 random Buddies
+                </label>
+                <p>
+                    <button class="button reverse-color" type="submit"><i class="fas fa-cubes"></i> Submit</button>
+                    <a id="add_user_field" class="button reverse-color"><i class="fas fa-user-plus"></i> Add User</a>
+                </p>
+            </form>
         </div>
         % else:
         <div class="grid_title">
