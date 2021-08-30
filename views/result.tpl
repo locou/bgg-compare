@@ -59,7 +59,7 @@
         </div>
         <div class="grid_diff_ratings">
             % for diff in user['diff_ratings']:
-            <div class="tag rating diff-rating-{{diff}}"></div>
+            <a href="#{{diff['title']}}"><div class="tag tooltip rating diff-rating-{{diff['diff_rating']}}" data-tooltip="{{diff['title']}}" ></div></a>
             % end
         </div>
         % end
@@ -81,8 +81,8 @@
             <div class="tag rating rating-{{make_int(item['stats']['average'])}}">{{item['stats']['average'] if item['stats']['average'] > 0 else '-'}}</div>
         </div>
         <div class="grid_bg_title">
-            <a class="bg_title" href="https://boardgamegeek.com/{{item['type']}}/{{key}}/">{{item['display_name']}}</a> (<i>{{item['yearpublished']}}</i>)
-            <p>{{item['name']}}</p>
+            <a class="bg_title" id="{{ item['title']}}" href="https://boardgamegeek.com/{{item['type']}}/{{key}}/">{{item['title']}}</a> (<i>{{item['yearpublished']}}</i>)
+            <p>{{item['alternative_title']}}</p>
         </div>
         <div class="grid_bg_info">
             <ul>

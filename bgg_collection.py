@@ -30,6 +30,13 @@ def calc_diff(left, right):
         return
 
 
+def get_title(originalname, name, type):
+    if type == "title":
+        return originalname if originalname != "" else name
+    elif type == "alternative_title":
+        return name if originalname != "" else ""
+
+
 def build_url(user_list):
     url = ""
     for key, username in enumerate(user_list):
@@ -67,8 +74,8 @@ def create_user_collection(username):
                 total_items += 1
                 collection[item["@objectid"]] = {
                     "type": item.get("@subtype", ""),
-                    "name": item.get("originalname", ""),
-                    "display_name": item.get("name", "").get("#text", ""),
+                    "title": get_title(item.get("originalname", ""), item.get("name").get("#text", ""), "title"),
+                    "alternative_title": get_title(item.get("originalname", ""), item.get("name").get("#text", ""), "alternative_title"),
                     "yearpublished": item.get("yearpublished", ""),
                     "thumbnail": item.get("thumbnail", ""),
                     "stats": {
@@ -171,14 +178,14 @@ def add_user_to_collection(collection, loading_status, username):
                         if item.get("comment"):
                             match_items_comment += 1
                         if isinstance(diff_rating, int) and diff_rating >= 0:
-                            # TODO: add which game the diff came from and display it with a tooltip
-                            diff_ratings.append(diff_rating)
+                            title = get_title(item.get("originalname", ""), item.get("name").get("#text", ""), "title")
+                            diff_ratings.append({"title": title, "diff_rating": diff_rating})
 
             loading_status.append({
                 "username": username,
                 "status": 1,
-                "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if len(diff_ratings) > 0 else None,
-                "diff_ratings": sorted(diff_ratings),
+                "mean_diff_rating": make_float(statistics.mean([i["diff_rating"] for i in diff_ratings])) if len(diff_ratings) > 0 else None,
+                "diff_ratings":  sorted(diff_ratings, key=lambda item: item["diff_rating"]),
                 "total_items": total_items,
                 "match_items": match_items,
                 "match_items_comment": match_items_comment,

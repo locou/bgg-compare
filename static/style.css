@@ -253,6 +253,26 @@ display: inline-block;
     background: var(--secondary-color);
 }
 
+.tooltip {
+    position: relative;
+    text-decoration: none;
+}
+.tooltip:after {
+    border-radius: 5px;
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 130%;
+    left: 20%;
+    background: var(--primary-color-lighter);
+    padding: .2em .5em;
+    color: black;
+    white-space: nowrap;
+    display: none;
+}
+.tooltip:hover:after {
+    display: block;
+}
+
 .wrapper_loading_status {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr .5fr;
