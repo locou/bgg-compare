@@ -84,14 +84,14 @@ def get_or_create_collection(username):
 def get_cached_usernames():
     try:
         with connect() as connection:
-            # TODO: reverse order
-            # TODO: format date to yyyy-mm-dd
             query_result = (
                 connection
-                .select('"bgg-compare".user_collection')
-                .fields('username', 'created_at', 'updated_at')
-                .order_by("updated_at")
-                .execute()
+                .execute("SELECT "
+                         "username, "
+                         "to_char(created_at, 'YYYY-MM-DD') as created_at, "
+                         "to_char(updated_at, 'YYYY-MM-DD') as updated_at "
+                         "FROM \"bgg-compare\".user_collection "
+                         "ORDER BY updated_at DESC")
                 .fetch_all()
             )
             return query_result
