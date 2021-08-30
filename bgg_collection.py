@@ -171,6 +171,7 @@ def add_user_to_collection(collection, loading_status, username):
                         if item.get("comment"):
                             match_items_comment += 1
                         if isinstance(diff_rating, int) and diff_rating >= 0:
+                            # TODO: add which game the diff came from and display it with a tooltip
                             diff_ratings.append(diff_rating)
 
             loading_status.append({

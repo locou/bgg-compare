@@ -84,6 +84,8 @@ def get_or_create_collection(username):
 def get_cached_usernames():
     try:
         with connect() as connection:
+            # TODO: reverse order
+            # TODO: format date to yyyy-mm-dd
             query_result = (
                 connection
                 .select('"bgg-compare".user_collection')

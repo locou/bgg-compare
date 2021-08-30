@@ -45,6 +45,10 @@ def bgg(username):
         for user_to_compare in users_to_compare:
             collection, loading_status = add_user_to_collection(collection, loading_status, user_to_compare)
     collection = calc_ratings(collection)
+
+    # TODO: put sort in its own function
+    # TODO: add combined number of ratings
+    # TODO: add buttons to sort by UI
     sort_by = request.GET.get('sort_by')
     if not sort_by:
         sort_by = "my_rating"
@@ -80,6 +84,10 @@ def bgg(username):
                 del collection[key]
         collection = dict(sorted(collection.items(), key=lambda item: (10 if item[1].get("calc").get("mean_diff_rating") is None else item[1].get("calc").get("mean_diff_rating")), reverse=order_by))
     loading_status = build_collection_url(loading_status)
+
+    # TODO: consistend icons and urls for: user-collection, user-bgg-page
+    # TODO: add tooltips for each rating display
+    # TODO: add title to each anchor
     return dict(collection=collection, loading_status=loading_status)
 
 
