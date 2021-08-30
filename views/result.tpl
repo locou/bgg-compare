@@ -45,16 +45,16 @@
         </div>
         % else:
         <div class="grid_title">
-            Added collection of <a href="https://boardgamegeek.com/user/{{user['username']}}"><i class="fas fa-user"></i> {{user['username']}}</a>
-            <a class="button icon-only" href="{{user['collection_url']}}" title="switch to collection"><i class="fas fa-random"></i></a>
-            <a class="button icon-only" href="{{user['remove_collection_url']}}" title="remove user"><i class="fas fa-times"></i></a>
+            Added collection of <a href="https://boardgamegeek.com/user/{{user['username']}}" class="tooltip" data-tooltip="open {{user['username']}}s boardgamegeek profile"><i class="fas fa-user"></i> {{user['username']}}</a>
+            <a class="button icon-only tooltip" href="{{user['collection_url']}}" data-tooltip="switch to {{user['username']}}s collection"><i class="fas fa-random"></i></a>
+            <a class="button icon-only tooltip" href="{{user['remove_collection_url']}}" data-tooltip="remove {{user['username']}}s collection"><i class="fas fa-times"></i></a>
         </div>
         <div class="grid_collection">
             matched <i class="fas fa-cubes"></i> {{user['match_items']}} of {{user['total_items']}} games providing <i class="far fa-comment"></i> {{user['match_items_comment']}} of {{user['total_items_comment']}} comments
         </div>
         <div class="grid_rating">
             % if user['mean_diff_rating']:
-            mean difference in ratings: <div class="tag rating diff-rating-{{make_int(user['mean_diff_rating'])}}">{{user['mean_diff_rating']}}</div>
+            mean difference in ratings: <div class="tag tooltip rating diff-rating-{{make_int(user['mean_diff_rating'])}}" data-tooltip="mean between all differences in ratings">{{user['mean_diff_rating']}}</div>
             % end
         </div>
         <div class="grid_diff_ratings">
@@ -66,7 +66,7 @@
         % elif "errors" in user:
         <div class="grid_message">Error loading "{{user['username']}}": <span>{{user['errors']}}</span></div>
         % elif "message" in user:
-        <div class="grid_message">Loading <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a>: <span>{{user['message']}}</span></div>
+        <div class="grid_message tooltip">Loading <a href="https://boardgamegeek.com/user/{{user['username']}}" data-tooltip="open {{user['username']}}s boardgamegeek profile">{{user['username']}}</a>: <span>{{user['message']}}</span></div>
         % end
         % end
     </div>
@@ -106,15 +106,15 @@
                 Combined
             </div>
             <div class="user_rating">
-                <div class="tag rating rating-{{make_int(item['calc']['mean_rating'])}}">
+                <div class="tag tooltip rating rating-{{make_int(item['calc']['mean_rating'])}}" data-tooltip="Mean rating between the users ratings">
                     {{item['calc']['mean_rating'] if item['calc']['mean_rating'] and item['calc']['mean_rating'] > 0 else '-'}}
                 </div>
-                Rating with <b>{{item['calc']['sum_numplays']}}</b> Play/s
+                Rating with <b class="tooltip" data-tooltip="Sum of all plays">{{item['calc']['sum_numplays']}}</b> Play/s
 
             </div>
             <div class="user_diff_rating">
                 % if item['calc']['mean_diff_rating'] is not None:
-                <div class="tag rating diff-rating-{{make_int(item['calc']['mean_diff_rating'])}}">{{item['calc']['mean_diff_rating']}}</div> Difference
+                <div class="tag tooltip rating diff-rating-{{make_int(item['calc']['mean_diff_rating'])}}" data-tooltip="Mean between the differences in rating">{{item['calc']['mean_diff_rating']}}</div> Difference
                 % end
             </div>
         </div>
@@ -124,7 +124,7 @@
         % for username, stats in item['users'].items():
         <div class="wrapper_user_stats">
             <div class="user_name">
-                <a href="https://boardgamegeek.com/user/{{username}}">{{username}}</a>
+                <a class="tooltip" href="https://boardgamegeek.com/user/{{username}}" data-tooltip="open {{username}}s boardgamegeek profile">{{username}}</a>
             </div>
             <div class="user_tags">
                 % for key, stat in stats['status'].items():
@@ -141,7 +141,7 @@
             </div>
             <div class="user_diff_rating">
                 % if isinstance(stats['diff_rating'], int):
-                <div class="tag rating diff-rating-{{stats['diff_rating']}}">{{stats['diff_rating']}}</div> Difference
+                <div class="tag tooltip rating diff-rating-{{stats['diff_rating']}}" data-tooltip="Difference between {{main_user}} and {{username}}s rating">{{stats['diff_rating']}}</div> Difference
                 % end
             </div>
             % if stats['comment']:

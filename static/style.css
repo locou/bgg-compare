@@ -258,6 +258,7 @@ display: inline-block;
     text-decoration: none;
 }
 .tooltip:after {
+    z-index: 50;
     border-radius: 5px;
     content: attr(data-tooltip);
     position: absolute;

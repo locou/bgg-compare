@@ -87,8 +87,7 @@ def bgg(username):
 
     # TODO: consistend icons and urls for: user-collection, user-bgg-page
     # TODO: add tooltips for each rating display
-    # TODO: add title to each anchor
-    return dict(collection=collection, loading_status=loading_status)
+    return dict(collection=collection, loading_status=loading_status, main_user=username)
 
 
 if os.environ.get('APP_LOCATION') == 'heroku':
