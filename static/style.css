@@ -273,6 +273,7 @@ display: inline-block;
     color: black;
     white-space: nowrap;
     display: none;
+    font-weight: 100;
 }
 .tooltip:hover:after {
     display: block;

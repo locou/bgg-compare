@@ -50,7 +50,7 @@
         % else:
         <div class="grid_title">
             Added collection of <a href="https://boardgamegeek.com/user/{{user['username']}}" class="tooltip" data-tooltip="open {{user['username']}}s boardgamegeek profile"><i class="fas fa-user"></i> {{user['username']}}</a>
-            <a class="button icon-only tooltip" href="{{user['collection_url']}}" data-tooltip="switch to {{user['username']}}s collection"><i class="fas fa-random"></i></a>
+            <a class="button icon-only tooltip" href="{{user['collection_url']}}" data-tooltip="switch to {{user['username']}}s collection"><i class="fas fa-people-arrows"></i></a>
             <a class="button icon-only tooltip" href="{{user['remove_collection_url']}}" data-tooltip="remove {{user['username']}}s collection"><i class="fas fa-times"></i></a>
         </div>
         <div class="grid_collection">
@@ -88,7 +88,7 @@
     </div>
     <div>
         <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
-           data-tooltip="open {{main_user}}s boardgamegeek profile">{{main_user}}</a>s stats, sort by
+           data-tooltip="open {{main_user}}s boardgamegeek profile"><i class="fas fa-user"></i> {{main_user}}</a>s stats, sort by
         <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
         <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
     </div>
@@ -97,15 +97,23 @@
         <div class="sort tag" data-sort="combined_numplays">Number of Plays <i class="fas fa-sort"></i></div>
         <div class="sort tag" data-sort="combined_mean_rating">Rating <i class="fas fa-sort"></i></div>
         <div class="sort tag" data-sort="combined_mean_diff_rating">Difference Rating <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_count_users">Number of users <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_count_ratings">Number of Ratings <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_count_comments">Number of Comments <i class="fas fa-sort"></i></div>
     </div>
     <div>
         Hide games with tags from <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
-           data-tooltip="open {{main_user}}s boardgamegeek profile">{{main_user}}</a>
+           data-tooltip="open {{main_user}}s boardgamegeek profile"><i class="fas fa-user"></i> {{main_user}}</a>
         <div class="toggle_tag tag" data-tag="my_tag_own">own <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_prevowned">prevowned <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_prevowned">prev. owned <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_preordered">preordered <i class="fas fa-eye"></i></div>
         <div class="toggle_tag tag" data-tag="my_tag_wishlist">wishlist <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_wanttobuy">wanttobuy <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_any">without tag <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_fortrade">for trade <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_want">want <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_wanttoplay">want to play <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_wanttobuy">want to buy <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_any"><em>without tag</em> <i class="fas fa-eye"></i></div>
+
     </div>
 </div>
 <div id="game_container">
@@ -122,10 +130,17 @@
      data-my_tag_prevowned="{{item['user']['status']['prevowned']}}"
      data-my_tag_wishlist="{{item['user']['status']['wishlist']}}"
      data-my_tag_wanttobuy="{{item['user']['status']['wanttobuy']}}"
+     data-my_tag_preordered="{{item['user']['status']['preordered']}}"
+     data-my_tag_fortrade="{{item['user']['status']['fortrade']}}"
+     data-my_tag_want="{{item['user']['status']['want']}}"
+     data-my_tag_wanttoplay="{{item['user']['status']['wanttoplay']}}"
      data-my_tag_any="{{ 0 if int(item['user']['status']['own']) + int(item['user']['status']['prevowned']) + int(item['user']['status']['wishlist']) + int(item['user']['status']['wanttobuy']) > 0 else 1}}"
      data-combined_numplays="{{item['calc']['sum_numplays']}}"
      data-combined_mean_rating="{{item['calc']['mean_rating']}}"
-     data-combined_mean_diff_rating="{{item['calc']['mean_diff_rating']}}">
+     data-combined_mean_diff_rating="{{item['calc']['mean_diff_rating']}}"
+     data-combined_count_users="{{item['calc']['count_users']}}"
+     data-combined_count_ratings="{{item['calc']['count_ratings']}}"
+     data-combined_count_comments="{{item['calc']['count_comments']}}">
     <div class="bg_img">
         <img src="{{item['thumbnail']}}">
     </div>
@@ -155,8 +170,8 @@
     </div>
     <div class="user_calc block-primary">
         <div class="wrapper_user_stats">
-            <div class="user_name">
-                Combined
+            <div class="user_name tooltip" data-tooltip="{{item['calc']['count_users']}} User/s | {{item['calc']['count_ratings']}} Rating/s | {{item['calc']['count_comments']}} Comment/s">
+                Combined <i class="fas fa-users"></i> {{item['calc']['count_users']}} <i class="fas fa-star-half-alt"></i> {{item['calc']['count_ratings']}} <i class="far fa-comment"></i> {{item['calc']['count_comments']}}
             </div>
             <div class="user_rating">
                 <div class="tag tooltip rating rating-{{make_int(item['calc']['mean_rating'])}}" data-tooltip="Mean rating between the users ratings">

@@ -18,7 +18,7 @@
             users. Sort by number of plays, ratings and difference between your and their ratings.
         </p>
         <p>
-            Start by typing your <a href="https://boardgamegeek.com/">boardgamegeek.com</a>/user/Username into the
+            Start by typing your BGG Username (found in the url like <a href="https://boardgamegeek.com/">boardgamegeek.com</a>/user/USERNAME) into the
             input textfield and hit <i class="fas fa-cubes"></i> <b>Submit</b>. It takes some time for the bgg-api to
             fetch your collection, so be patient. Usually you can refresh the page after a minute to view the results.
         </p>
@@ -28,7 +28,10 @@
                     You may add any amount of additional users by clicking <i class="fas fa-user-plus"></i> <b>Add User</b>.
                 </li>
                 <li>
-                    You may add a random set of up to 5 buddies by enabling <i class="far fa-circle"></i> <b>Include Buddies</b>.
+                    You may add a random set of up to 5 buddies by enabling <i class="far fa-circle"></i> <b>Include 5 random Buddies</b>.
+                </li>
+                <li>
+                    You may add a random set of 5 random, cached users by enabling <i class="far fa-circle"></i> <b>Include 5 random, cached Users</b>.
                 </li>
                 <li>
                     Requested user collections are cached for {{ cache_hours }}h, so future requests are handled faster.
@@ -44,9 +47,9 @@
         <label for="include_buddies" class="button checkbox">
             <i class="far fa-circle"></i> Include 5 random Buddies
         </label>
-        <input id="include_random_users" type="checkbox" name="include_random_users" hidden>
+        <input id="include_random_users" type="checkbox" name="include_random_users" hidden checked>
         <label for="include_random_users" class="button checkbox">
-            <i class="far fa-circle"></i> Include 5 random, cached Users
+            <i class="far fa-check-circle"></i> Include 5 random, cached Users
         </label>
         <p>
             <button class="button" type="submit"><i class="fas fa-cubes"></i> Submit</button>

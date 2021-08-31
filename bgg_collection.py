@@ -202,18 +202,29 @@ def calc_ratings(collection):
         ratings = list()
         diff_ratings = list()
         numplays = list()
+        count_comments = 0
+        count_ratings = 0
+        count_users = 0
         for _, user in item["users"].items():
             if user["rating"] in range(1, 11):
                 ratings.append(user["rating"])
+                count_ratings += 1
             if user["diff_rating"] in range(0, 10):
                 diff_ratings.append(user["diff_rating"])
             if user["numplays"]:
                 numplays.append(user["numplays"])
+            if user["comment"]:
+                count_comments += 1
+            count_users += 1
+
         item["calc"] = {
             "mean_rating": make_float(statistics.mean(ratings)) if ratings else None,
             "mean_diff_rating": make_float(statistics.mean(diff_ratings)) if len(diff_ratings) > 0 else None,
             "median_rating": make_float(statistics.median(ratings)) if ratings else None,
             "sum_numplays": sum(numplays),
+            "count_comments": count_comments,
+            "count_ratings": count_ratings,
+            "count_users": count_users,
         }
     return collection
 
