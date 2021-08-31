@@ -274,6 +274,14 @@ display: inline-block;
     display: block;
 }
 
+span.error {
+    font-family: monospace;
+    background: var(--primary-color-lighter);
+    font-size: .8em;
+    padding: .2em .5em;
+    border-radius: 5px;
+}
+
 .wrapper_loading_status {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr .5fr;
@@ -294,9 +302,7 @@ display: inline-block;
     grid-column: 1/5;
     margin: auto 0 auto 0;
 }
-.wrapper_loading_status .grid_message span {
-    font-family: monospace;
-}
+
 .wrapper_loading_status .grid_title {
     grid-column: 1;
     margin: auto 0 auto 0;

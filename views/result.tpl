@@ -59,6 +59,8 @@
         <div class="grid_rating">
             % if user['mean_diff_rating']:
             mean difference in ratings: <div class="tag tooltip rating diff-rating-{{make_int(user['mean_diff_rating'])}}" data-tooltip="mean between all differences in ratings">{{user['mean_diff_rating']}}</div>
+            % else:
+            <span class="error">No ratings to compare</span>
             % end
         </div>
         <div class="grid_diff_ratings">
@@ -68,7 +70,7 @@
         </div>
         % end
         % elif "errors" in user:
-        <div class="grid_message">Error loading "{{user['username']}}": <span>{{user['errors']}}</span></div>
+        <div class="grid_message">Error loading "{{user['username']}}" <a class="button icon-only tooltip" href="{{user['remove_collection_url']}}" data-tooltip="remove {{user['username']}}s collection"><i class="fas fa-times"></i></a>: <span class="error">{{user['errors']}}</span></div>
         % elif "message" in user:
         <div class="grid_message tooltip">Loading <a href="https://boardgamegeek.com/user/{{user['username']}}" data-tooltip="open {{user['username']}}s boardgamegeek profile">{{user['username']}}</a>: <span>{{user['message']}}</span></div>
         % end
