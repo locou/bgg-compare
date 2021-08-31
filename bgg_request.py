@@ -30,6 +30,8 @@ def request_user(username):
 
 def handle_user_request(username):
     try:
+        # TODO: include all cached buddies + x random ones, which are not cached
+        # TODO: make number of buddies a constant and display it in the ui
         user_data = request_user(username)
         buddies = [user["@name"] for user in user_data["user"]["buddies"]["buddy"] if len(user["@name"]) > 0]
         random.shuffle(buddies)

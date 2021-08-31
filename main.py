@@ -14,6 +14,7 @@ def stylesheets(filename):
 @route("/cache")
 @view("views/cache")
 def cache():
+    # TODO: remove this page?
     result = get_cached_usernames()
     return dict(result=result)
 
@@ -21,6 +22,8 @@ def cache():
 @route("/")
 @view("views/index")
 def index():
+    # TODO: checkmark to refresh the cache
+    # TODO: checkbox to include a random set of cached user collections
     return dict(cache_hours=int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)))
 
 
@@ -85,8 +88,11 @@ def bgg(username):
         collection = dict(sorted(collection.items(), key=lambda item: (10 if item[1].get("calc").get("mean_diff_rating") is None else item[1].get("calc").get("mean_diff_rating")), reverse=order_by))
     loading_status = build_collection_url(loading_status)
 
-    # TODO: consistend icons and urls for: user-collection, user-bgg-page
+    # TODO: consistent icons and urls for: user-collection, user-bgg-page
     # TODO: add tooltips for each rating display
+    # TODO: show cache date
+    # TODO: pagination for big collections
+    # TODO: enable / disable tags
     return dict(collection=collection, loading_status=loading_status, main_user=username)
 
 
