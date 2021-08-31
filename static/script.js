@@ -1,4 +1,62 @@
 $(document).ready(function() {
+    var items = $('div#game_container'), item = items.children('div.wrapper');
+    $('.toggle_tag').click(function() {
+        var button = $(this);
+        var button_icon = button.find('i');
+        var class_show = "fa-eye"
+        var class_hidden = "fa-eye-slash"
+        var tag = $(this).data('tag');
+        var o = button.hasClass("hidden") ? "show" : "hidden";
+        var oi = button_icon.hasClass(class_hidden) ? class_show : class_hidden;
+
+        button_icon.removeClass(class_show).removeClass(class_hidden).addClass(oi)
+        button.removeClass("show").removeClass("hidden").addClass(o);
+        $("div[data-"+tag+"='1']").each(function() {
+            if(o == "hidden") {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    });
+    $('.sort').click(function () {
+        var button = $(this);
+        var button_icon = button.find('i');
+        var class_neutral = "fa-sort"
+        var class_asc = "fa-sort-up"
+        var class_desc = "fa-sort-down"
+        var sort_by = $(this).data('sort');
+        var o = button.hasClass("desc") ? "asc" : "desc";
+        var oi = button_icon.hasClass(class_desc) ? class_asc : class_desc;
+        $('div.sort').each(function() {
+            $(this).removeClass("asc").removeClass("desc");
+            $(this).find('i').removeClass(class_asc).removeClass(class_desc).addClass(class_neutral)
+        })
+        button.addClass(o);
+        button_icon.addClass(oi);
+        item.detach().sort(function(a, b) {
+            var astts = $(a).data(sort_by);
+            var bstts = $(b).data(sort_by);
+
+            if (astts == "None") {
+                return 1;
+            }
+            if (bstts == "None") {
+                return -1;
+            }
+            if (astts > bstts) {
+                return button.hasClass("asc") ? 1 : -1;
+            }
+            if (astts < bstts) {
+                return button.hasClass("asc") ? -1 : 1;
+            }
+            return 0;
+        });
+        items.append(item);
+    });
+
+
+
     $('a#add_user_field').click(function() {
         var lastField = $("#form_build_collection div:last");
         var intId = (lastField && lastField.length && lastField.data("idx") + 1) || 1;

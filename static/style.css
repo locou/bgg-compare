@@ -253,6 +253,10 @@ display: inline-block;
     background: var(--secondary-color);
 }
 
+#sort_container div:not(:last-child) {
+    margin-bottom: .2em;
+}
+
 .tooltip {
     position: relative;
     text-decoration: none;
@@ -280,6 +284,30 @@ span.error {
     font-size: .8em;
     padding: .2em .5em;
     border-radius: 5px;
+}
+
+.sort,
+.toggle_tag{
+    cursor: pointer;
+    color: var(--primary-color);
+    background: var(--primary-color-lighter);
+}
+
+.sort i,
+.toggle_tag i {
+    min-width: 20px;
+    text-align: center;
+}
+
+.toggle_tag.hidden {
+    color: var(--primary-color-lighter);
+    background: var(--primary-color);
+}
+
+.sort.asc,
+.sort.desc {
+    color: var(--primary-color-lighter);
+    background: var(--primary-color);
 }
 
 .wrapper_loading_status {

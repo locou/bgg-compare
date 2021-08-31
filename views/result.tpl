@@ -77,8 +77,55 @@
         % end
     </div>
 </div>
+<div id="sort_container" class="container">
+    <div>
+        Boardgame stats, sort by
+        <div class="sort tag" data-sort="boardgame_title">Title <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="boardgame_rating">Rating <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="boardgame_year">Year <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="boardgame_numowned">Number of Owners <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="boardgame_numrating">Number of Ratings <i class="fas fa-sort"></i></div>
+    </div>
+    <div>
+        <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
+           data-tooltip="open {{main_user}}s boardgamegeek profile">{{main_user}}</a>s stats, sort by
+        <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
+    </div>
+    <div>
+        Combined stats, sort by
+        <div class="sort tag" data-sort="combined_numplays">Number of Plays <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_mean_rating">Rating <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_mean_diff_rating">Difference Rating <i class="fas fa-sort"></i></div>
+    </div>
+    <div>
+        Hide games with tags from <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
+           data-tooltip="open {{main_user}}s boardgamegeek profile">{{main_user}}</a>
+        <div class="toggle_tag tag" data-tag="my_tag_own">own <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_prevowned">prevowned <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_wishlist">wishlist <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_wanttobuy">wanttobuy <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_any">without tag <i class="fas fa-eye"></i></div>
+    </div>
+</div>
+<div id="game_container">
 % for key, item in collection.items():
-<div class="wrapper">
+<div class="wrapper"
+     data-boardgame_rating="{{item['stats']['average']}}"
+     data-boardgame_title="{{item['title']}}"
+     data-boardgame_year="{{ item['yearpublished']}}"
+     data-boardgame_numowned="{{item['stats']['numowned']}}"
+     data-boardgame_numrating="{{item['stats']['numrating']}}"
+     data-my_rating="{{item['user']['rating']}}"
+     data-my_numplays="{{item['user']['numplays']}}"
+     data-my_tag_own="{{item['user']['status']['own']}}"
+     data-my_tag_prevowned="{{item['user']['status']['prevowned']}}"
+     data-my_tag_wishlist="{{item['user']['status']['wishlist']}}"
+     data-my_tag_wanttobuy="{{item['user']['status']['wanttobuy']}}"
+     data-my_tag_any="{{ 0 if int(item['user']['status']['own']) + int(item['user']['status']['prevowned']) + int(item['user']['status']['wishlist']) + int(item['user']['status']['wanttobuy']) > 0 else 1}}"
+     data-combined_numplays="{{item['calc']['sum_numplays']}}"
+     data-combined_mean_rating="{{item['calc']['mean_rating']}}"
+     data-combined_mean_diff_rating="{{item['calc']['mean_diff_rating']}}">
     <div class="bg_img">
         <img src="{{item['thumbnail']}}">
     </div>
@@ -161,6 +208,7 @@
     </div>
 </div>
 % end
+</div>
 % include('footer.tpl')
 </body>
 </html>
