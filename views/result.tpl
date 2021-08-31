@@ -37,6 +37,10 @@
                 <label for="include_buddies" class="button checkbox reverse-color">
                     <i class="far fa-circle"></i> Include 5 random Buddies
                 </label>
+                <input id="include_random_users" type="checkbox" name="include_random_users" hidden>
+                <label for="include_random_users" class="button checkbox reverse-color">
+                    <i class="far fa-circle"></i> Include 5 random, cached Users
+                </label>
                 <p>
                     <button class="button reverse-color" type="submit"><i class="fas fa-cubes"></i> Submit</button>
                     <a id="add_user_field" class="button reverse-color"><i class="fas fa-user-plus"></i> Add User</a>

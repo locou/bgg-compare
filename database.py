@@ -83,8 +83,9 @@ def get_or_create_collection(username):
     return result
 
 
-def get_cached_usernames():
+def get_cached_usernames(exclude_usernames=[""]):
     try:
+        exclude_usernames = [username.lower() for username in exclude_usernames]
         with connect() as connection:
             query_result = (
                 connection
@@ -93,7 +94,9 @@ def get_cached_usernames():
                          "to_char(created_at, 'YYYY-MM-DD') as created_at, "
                          "to_char(updated_at, 'YYYY-MM-DD') as updated_at "
                          "FROM \"bgg-compare\".user_collection "
-                         "ORDER BY updated_at DESC")
+                         "WHERE LOWER(username) NOT IN %(exclude_usernames)s "
+                         "ORDER BY updated_at DESC;",
+                         {"exclude_usernames": tuple(exclude_usernames)})
                 .fetch_all()
             )
             return query_result

@@ -42,7 +42,11 @@
         <input id="main_user" type="text" placeholder="Username" name="main_user" required>
         <input id="include_buddies" type="checkbox" name="include_buddies" hidden>
         <label for="include_buddies" class="button checkbox">
-            <i class="far fa-circle"></i> Include Buddies
+            <i class="far fa-circle"></i> Include 5 random Buddies
+        </label>
+        <input id="include_random_users" type="checkbox" name="include_random_users" hidden>
+        <label for="include_random_users" class="button checkbox">
+            <i class="far fa-circle"></i> Include 5 random, cached Users
         </label>
         <p>
             <button class="button" type="submit"><i class="fas fa-cubes"></i> Submit</button>
