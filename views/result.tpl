@@ -53,7 +53,7 @@
             <a class="button icon-only tooltip" href="{{user['collection_url']}}" data-tooltip="switch to {{user['username']}}s collection"><i class="fas fa-people-arrows"></i></a>
             <a class="button icon-only tooltip" href="{{user['remove_collection_url']}}" data-tooltip="remove {{user['username']}}s collection"><i class="fas fa-times"></i></a>
         </div>
-        <div class="grid_collection">
+        <div class="grid_collection tooltip" data-tooltip="Data from {{user['updated_at']}}">
             matched <i class="fas fa-cubes"></i> {{user['match_items']}} of {{user['total_items']}} games providing <i class="far fa-comment"></i> {{user['match_items_comment']}} of {{user['total_items_comment']}} comments
         </div>
         <div class="grid_rating">

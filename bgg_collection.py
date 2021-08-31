@@ -184,6 +184,7 @@ def add_user_to_collection(collection, loading_status, username):
             loading_status.append({
                 "username": username,
                 "status": 1,
+                "updated_at": datetime.strftime(result["message"]["updated_at"], "%Y-%m-%d"),
                 "mean_diff_rating": make_float(statistics.mean([i["diff_rating"] for i in diff_ratings])) if len(diff_ratings) > 0 else None,
                 "diff_ratings":  sorted(diff_ratings, key=lambda item: item["diff_rating"]),
                 "total_items": total_items,

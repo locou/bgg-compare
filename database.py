@@ -70,15 +70,18 @@ def get_or_create_collection(username):
             result = handle_collection_request(username)
             if result["message"]["status"] == 1:
                 update_collection(username, result)
-                # TODO: add updated_at to result
                 result["collection"] = json.loads(result["result"])
+                result["message"]["updated_at"] = datetime.now()
         else:
-            result = {"username": username, "message": {"username": username, "status": 1}, "collection": query_result.collection}
+            result = {"username": username,
+                      "message": {"username": username, "status": 1, "updated_at": query_result.updated_at},
+                      "collection": query_result.collection}
     else:
         result = handle_collection_request(username)
         if result["message"]["status"] == 1:
             query_result = insert_collection(username, result)
             result["collection"] = query_result.collection
+            result["message"]["updated_at"] = datetime.now()
 
     return result
 

@@ -24,7 +24,6 @@ def cache():
 @view("views/index")
 def index():
     # TODO: checkmark to refresh the cache
-    # TODO: checkbox to include a random set of cached user collections
     return dict(cache_hours=int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)))
 
 
@@ -58,9 +57,6 @@ def bgg(username):
 
     loading_status = build_collection_url(loading_status)
 
-    # TODO: add combined number of ratings
-    # TODO: consistent icons and urls for: user-collection, user-bgg-page
-    # TODO: add tooltips for each rating display
     # TODO: show cache date
     # TODO: pagination for big collections
     return dict(collection=collection, loading_status=loading_status, main_user=username)
