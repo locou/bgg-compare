@@ -311,6 +311,11 @@ span.error {
     background: var(--primary-color);
 }
 
+.grid_collection span {
+    width: 30%;
+    display: inline-block;
+}
+
 .wrapper_loading_status {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr .5fr;
