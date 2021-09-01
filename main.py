@@ -57,7 +57,6 @@ def bgg(username):
 
     loading_status = build_collection_url(loading_status)
 
-    # TODO: show cache date
     # TODO: pagination for big collections
     return dict(collection=collection, loading_status=loading_status, main_user=username)
 

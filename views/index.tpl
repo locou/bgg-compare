@@ -49,7 +49,7 @@
         </label>
         <input id="include_random_users" type="checkbox" name="include_random_users" hidden checked>
         <label for="include_random_users" class="button checkbox">
-            <i class="far fa-check-circle"></i> Include 5 random, cached Users
+            <i class="fas fa-check-circle"></i> Include 5 random, cached Users
         </label>
         <p>
             <button class="button" type="submit"><i class="fas fa-cubes"></i> Submit</button>

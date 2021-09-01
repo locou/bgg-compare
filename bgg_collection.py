@@ -61,11 +61,13 @@ def create_user_collection(username):
             "status": 1,
             "total_items": 0,
             "match_items": 0,
+            "match_items_rating": 0,
             "match_items_comment": 0,
         })
     elif result["message"]["status"] == 1 and "item" in result["collection"]["items"]:
         try:
             total_items = 0
+            match_items_rating = 0
             match_items_comment = 0
             if isinstance(result["collection"].get("items").get("item"), dict):
                 result["collection"]["items"]["item"] = [result["collection"].get("items").get("item")]
@@ -124,13 +126,18 @@ def create_user_collection(username):
                         }
                     }
                 }
+                if make_int(item.get("stats").get("rating").get("@value", None)):
+                    match_items_rating += 1
                 if item.get("comment"):
                     match_items_comment += 1
             loading_status.append({
                 "username": username,
                 "status": 1,
                 "total_items": total_items,
-                "match_items": 0,
+                "match_items": total_items,
+                "total_items_rating": match_items_rating,
+                "match_items_rating": match_items_rating,
+                "total_items_comment": match_items_comment,
                 "match_items_comment": match_items_comment,
             })
         except:
@@ -148,11 +155,15 @@ def add_user_to_collection(collection, loading_status, username):
             diff_ratings = list()
             total_items = 0
             match_items = 0
-            match_items_comment = 0
+            total_items_rating = 0
+            match_items_rating = 0
             total_items_comment = 0
+            match_items_comment = 0
             if make_int(result["collection"].get("items").get("@totalitems")) > 0:
                 for item in result["collection"].get("items").get("item"):
                     total_items += 1
+                    if make_int(item.get("stats").get("rating").get("@value", None)):
+                        total_items_rating += 1
                     if item.get("comment"):
                         total_items_comment += 1
                     if item["@objectid"] in collection.keys():
@@ -175,6 +186,8 @@ def add_user_to_collection(collection, loading_status, username):
                                 "lastmodified": datetime.strptime(item.get("status").get("@lastmodified", 0), '%Y-%m-%d %H:%M:%S').strftime("%b %Y"),
                             }
                         }
+                        if make_int(item.get("stats").get("rating").get("@value", None)):
+                            match_items_rating += 1
                         if item.get("comment"):
                             match_items_comment += 1
                         if isinstance(diff_rating, int) and diff_rating >= 0:
@@ -189,8 +202,10 @@ def add_user_to_collection(collection, loading_status, username):
                 "diff_ratings":  sorted(diff_ratings, key=lambda item: item["diff_rating"]),
                 "total_items": total_items,
                 "match_items": match_items,
-                "match_items_comment": match_items_comment,
+                "total_items_rating": total_items_rating,
+                "match_items_rating": match_items_rating,
                 "total_items_comment": total_items_comment,
+                "match_items_comment": match_items_comment,
             })
         except TypeError:
             loading_status.append({"username": username, "status": 0})

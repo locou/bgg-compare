@@ -19,7 +19,7 @@
         <div class="grid_header block-primary">
             <h1><i class="fas fa-dice-d20"></i> Displaying the collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a></h1>
             <div>
-                <i class="fas fa-cubes"></i> {{user['total_items']}} games with <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
+                <i class="fas fa-cubes"></i> {{user['total_items']}} games with <i class="fas fa-star-half-alt"></i> {{user['match_items_rating']}} ratings and <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
                 <p><a href="/">Back to Main Page</a></p>
             </div>
         </div>
@@ -50,11 +50,35 @@
         % else:
         <div class="grid_title">
             Added collection of <a href="https://boardgamegeek.com/user/{{user['username']}}" class="tooltip" data-tooltip="open {{user['username']}}s boardgamegeek profile"><i class="fas fa-user"></i> {{user['username']}}</a>
+            <em class="tooltip" data-tooltip="Cache last updated">({{user['updated_at']}})</em>
             <a class="button icon-only tooltip" href="{{user['collection_url']}}" data-tooltip="switch to {{user['username']}}s collection"><i class="fas fa-people-arrows"></i></a>
             <a class="button icon-only tooltip" href="{{user['remove_collection_url']}}" data-tooltip="remove {{user['username']}}s collection"><i class="fas fa-times"></i></a>
         </div>
-        <div class="grid_collection tooltip" data-tooltip="Data from {{user['updated_at']}}">
-            matched <i class="fas fa-cubes"></i> {{user['match_items']}} of {{user['total_items']}} games providing <i class="far fa-comment"></i> {{user['match_items_comment']}} of {{user['total_items_comment']}} comments
+        <div class="grid_collection">
+            <span class="tooltip" data-tooltip="matched {{user['match_items']}} of {{user['total_items']}} games">
+                <i class="fas fa-cubes"></i>
+                % if user['total_items'] > 0:
+                <b>{{user['match_items']}}</b> / {{user['total_items']}}
+                % else:
+                0
+                % end
+            </span>
+            <span class="tooltip" data-tooltip="providing {{user['match_items_rating']}} of {{user['total_items_rating']}} ratings">
+                <i class="fas fa-star-half-alt"></i>
+                % if user['total_items_rating'] > 0:
+                <b>{{user['match_items_rating']}}</b> / {{user['total_items_rating']}}
+                % else:
+                0
+                % end
+            </span>
+            <span class="tooltip" data-tooltip="providing {{user['match_items_comment']}} of {{user['total_items_comment']}} comments">
+                <i class="far fa-comment"></i>
+                % if user['total_items_comment'] > 0:
+                <b>{{user['match_items_comment']}}</b> / {{user['total_items_comment']}}
+                % else:
+                0
+                % end
+            </span>
         </div>
         <div class="grid_rating">
             % if user['mean_diff_rating']:
