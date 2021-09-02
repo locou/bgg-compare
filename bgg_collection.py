@@ -2,7 +2,7 @@ import collections
 import statistics
 from datetime import datetime
 
-from database import get_or_create_collection
+from database import get_or_create_collection, get_or_create_games_color
 
 
 def make_int(number):
@@ -66,13 +66,16 @@ def create_user_collection(username):
         })
     elif result["message"]["status"] == 1 and "item" in result["collection"]["items"]:
         try:
+            games = dict()
+            for item in result["collection"].get("items").get("item"):
+                games[item["@objectid"]] = item.get("thumbnail", "")
+            games_color = get_or_create_games_color(games)
             total_items = 0
             match_items_rating = 0
             match_items_comment = 0
             if isinstance(result["collection"].get("items").get("item"), dict):
                 result["collection"]["items"]["item"] = [result["collection"].get("items").get("item")]
             for item in result["collection"].get("items").get("item"):
-
                 total_items += 1
                 collection[item["@objectid"]] = {
                     "type": item.get("@subtype", ""),
@@ -80,6 +83,7 @@ def create_user_collection(username):
                     "alternative_title": get_title(item.get("originalname", ""), item.get("name").get("#text", ""), "alternative_title"),
                     "yearpublished": item.get("yearpublished", ""),
                     "thumbnail": item.get("thumbnail", ""),
+                    "rgb_cluster": games_color.get(int(item["@objectid"]), None) or ["#3f3a60", "#3f3a60"],
                     "stats": {
                         "minplayers": make_int(item.get("stats").get("@minplayers", None)),
                         "maxplayers": make_int(item.get("stats").get("@maxplayers", None)),
@@ -140,7 +144,7 @@ def create_user_collection(username):
                 "total_items_comment": match_items_comment,
                 "match_items_comment": match_items_comment,
             })
-        except:
+        except NotImplementedError:
             loading_status.append({"username": username, "status": 0, "message": "Unknown error"})
 
     return collection, loading_status

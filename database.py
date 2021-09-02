@@ -1,10 +1,13 @@
 import os
 import uuid
 import json
+import cv2
 from datetime import datetime
 from bottle_postgresql import Configuration, Database
 from bgg_request import handle_collection_request
 from dotenv import load_dotenv
+from skimage import io
+from sklearn.cluster import MiniBatchKMeans
 
 load_dotenv()
 
@@ -17,6 +20,19 @@ configuration_dict = {
     "print_sql": os.environ.get("DATABASE_PRINT_SQL", True),
     "username": os.environ.get("DATABASE_USERNAME", "")
 }
+
+
+def calc_cluster(img):
+    def rgb2hex(r, g, b):
+        return "#{:02x}{:02x}{:02x}".format(r, g, b)
+    image = io.imread(img)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = cv2.resize(image, (15, 15))
+    reshape = image.reshape((image.shape[0] * image.shape[1], 3))
+
+    cluster = MiniBatchKMeans(n_clusters=2).fit(reshape)
+    rgb_cluster = [rgb2hex(int(r), int(g), int(b)) for b, g, r in cluster.cluster_centers_]
+    return rgb_cluster
 
 
 def connect():
@@ -44,6 +60,66 @@ def update_collection(username, result):
                      {"username": username, "updated_at": datetime.now(), "collection": result["result"]}
                      )
         )
+
+
+def get_or_create_games_color(games):
+    # TODO: fetch & save (?) games with https://api.geekdo.com/xmlapi2/thing?id=174388 / subtype and categorys are there
+    # TODO: calc color based on that preview image
+    # TODO: collections with many games would do that many api calls as well (worth it?) (cache for a week?)
+    with connect() as connection:
+        (
+            connection
+            .execute("CREATE TABLE IF NOT EXISTS \"bgg-compare\".game_color"
+                     "(game_id integer PRIMARY KEY,"
+                     "colors varchar(40)[])")
+        )
+    with connect() as connection:
+        games_found = (
+            connection
+            .execute("SELECT * FROM \"bgg-compare\".game_color WHERE game_id IN %(game_ids)s;",
+                     {"game_ids": tuple(games.keys())})
+            .fetch_all()
+        )
+
+    game_ids_found = [str(g.game_id) for g in games_found]
+    game_ids_not_found = set(games.keys()) ^ set(game_ids_found)
+
+    values = list()
+    i = 0
+    print(str(len(game_ids_not_found))+" games not found")
+    for game_id in game_ids_not_found:
+        i+=1
+        if i <= 10 and games[game_id]:
+            print(str(i)+": "+games[game_id])
+            values.append((int(game_id), tuple(calc_cluster(games[game_id]))))
+    parameters = "("+"),(".join([str(game)+", '{"+",".join(color)+"}'" for game, color in values])+")"
+
+    if game_ids_not_found:
+        with connect() as connection:
+            (
+                connection
+                .execute("INSERT INTO \"bgg-compare\".game_color (game_id, colors)"
+                         "(VALUES "+parameters+")"
+                         "ON CONFLICT (game_id) DO NOTHING;")
+            )
+            games_found = (
+                connection
+                .execute("SELECT * FROM \"bgg-compare\".game_color WHERE game_id IN %(game_ids)s;",
+                         {"game_ids": tuple(games.keys())})
+                .fetch_all()
+            )
+    else:
+        with connect() as connection:
+            games_found = (
+                connection
+                .execute("SELECT * FROM \"bgg-compare\".game_color WHERE game_id IN %(game_ids)s;",
+                         {"game_ids": tuple(games.keys())})
+                .fetch_all()
+            )
+    games_color = dict()
+    for game in games_found:
+        games_color[game.game_id] = game.colors
+    return games_color
 
 
 def insert_collection(username, result):

@@ -15,7 +15,8 @@ def stylesheets(filename):
 @route("/cache")
 @view("views/cache")
 def cache():
-    # TODO: remove this page?
+    # TODO: remove this page? or clean it up
+    # TODO: fuzzy cache date?
     result = get_cached_usernames()
     return dict(result=result)
 
@@ -23,6 +24,7 @@ def cache():
 @route("/")
 @view("views/index")
 def index():
+    # TODO: remove auto select of 5 random users
     # TODO: checkmark to refresh the cache
     return dict(cache_hours=int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)))
 
@@ -57,7 +59,10 @@ def bgg(username):
 
     loading_status = build_collection_url(loading_status)
 
-    # TODO: pagination for big collections
+    # TODO: combined data filter tag (ex: hide all games where only x or less users/ratings/comments are present)
+    # TODO: display loading icon when sorting
+    # TODO: mean diff of 0 displays the errormessage for no ratings to compare
+    # TODO: remove button for "Unknown error"
     return dict(collection=collection, loading_status=loading_status, main_user=username)
 
 

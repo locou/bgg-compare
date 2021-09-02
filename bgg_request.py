@@ -30,6 +30,7 @@ def request_user(username):
 
 def handle_user_request(username):
     try:
+        # TODO: request multiple pages for buddies
         user_data = request_user(username)
         buddies = [user["@name"] for user in user_data["user"]["buddies"]["buddy"] if len(user["@name"]) > 0]
         random.shuffle(buddies)
@@ -39,6 +40,8 @@ def handle_user_request(username):
 
 
 def handle_collection_request(username):
+    # TODO: custom error message for "retry another time"
+    # TODO: custom error message for "Unknown error"
     message = {"username": username, "status": 0, "message": "Unknown error"}
     try:
         request = request_collection(username)
