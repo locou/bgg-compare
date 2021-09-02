@@ -83,5 +83,6 @@ def test_collection_calc_ratings(collection_foo_bar, gameid, field, expected):
     ]
 )
 def test_collection_build_url_foo_bar_baz(key, loading_status, field, expected):
+    # TODO: mock for get_or_create_games_color
     loading_status = build_collection_url(loading_status)
     assert loading_status[key][field] == expected

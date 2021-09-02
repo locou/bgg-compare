@@ -213,7 +213,7 @@ $(document).ready(function() {
     <div class="bg_img">
         <img src="{{item['thumbnail']}}">
     </div>
-    <div class="bg_head wrapper_bg_head">
+    <div class="bg_head wrapper_bg_head" style="background: linear-gradient(110deg, #2d2944, {{item['rgb_cluster'][0]}}40), linear-gradient(15deg, {{item['rgb_cluster'][0]}}, {{item['rgb_cluster'][1]}});">
         <div class="grid_bg_rating">
             <div class="tag rating rating-{{make_int(item['stats']['average'])}}">{{item['stats']['average'] if item['stats']['average'] > 0 else '-'}}</div>
         </div>

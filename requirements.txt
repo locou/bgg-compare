@@ -6,3 +6,6 @@ python-dotenv
 pytest
 pytest-mock
 pytest-lazy-fixture==0.6.3
+scikit-learn
+scikit-image
+opencv-python==4.5.3.56
