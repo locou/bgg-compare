@@ -12,23 +12,15 @@
         <h1><i class="fas fa-database"></i> Cached Collections</h1>
         <p><a href="/">Back to Main Page</a></p>
     </div>
-    <div class="wrapper_loading_status">
-        <div class="grid_title">Username</div>
-        <div class="grid_collection">Created At</div>
-        <div class="grid_rating">Updated At</div>
-        % for user in result:
-            <div class="grid_title">
-                <a href="/bgg/{{user['username']}}"><i class="fas fa-user"></i> {{ user.username }}</a> <a href="https://boardgamegeek.com/user/{{user['username']}}"><i class="fas fa-external-link-alt"></i> BGG</a>
-            </div>
-            <div class="grid_collection">
-                {{ user.created_at }}
-            </div>
-            <div class="grid_rating">
-                {{ user.updated_at }}
-            </div>
+    <div class="block">
+        % for updated_at, users in grouped_users_by_updated_at.items():
+        <h1>{{updated_at }}</h1>
+        %for user in users:
+        <span><a href="/bgg/{{user['username']}}"><i class="fas fa-user"></i> {{ user.username }}</a></span>
+        %end
         % end
-        </div>
     </div>
+</div>
 % include('footer.tpl')
 </body>
 </html>

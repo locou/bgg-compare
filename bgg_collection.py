@@ -59,6 +59,7 @@ def create_user_collection(username):
         loading_status.append({
             "username": username,
             "status": 1,
+            "updated_at": datetime.strftime(result["message"]["updated_at"], "%Y-%m-%d"),
             "total_items": 0,
             "match_items": 0,
             "match_items_rating": 0,
@@ -133,6 +134,7 @@ def create_user_collection(username):
             loading_status.append({
                 "username": username,
                 "status": 1,
+                "updated_at": datetime.strftime(result["message"]["updated_at"], "%Y-%m-%d"),
                 "total_items": total_items,
                 "match_items": total_items,
                 "total_items_rating": match_items_rating,

@@ -7,6 +7,8 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <script src="https://kit.fontawesome.com/9e34df6d41.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     <script src="/script.js"></script>
 </head>
 % from bgg_collection import make_int
@@ -17,9 +19,21 @@
         % if user['status'] == 1:
         % if key == 0:
         <div class="grid_header block-primary">
-            <h1><i class="fas fa-dice-d20"></i> Displaying the collection of <a href="https://boardgamegeek.com/user/{{user['username']}}">{{user['username']}}</a></h1>
+            <h1>
+                <i class="fas fa-dice-d20"></i>
+                Displaying the collection of
+                <a href="https://boardgamegeek.com/user/{{user['username']}}">
+                    {{user['username']}}
+                </a>
+            </h1>
             <div>
-                <i class="fas fa-cubes"></i> {{user['total_items']}} games with <i class="fas fa-star-half-alt"></i> {{user['match_items_rating']}} ratings and <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
+                % main_user_total_items = user['total_items']
+                <i class="fas fa-cubes"></i> {{user['total_items']}} games with
+                <i class="fas fa-star-half-alt"></i> {{user['match_items_rating']}} ratings and
+                <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
+                <em class="tooltip" data-tooltip="Cache last updated">
+                    ({{user['updated_at']}})
+                </em>
                 <p><a href="/">Back to Main Page</a></p>
             </div>
         </div>
@@ -49,7 +63,7 @@
         </div>
         % else:
         <div class="grid_title">
-            Added collection of <a href="https://boardgamegeek.com/user/{{user['username']}}" class="tooltip" data-tooltip="open {{user['username']}}s boardgamegeek profile"><i class="fas fa-user"></i> {{user['username']}}</a>
+            <a href="https://boardgamegeek.com/user/{{user['username']}}" class="tooltip" data-tooltip="open {{user['username']}}s boardgamegeek profile"><i class="fas fa-user"></i> {{user['username']}}</a>
             <em class="tooltip" data-tooltip="Cache last updated">({{user['updated_at']}})</em>
             <a class="button icon-only tooltip" href="{{user['collection_url']}}" data-tooltip="switch to {{user['username']}}s collection"><i class="fas fa-people-arrows"></i></a>
             <a class="button icon-only tooltip" href="{{user['remove_collection_url']}}" data-tooltip="remove {{user['username']}}s collection"><i class="fas fa-times"></i></a>
@@ -102,31 +116,12 @@
     </div>
 </div>
 <div id="sort_container" class="container">
-    <div>
-        Boardgame stats, sort by
-        <div class="sort tag" data-sort="boardgame_title">Title <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="boardgame_rating">Rating <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="boardgame_year">Year <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="boardgame_numowned">Number of Owners <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="boardgame_numrating">Number of Ratings <i class="fas fa-sort"></i></div>
+    <div class="block block-primary">
+        <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user_total_items}}</span> games</h2>
     </div>
+    <h3><i class="fas fa-filter"></i> Filter</h3>
     <div>
-        <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
-           data-tooltip="open {{main_user}}s boardgamegeek profile"><i class="fas fa-user"></i> {{main_user}}</a>s stats, sort by
-        <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
-    </div>
-    <div>
-        Combined stats, sort by
-        <div class="sort tag" data-sort="combined_numplays">Number of Plays <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_mean_rating">Rating <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_mean_diff_rating">Difference Rating <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_count_users">Number of users <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_count_ratings">Number of Ratings <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_count_comments">Number of Comments <i class="fas fa-sort"></i></div>
-    </div>
-    <div>
-        Hide games with tags from <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
+        Tags from <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
            data-tooltip="open {{main_user}}s boardgamegeek profile"><i class="fas fa-user"></i> {{main_user}}</a>
         <div class="toggle_tag tag" data-tag="my_tag_own">own <i class="fas fa-eye"></i></div>
         <div class="toggle_tag tag" data-tag="my_tag_prevowned">prev. owned <i class="fas fa-eye"></i></div>
@@ -137,12 +132,62 @@
         <div class="toggle_tag tag" data-tag="my_tag_wanttoplay">want to play <i class="fas fa-eye"></i></div>
         <div class="toggle_tag tag" data-tag="my_tag_wanttobuy">want to buy <i class="fas fa-eye"></i></div>
         <div class="toggle_tag tag" data-tag="my_tag_any"><em>without tag</em> <i class="fas fa-eye"></i></div>
-
+    </div>
+    <div>
+        Combined <span id="toggle_combined_slider"></span>
+        <div class="toggle_tag tag" data-tag="combined_count_users">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> users <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="combined_count_ratings">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> ratings <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="combined_count_comments">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> comments <i class="fas fa-eye"></i></div>
+        <script>
+$(document).ready(function() {
+    $("#toggle_combined_slider").slider({
+        min: 1,
+        max: {{len(loading_status)-1}},
+        value: {{len(loading_status)-1}},
+        step: 1,
+        animate: true,
+        slide: function (event, ui) {
+            $(".toggle_value").text(ui.value);
+        },
+        classes: {
+            "ui-slider": "",
+            "ui-slider-handle": "",
+            "ui-slider-range": ""
+        }
+    });
+});
+        </script>
+    </div>
+    <h3><i class="fas fa-sort-amount-down"></i> Sort</h3>
+    <div>
+        Boardgame stats
+        <div class="sort tag" data-sort="boardgame_title">Title <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="boardgame_rating">Rating <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="boardgame_year">Year <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="boardgame_numowned">Number of Owners <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="boardgame_numrating">Number of Ratings <i class="fas fa-sort"></i></div>
+    </div>
+    <div>
+        <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
+           data-tooltip="open {{main_user}}s boardgamegeek profile"><i class="fas fa-user"></i> {{main_user}}</a>s stats
+        <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
+    </div>
+    <div>
+        Combined stats
+        <div class="sort tag" data-sort="combined_numplays">Number of Plays <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_mean_rating">Rating <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_mean_diff_rating">Difference Rating <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_count_users">Number of users <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_count_ratings">Number of Ratings <i class="fas fa-sort"></i></div>
+        <div class="sort tag" data-sort="combined_count_comments">Number of Comments <i class="fas fa-sort"></i></div>
     </div>
 </div>
+
 <div id="game_container">
 % for key, item in collection.items():
 <div class="wrapper"
+     data-hidden_by=""
      data-boardgame_rating="{{item['stats']['average']}}"
      data-boardgame_title="{{item['title']}}"
      data-boardgame_year="{{ item['yearpublished']}}"

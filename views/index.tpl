@@ -51,6 +51,10 @@
         <label for="include_random_users" class="button checkbox">
             <i class="fas fa-check-circle"></i> Include 5 random, cached Users
         </label>
+        <input id="refresh_cache" type="checkbox" name="refresh_cache" hidden>
+        <label for="refresh_cache" class="button checkbox">
+            <i class="far fa-circle"></i> Refresh Cache
+        </label>
         <p>
             <button class="button" type="submit"><i class="fas fa-cubes"></i> Submit</button>
             <button id="reset_fields" class="button reverse-color" type="reset"><i class="fas fa-redo-alt"></i> Reset</button>

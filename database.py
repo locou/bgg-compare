@@ -1,7 +1,7 @@
 import os
 import uuid
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from bottle_postgresql import Configuration, Database
 from bgg_request import handle_collection_request
 from dotenv import load_dotenv
@@ -22,6 +22,19 @@ configuration_dict = {
 def connect():
     configuration = Configuration(configuration_dict=configuration_dict)
     return Database(configuration)
+
+
+def refresh_collection_cache(username):
+    with connect() as connection:
+        (
+            # TODO: set up database to accept Null in updated at
+            connection
+            .execute("UPDATE \"bgg-compare\".user_collection "
+                     "SET updated_at = %(updated_at)s "
+                     "WHERE LOWER(username) = LOWER(%(username)s)",
+                     {"username": username, "updated_at": datetime.now() - timedelta(days=31)}
+                     )
+        )
 
 
 def select_collection(username):

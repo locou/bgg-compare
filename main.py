@@ -3,7 +3,7 @@ import random
 
 from bgg_collection import calc_ratings, build_url, build_collection_url, add_user_to_collection, create_user_collection
 from bgg_request import handle_user_request
-from database import get_cached_usernames
+from database import get_cached_usernames, refresh_collection_cache
 from bottle import route, run, view, request, static_file, get, redirect, post
 
 
@@ -17,7 +17,12 @@ def stylesheets(filename):
 def cache():
     # TODO: remove this page?
     result = get_cached_usernames()
-    return dict(result=result)
+    grouped_users_by_updated_at = dict()
+    for user in result:
+        if user.updated_at not in grouped_users_by_updated_at:
+            grouped_users_by_updated_at[user.updated_at] = list()
+        grouped_users_by_updated_at[user.updated_at].append(user)
+    return dict(grouped_users_by_updated_at=grouped_users_by_updated_at)
 
 
 @route("/")
@@ -38,6 +43,8 @@ def process():
             users.append(buddy)
     users = list(set(users))
     users.insert(0, user)
+    if request.POST.get('refresh_cache'):
+        refresh_collection_cache(user)
     if request.POST.get('include_random_users'):
         query_users = [u.username for u in get_cached_usernames(exclude_usernames=users)]
         random.shuffle(query_users)

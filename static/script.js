@@ -3,21 +3,54 @@ $(document).ready(function() {
     $('.toggle_tag').click(function() {
         var button = $(this);
         var button_icon = button.find('i');
+        var tag = $(this).data('tag');
+
         var class_show = "fa-eye"
         var class_hidden = "fa-eye-slash"
-        var tag = $(this).data('tag');
         var o = button.hasClass("hidden") ? "show" : "hidden";
         var oi = button_icon.hasClass(class_hidden) ? class_show : class_hidden;
-
         button_icon.removeClass(class_show).removeClass(class_hidden).addClass(oi)
         button.removeClass("show").removeClass("hidden").addClass(o);
-        $("div[data-"+tag+"='1']").each(function() {
+
+        var button_value = button.find("span.toggle_value").text();
+        if (button_value === "") {
+            $("div[data-"+tag+"='1']").each(function() {
+
+                if(o == "hidden") {
+                if($(this).data("hidden_by") == "") {
+                    $(this).hide();
+                    $(this).data("hidden_by", "tag");
+                    $("#count_items").text(item.filter(":visible").length);
+                }
+                } else {
+                if($(this).data("hidden_by") == "tag") {
+                    $(this).show();
+                    $(this).data("hidden_by", "");
+                    $("#count_items").text(item.filter(":visible").length);
+                }
+                }
+            });
+        } else {
             if(o == "hidden") {
-                $(this).hide();
+                $("div[data-"+tag+"]").filter(function() {
+                    return $(this).data(tag) < button_value;
+                }).each(function() {
+                    if($(this).data("hidden_by") == "") {
+                        $(this).hide();
+                        $(this).data("hidden_by", "combined");
+                        $("#count_items").text(item.filter(":visible").length);
+                    }
+                });
             } else {
-                $(this).show();
+                $("div[data-"+tag+"]").each(function() {
+                    if($(this).data("hidden_by") == "combined") {
+                        $(this).show();
+                        $(this).data("hidden_by", "");
+                        $("#count_items").text(item.filter(":visible").length);
+                    }
+                });
             }
-        });
+        }
     });
     $('.sort').click(function () {
         var button = $(this);
