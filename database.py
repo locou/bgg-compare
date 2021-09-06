@@ -204,7 +204,7 @@ def get_or_create_games(collection_game_ids):
                                        "@value"],
                                },
                                }
-    update_game_colours(update_colors_values)
+    # update_game_colours(update_colors_values)
     return games_data
 
 
