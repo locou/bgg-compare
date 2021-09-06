@@ -2,7 +2,7 @@ import collections
 import statistics
 from datetime import datetime
 
-from database import get_or_create_collection, get_or_create_games_color
+from database import get_or_create_collection, get_or_create_games
 
 
 def make_int(number):
@@ -66,33 +66,36 @@ def create_user_collection(username):
         })
     elif result["message"]["status"] == 1 and "item" in result["collection"]["items"]:
         try:
-            games = dict()
+            if isinstance(result["collection"].get("items").get("item"), dict):
+                result["collection"]["items"]["item"] = [result["collection"].get("items").get("item")]
+            game_ids = list()
             for item in result["collection"].get("items").get("item"):
-                games[item["@objectid"]] = item.get("thumbnail", "")
-            games_color = get_or_create_games_color(games)
+                game_ids.append(item["@objectid"])
+            games = get_or_create_games(game_ids)
             total_items = 0
             match_items_rating = 0
             match_items_comment = 0
-            if isinstance(result["collection"].get("items").get("item"), dict):
-                result["collection"]["items"]["item"] = [result["collection"].get("items").get("item")]
             for item in result["collection"].get("items").get("item"):
+                game = games.get(int(item["@objectid"]))
                 total_items += 1
                 collection[item["@objectid"]] = {
-                    "type": item.get("@subtype", ""),
-                    "title": get_title(item.get("originalname", ""), item.get("name").get("#text", ""), "title"),
-                    "alternative_title": get_title(item.get("originalname", ""), item.get("name").get("#text", ""), "alternative_title"),
+                    "type": game.get("type"),
+                    "title": game.get("title"),
                     "yearpublished": item.get("yearpublished", ""),
-                    "thumbnail": item.get("thumbnail", ""),
-                    "rgb_cluster": games_color.get(int(item["@objectid"]), None) or ["#3f3a60", "#3f3a60"],
+                    "thumbnail":  game.get("thumbnail"),
+                    "dominant_colors": game.get("dominant_colors") or ["#3f3a60", "#3f3a60"],
                     "stats": {
-                        "minplayers": make_int(item.get("stats").get("@minplayers", None)),
-                        "maxplayers": make_int(item.get("stats").get("@maxplayers", None)),
-                        "minplaytime": make_int(item.get("stats").get("@minplaytime", None)),
-                        "maxplaytime": make_int(item.get("stats").get("@maxplaytime", None)),
-                        "numowned": make_int(item.get("stats").get("@numowned", None)),
-                        "numrating": make_int(item.get("stats").get("rating").get("usersrated").get("@value", None)),
-                        "average": make_float(item.get("stats").get("rating").get("average").get("@value", None)),
-                        "bayesaverage": make_float(item.get("stats").get("rating").get("bayesaverage").get("@value", None)),
+                        "minplayers": make_int(game.get("stats").get("minplayers", None)),
+                        "maxplayers": make_int(game.get("stats").get("maxplayers", None)),
+                        "minplaytime": make_int(game.get("stats").get("minplaytime", None)),
+                        "maxplaytime": make_int(game.get("stats").get("maxplaytime", None)),
+                        "numowned": make_int(game.get("stats").get("numowned", None)),
+                        "numcomments": make_int(game.get("stats").get("numcomments", None)),
+                        "numweights": make_int(game.get("stats").get("numweights", None)),
+                        "averageweight": make_float(game.get("stats").get("averageweight", None)),
+                        "numrating": make_int(game.get("stats").get("numrating", None)),
+                        "average": make_float(game.get("stats").get("average", None)),
+                        "bayesaverage": make_float(game.get("stats").get("bayesaverage", None)),
                     },
                     "users": {
                         username: {
@@ -144,7 +147,7 @@ def create_user_collection(username):
                 "total_items_comment": match_items_comment,
                 "match_items_comment": match_items_comment,
             })
-        except NotImplementedError:
+        except AttributeError:
             loading_status.append({"username": username, "status": 0, "message": "Unknown error"})
 
     return collection, loading_status

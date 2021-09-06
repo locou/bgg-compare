@@ -19,20 +19,25 @@ from bgg_collection import create_user_collection, add_user_to_collection, calc_
     ],
 )
 def test_create_request_collection_with_games(mocker, context, gameid, expected):
+    mocker.patch('database.select_games', return_value=dict())
+    mocker.patch('database.insert_and_select_games', return_value=dict())
+    mocker.patch('bgg_collection.get_or_create_games', return_value=dict())
     mocker.patch('bgg_request.request_collection', return_value=context)
     mocker.patch('database.select_collection', return_value=DictWrapper({"username": "foo", "updated_at": datetime.now(), "collection": json.loads(json.dumps(context))}))
     collection, _ = create_user_collection("foo")
-    assert collection[gameid]["display_name"] == expected
+    assert collection[gameid]["title"] == expected
 
 
 def test_create_collection_0_games(mocker, request_collection_with_0_games):
+    mocker.patch('bgg_collection.get_or_create_games', return_value=dict())
     mocker.patch('bgg_request.request_collection', return_value=request_collection_with_0_games)
     mocker.patch('database.select_collection', return_value=DictWrapper({"username": "foo", "updated_at": datetime.now(), "collection": json.loads(json.dumps(request_collection_with_0_games))}))
     collection, _ = create_user_collection("foo")
     assert collection == {}
 
 
-def test_add_collection(collection_foo_bar):
+def test_add_collection(mocker, collection_foo_bar):
+    mocker.patch('bgg_collection.get_or_create_games_color', return_value=dict())
     _, loading_status = collection_foo_bar
     assert len(loading_status) == 2
 
@@ -59,7 +64,8 @@ def test_add_collection(collection_foo_bar):
         ("11", "median_rating", None),
     ],
 )
-def test_collection_calc_ratings(collection_foo_bar, gameid, field, expected):
+def test_collection_calc_ratings(mocker, collection_foo_bar, gameid, field, expected):
+    mocker.patch('bgg_collection.get_or_create_games_color', return_value=dict())
     collection, _ = collection_foo_bar
     collection = calc_ratings(collection)
     assert collection[gameid]["calc"][field] == expected
@@ -83,6 +89,113 @@ def test_collection_calc_ratings(collection_foo_bar, gameid, field, expected):
     ]
 )
 def test_collection_build_url_foo_bar_baz(key, loading_status, field, expected):
-    # TODO: mock for get_or_create_games_color
     loading_status = build_collection_url(loading_status)
     assert loading_status[key][field] == expected
+
+
+@pytest.mark.parametrize(
+    "return_value, expected",
+    [
+        (
+                [
+                    {
+                        'game_id': 0,
+                        'title': "Good Game",
+                        "thumbnail": "http//url.img",
+                        "type": "boardgame",
+                        "dominant_colors": ["#aaa", "#bbb"],
+                        "json": "json_import_by_mock",
+                        "stats": {
+                            "minplayers": 1,
+                            "maxplayers": 4,
+                            "minplaytime": 60,
+                            "maxplaytime": 90,
+                            "numowned": 8133,
+                            "numcomments": 1075,
+                            "numweights": 184,
+                            "averageweight": 2.9185,
+                            "numrating": 5477,
+                            "average": 7.64815,
+                            "bayesaverage": 7.11535,
+                        },
+                        "created_at": "",
+                        "updated_at": ""
+                    }
+                ],
+                [
+                    {
+                        'game_id': 0,
+                        'title': "Good Game",
+                        "thumbnail": "http//url.img",
+                        "type": "boardgame",
+                        "dominant_colors": ["#aaa", "#bbb"],
+                        "json": "JASON",
+                        "stats": {
+                            "minplayers": 1,
+                            "maxplayers": 4,
+                            "minplaytime": 60,
+                            "maxplaytime": 90,
+                            "numowned": 8133,
+                            "numcomments": 1075,
+                            "numweights": 184,
+                            "averageweight": 2.9,
+                            "numrating": 5477,
+                            "average": 7.6,
+                            "bayesaverage": 7.1,
+                        },
+                        "created_at": "",
+                        "updated_at": ""
+                    }
+                ],
+        ),
+    ]
+)
+def test_collection_request_item_entries(mocker, return_value, expected, request_collection_with_ratings_asc, request_game_random):
+    mocker.patch('database.select_games', return_value=return_value)
+    mocker.patch('database.insert_and_select_games', return_value=return_value)
+    return_value[0]["json"] = request_game_random
+    mocker.patch('bgg_request.request_collection', return_value=request_collection_with_ratings_asc)
+    mocker.patch('database.select_collection', return_value=DictWrapper(
+        {"username": "foo", "updated_at": datetime.now(),
+         "collection": json.loads(json.dumps(request_collection_with_ratings_asc))}))
+    collection, loading_status = create_user_collection("foo")
+    assert collection["0"]["title"] == expected[0]["title"]
+    assert collection["0"]["thumbnail"] == expected[0]["thumbnail"]
+    assert collection["0"]["type"] == expected[0]["type"]
+    assert collection["0"]["dominant_colors"] == expected[0]["dominant_colors"]
+    assert collection["0"]["stats"]["minplayers"] == expected[0]["stats"]["minplayers"]
+    assert collection["0"]["stats"]["maxplayers"] == expected[0]["stats"]["maxplayers"]
+    assert collection["0"]["stats"]["numowned"] == expected[0]["stats"]["numowned"]
+    assert collection["0"]["stats"]["numcomments"] == expected[0]["stats"]["numcomments"]
+    assert collection["0"]["stats"]["numweights"] == expected[0]["stats"]["numweights"]
+    assert collection["0"]["stats"]["averageweight"] == expected[0]["stats"]["averageweight"]
+    assert collection["0"]["stats"]["numrating"] == expected[0]["stats"]["numrating"]
+    assert collection["0"]["stats"]["average"] == expected[0]["stats"]["average"]
+    assert collection["0"]["stats"]["bayesaverage"] == expected[0]["stats"]["bayesaverage"]
+
+
+# https://api.geekdo.com/xmlapi2/thing?id=192458&stats=1
+# table item
+# columns: uuid,
+#          item_id,
+#          title,
+#          thumbnail,
+#          type,
+#          dominant_colors,
+#          json,
+#          created_at,
+#          updated_at
+
+# https://api.geekdo.com/xmlapi2/collection?username=Locou
+# table collection
+# columns: uuid,
+#          user_id,
+#          username,
+#          number_of_games[sum, own, prevowned, preordered, wishlist, notag],
+#          number_of_ratings[sum, own, prevowned, preordered, wishlist, notag],
+#          number_of_comments[sum, own, prevowned, preordered, wishlist, notag],
+#          json,
+#          created_at,
+#          updated_at
+
+# https://api.geekdo.com/xmlapi2/user?name=msaari&buddies=1&hot=1&top=1
