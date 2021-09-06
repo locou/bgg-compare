@@ -4,7 +4,7 @@ import re
 import urllib.request
 import json
 import socket
-
+import time
 import xmltodict
 
 
@@ -12,7 +12,7 @@ def request_collection(username):
     username = re.sub("[^a-zA-Z0-9-_ ]", "_", username)
     try:
         with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/collection?stats=1&username=" +
-                                    username.replace(" ", "%20"), timeout=1) as response:
+                                    username.replace(" ", "%20"), timeout=10) as response:
             return xmltodict.parse(response.read())
     except socket.timeout:
         print("connection's timeout expired")
@@ -22,7 +22,16 @@ def request_user(username):
     username = re.sub("[^a-zA-Z0-9-_ ]", "_", username)
     try:
         with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/user?buddies=1&name=" +
-                                    username.replace(" ", "%20"), timeout=1) as response:
+                                    username.replace(" ", "%20"), timeout=10) as response:
+            return xmltodict.parse(response.read())
+    except socket.timeout:
+        print("connection's timeout expired")
+
+
+def request_games(game_ids):
+    try:
+        with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/thing?stats=1&id=" + ",".join(game_ids), timeout=10) as response:
+            time.sleep(2)
             return xmltodict.parse(response.read())
     except socket.timeout:
         print("connection's timeout expired")

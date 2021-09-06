@@ -30,7 +30,7 @@ def cache():
 @view("views/index")
 def index():
     # TODO: remove auto select of 5 random users
-    # TODO: checkmark to refresh the cache
+    # TODO: checkbox to refresh the cache
     return dict(cache_hours=int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)))
 
 
@@ -65,11 +65,13 @@ def bgg(username):
     collection = calc_ratings(collection)
 
     loading_status = build_collection_url(loading_status)
-
-    # TODO: combined data filter tag (ex: hide all games where only x or less users/ratings/comments are present)
+    # TODO: scroll up button
+    # TODO: show/hide filter button
+    # TODO: show/hide all tags for an easier reverse search
+    # TODO: sort loading_status by compability
     # TODO: display loading icon when sorting
     # TODO: mean diff of 0 displays the errormessage for no ratings to compare
-    # TODO: remove button for "Unknown error"
+    # TODO: remove user button for "Unknown error"
     return dict(collection=collection, loading_status=loading_status, main_user=username)
 
 

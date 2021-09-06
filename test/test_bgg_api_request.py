@@ -53,7 +53,3 @@ def test_handle_user_request_with_3_buddies(mocker, request_user_with_3_buddies)
     mocker.patch('bgg_request.request_user', return_value=request_user_with_3_buddies)
     assert set(handle_user_request("foo")) == {'bar', 'baz', 'foz'}
 
-
-def test_handle_user_request_with_30_buddies_receive_less(mocker, request_user_with_30_buddies):
-    mocker.patch('bgg_request.request_user', return_value=request_user_with_30_buddies)
-    assert len(handle_user_request("foo")) < 20

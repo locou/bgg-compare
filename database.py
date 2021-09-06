@@ -2,9 +2,12 @@ import os
 import uuid
 import json
 import cv2
+import psycopg2
 from datetime import datetime, timedelta
 from bottle_postgresql import Configuration, Database
-from bgg_request import handle_collection_request
+from psycopg2.extras import execute_values
+
+from bgg_request import handle_collection_request, request_games
 from dotenv import load_dotenv
 from skimage import io
 from sklearn.cluster import MiniBatchKMeans
@@ -38,6 +41,14 @@ def calc_cluster(img):
 def connect():
     configuration = Configuration(configuration_dict=configuration_dict)
     return Database(configuration)
+
+
+def connect_psy():
+    return psycopg2.connect("dbname=" + os.environ.get("DATABASE_NAME", "") +
+                            " user=" + os.environ.get("DATABASE_USERNAME", "") +
+                            " password=" + os.environ.get("DATABASE_PASSWORD", "") +
+                            " port=" + os.environ.get("DATABASE_PORT", 0) +
+                            " host=" + os.environ.get("DATABASE_HOST", ""))
 
 
 def refresh_collection_cache(username):
@@ -75,64 +86,129 @@ def update_collection(username, result):
         )
 
 
-def get_or_create_games_color(games):
-    # TODO: fetch & save (?) games with https://api.geekdo.com/xmlapi2/thing?id=174388 / subtype and categorys are there
+def select_games(game_ids):
+    conn = connect_psy()
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM \"bgg-compare\".games WHERE game_id IN %(game_ids)s;",
+                        {"game_ids": game_ids, "cache_date": datetime.now() - timedelta(days=31)})
+            games_found = cur.fetchall()
+    conn.close()
+
+    return games_found
+
+
+def insert_and_select_games(game_ids, parameter_values):
+    conn = connect_psy()
+    with conn:
+        with conn.cursor() as cur:
+            execute_values(cur, "INSERT INTO \"bgg-compare\".games ("
+                                "uuid, "
+                                "game_id, "
+                                "title, "
+                                "thumbnail, "
+                                "type, "
+                                "json) VALUES %s "
+                                "ON CONFLICT (game_id) DO UPDATE SET "
+                                "title = EXCLUDED.title,"
+                                "thumbnail = EXCLUDED.thumbnail,"
+                                "type = EXCLUDED.type,"
+                                "json = EXCLUDED.json,"
+                                "updated_at = current_timestamp;", parameter_values)
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM \"bgg-compare\".games WHERE game_id IN %(game_ids)s;", {"game_ids": game_ids})
+            games_found = cur.fetchall()
+
+    conn.close()
+    return games_found
+
+
+def update_game_colours(parameter_values):
+    conn = connect_psy()
+    with conn:
+        with conn.cursor() as cur:
+            execute_values(cur, "UPDATE \"bgg-compare\".games AS g "
+                                "SET dominant_colors = v.dominant_colours "
+                                "FROM (VALUES %s) AS v(game_id, dominant_colours) "
+                                "WHERE g.game_id = v.game_id;", parameter_values)
+    conn.close()
+
+
+def get_or_create_games(collection_game_ids):
+    # TODO: fetch & save (?) games with https://api.geekdo.com/xmlapi2/thing?id=174388 /
+    #  subtype and categories are there
     # TODO: calc color based on that preview image
     # TODO: collections with many games would do that many api calls as well (worth it?) (cache for a week?)
-    with connect() as connection:
-        (
-            connection
-            .execute("CREATE TABLE IF NOT EXISTS \"bgg-compare\".game_color"
-                     "(game_id integer PRIMARY KEY,"
-                     "colors varchar(40)[])")
-        )
-    with connect() as connection:
-        games_found = (
-            connection
-            .execute("SELECT * FROM \"bgg-compare\".game_color WHERE game_id IN %(game_ids)s;",
-                     {"game_ids": tuple(games.keys())})
-            .fetch_all()
-        )
+    # CREATE UNIQUE INDEX index_game_id ON  "bgg-compare".games(game_id);
 
-    game_ids_found = [str(g.game_id) for g in games_found]
-    game_ids_not_found = set(games.keys()) ^ set(game_ids_found)
+    games_found = select_games(tuple(collection_game_ids))
 
-    values = list()
-    i = 0
+    game_ids_found = [str(g[1]) for g in games_found]
+    game_ids_not_found = list(set(collection_game_ids) ^ set(game_ids_found))
+
     print(str(len(game_ids_not_found))+" games not found")
-    for game_id in game_ids_not_found:
-        i+=1
-        if i <= 10 and games[game_id]:
-            print(str(i)+": "+games[game_id])
-            values.append((int(game_id), tuple(calc_cluster(games[game_id]))))
-    parameters = "("+"),(".join([str(game)+", '{"+",".join(color)+"}'" for game, color in values])+")"
 
-    if game_ids_not_found:
-        with connect() as connection:
-            (
-                connection
-                .execute("INSERT INTO \"bgg-compare\".game_color (game_id, colors)"
-                         "(VALUES "+parameters+")"
-                         "ON CONFLICT (game_id) DO NOTHING;")
-            )
-            games_found = (
-                connection
-                .execute("SELECT * FROM \"bgg-compare\".game_color WHERE game_id IN %(game_ids)s;",
-                         {"game_ids": tuple(games.keys())})
-                .fetch_all()
-            )
+    parameter_values = list()
+    game_ids_not_found_chunks = [game_ids_not_found[x:x + 100] for x in range(0, len(game_ids_not_found), 100)]
+    for game_ids in game_ids_not_found_chunks:
+
+        games = request_games(game_ids)
+        if games:
+            for game in games["items"]["item"]:
+                if isinstance(game["name"], list):
+                    title = game["name"][0]["@value"]
+                else:
+                    title = game["name"]["@value"]
+                parameter_values.append(
+                    (
+                        str(uuid.uuid4()),
+                        int(game["@id"]),
+                        str(title),
+                        str(game.get("thumbnail", None)),
+                        str(game["@type"]),
+                        json.dumps(game)
+                    )
+                )
+
+    if game_ids_not_found and len(parameter_values) > 0:
+        games_found = insert_and_select_games(tuple(collection_game_ids), parameter_values)
     else:
-        with connect() as connection:
-            games_found = (
-                connection
-                .execute("SELECT * FROM \"bgg-compare\".game_color WHERE game_id IN %(game_ids)s;",
-                         {"game_ids": tuple(games.keys())})
-                .fetch_all()
-            )
-    games_color = dict()
+        games_found = select_games(tuple(collection_game_ids))
+    games_data = dict()
+    i = 0
+    update_colors_values = list()
     for game in games_found:
-        games_color[game.game_id] = game.colors
-    return games_color
+        if i < 25 and game[5] is None and game[3] is not None and game[3] != "None":
+            i += 1
+            print(str(i)+" calc_cluster "+str(game[2]) + " - " + str(game[3]))
+            dominant_colours = calc_cluster(game[3])
+            update_colors_values.append((game[1], dominant_colours))
+        else:
+            dominant_colours = []
+        games_data[game[1]] = {"title": game[2],
+                               "thumbnail": game[3],
+                               "type": game[4],
+                               "dominant_colors": dominant_colours or game[5],
+                               "stats": {
+                                   "minplayers": game[6]["minplayers"]["@value"],
+                                   "maxplayers": game[6]["maxplayers"]["@value"],
+                                   "minplaytime": game[6]["minplaytime"]["@value"],
+                                   "maxplaytime": game[6]["maxplaytime"]["@value"],
+                                   "numowned": game[6]["statistics"]["ratings"]["owned"]["@value"],
+                                   "numcomments": game[6]["statistics"]["ratings"]["numcomments"][
+                                       "@value"],
+                                   "numweights": game[6]["statistics"]["ratings"]["numweights"]["@value"],
+                                   "averageweight": game[6]["statistics"]["ratings"]["averageweight"][
+                                       "@value"],
+                                   "numrating": game[6]["statistics"]["ratings"]["usersrated"]["@value"],
+                                   "average": game[6]["statistics"]["ratings"]["average"]["@value"],
+                                   "bayesaverage": game[6]["statistics"]["ratings"]["bayesaverage"][
+                                       "@value"],
+                               },
+                               }
+    update_game_colours(update_colors_values)
+    return games_data
 
 
 def insert_collection(username, result):

@@ -94,7 +94,21 @@ def request_collection_with_ratings_random():
 
 
 @pytest.fixture
+def request_game_random():
+    with open('test/requests/game_random.xml', 'r', encoding="utf8") as f:
+        data = f.read()
+    return xmltodict.parse(data)
+
+
+@pytest.fixture
 def collection_foo_bar(mocker, request_collection_with_ratings_asc, request_collection_with_ratings_random):
+    mocker.patch('database.select_games', return_value=[{'game_id': 0, 'dominant_colors': ['#e6d9d2', '#b43929']},
+                                                        {'game_id': 1, 'dominant_colors': ['#e6d9d2', '#b43929']},
+                                                        {'game_id': 2, 'dominant_colors': ['#cebfb7', '#351b1a']}])
+    mocker.patch('database.insert_and_select_games', return_value=[{'game_id': 0, 'dominant_colors': ['#e6d9d2', '#b43929']},
+                                                                   {'game_id': 1, 'dominant_colors': ['#e6d9d2', '#b43929']},
+                                                                   {'game_id': 2, 'dominant_colors': ['#e6d9d2', '#b43929']},
+                                                                   {'game_id': 3, 'dominant_colors': ['#cebfb7', '#351b1a']}])
     mocker.patch('bgg_request.request_collection', return_value=request_collection_with_ratings_asc)
     mocker.patch('database.select_collection', return_value=DictWrapper(
         {"username": "foo", "updated_at": datetime.now(),

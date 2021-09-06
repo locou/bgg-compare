@@ -1,0 +1,144 @@
+<items termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">
+    <item type="boardgame" id="192458">
+        <thumbnail>
+            https://cf.geekdo-images.com/oaDIooAl30NgVUWeIpC1sg__thumb/img/bWWziWTy6KflOseb2tYLNC0PrfQ=/fit-in/200x150/filters:strip_icc()/pic2945432.jpg
+        </thumbnail>
+        <image>
+            https://cf.geekdo-images.com/oaDIooAl30NgVUWeIpC1sg__original/img/7jICcOLqm0LTdlXVUOUJloyqj2A=/0x0/filters:format(jpeg)/pic2945432.jpg
+        </image>
+        <name type="primary" sortindex="1" value="51st State: Master Set"/>
+        <name type="alternate" sortindex="1" value="51 Штат: Полный Набор"/>
+        <name type="alternate" sortindex="1" value="51. Stan: Master Set"/>
+        <name type="alternate" sortindex="1" value="51st State: Das Master-Set"/>
+        <name type="alternate" sortindex="1" value="51st State: Set Completo"/>
+        <name type="alternate" sortindex="1" value="51st State: Set de jeu complet"/>
+        <description>The world you know no longer exists. There is no government. No army. No civilization. The United
+            States has collapsed, and now thirty years after the war started, new powers finally try to take control
+            over the ruined country, try to establish a new order, try to control others and create a new country, a new
+            state: the 51st State.&#10;&#10;51st State is a card game in which players control one of four powers trying
+            to build a new country. Players put new locations into play, hire leaders, and send people to work in
+            buildings to gain resources and new skills. To do this, every card in 51st State can be used in three
+            different ways:&#10;&#10;&#10; Raze a location to gain many resources once.&#10; Deal with this location to
+            gain one resource every turn.&#10; Build the location so that you can use its skill each turn.&#10;&#10;&#10;51st
+            State: Master Set marks the rebirth of the 51st State line, with this set containing 88 cards from the
+            original base game, and 50 cards each from both the New Era and Winter expansions; one of these expansions
+            can be mixed with the cards of the base game, but not both at the same time. The entire set has been
+            rebalanced to offer a cohesive experience no matter which expansion you choose to use.&#10;&#10;
+        </description>
+        <yearpublished value="2016"/>
+        <minplayers value="1"/>
+        <maxplayers value="4"/>
+        <poll name="suggested_numplayers" title="User Suggested Number of Players" totalvotes="135">
+            <results numplayers="1">
+                <result value="Best" numvotes="10"/>
+                <result value="Recommended" numvotes="50"/>
+                <result value="Not Recommended" numvotes="29"/>
+            </results>
+            <results numplayers="2">
+                <result value="Best" numvotes="85"/>
+                <result value="Recommended" numvotes="38"/>
+                <result value="Not Recommended" numvotes="3"/>
+            </results>
+            <results numplayers="3">
+                <result value="Best" numvotes="35"/>
+                <result value="Recommended" numvotes="55"/>
+                <result value="Not Recommended" numvotes="8"/>
+            </results>
+            <results numplayers="4">
+                <result value="Best" numvotes="6"/>
+                <result value="Recommended" numvotes="53"/>
+                <result value="Not Recommended" numvotes="34"/>
+            </results>
+            <results numplayers="4+">
+                <result value="Best" numvotes="0"/>
+                <result value="Recommended" numvotes="0"/>
+                <result value="Not Recommended" numvotes="56"/>
+            </results>
+        </poll>
+        <playingtime value="90"/>
+        <minplaytime value="60"/>
+        <maxplaytime value="90"/>
+        <minage value="14"/>
+        <poll name="suggested_playerage" title="User Suggested Player Age" totalvotes="17">
+            <results>
+                <result value="2" numvotes="0"/>
+                <result value="3" numvotes="0"/>
+                <result value="4" numvotes="0"/>
+                <result value="5" numvotes="0"/>
+                <result value="6" numvotes="0"/>
+                <result value="8" numvotes="0"/>
+                <result value="10" numvotes="2"/>
+                <result value="12" numvotes="12"/>
+                <result value="14" numvotes="2"/>
+                <result value="16" numvotes="1"/>
+                <result value="18" numvotes="0"/>
+                <result value="21 and up" numvotes="0"/>
+            </results>
+        </poll>
+        <poll name="language_dependence" title="Language Dependence" totalvotes="11">
+            <results>
+                <result level="16" value="No necessary in-game text" numvotes="0"/>
+                <result level="17" value="Some necessary text - easily memorized or small crib sheet" numvotes="2"/>
+                <result level="18" value="Moderate in-game text - needs crib sheet or paste ups" numvotes="4"/>
+                <result level="19" value="Extensive use of text - massive conversion needed to be playable"
+                        numvotes="3"/>
+                <result level="20" value="Unplayable in another language" numvotes="2"/>
+            </results>
+        </poll>
+        <link type="boardgamecategory" id="1002" value="Card Game"/>
+        <link type="boardgamecategory" id="1029" value="City Building"/>
+        <link type="boardgamecategory" id="1021" value="Economic"/>
+        <link type="boardgamecategory" id="1016" value="Science Fiction"/>
+        <link type="boardgamemechanic" id="2041" value="Card Drafting"/>
+        <link type="boardgamemechanic" id="2040" value="Hand Management"/>
+        <link type="boardgamemechanic" id="2079" value="Variable Phase Order"/>
+        <link type="boardgamemechanic" id="2015" value="Variable Player Powers"/>
+        <link type="boardgamemechanic" id="2082" value="Worker Placement"/>
+        <link type="boardgamefamily" id="65191" value="Components: Multi-Use Cards"/>
+        <link type="boardgamefamily" id="44856" value="Game: 51st State"/>
+        <link type="boardgamefamily" id="27646" value="Mechanism: Tableau Building"/>
+        <link type="boardgamefamily" id="5666" value="Players: Games with Solitaire Rules"/>
+        <link type="boardgamefamily" id="855" value="Setting: Neuroshima"/>
+        <link type="boardgamefamily" id="41799" value="Theme: Post-Apocalyptic"/>
+        <link type="boardgameexpansion" id="264003" value="51st State: Master Set – Allies"/>
+        <link type="boardgameexpansion" id="234106" value="51st State: Master Set – Arena Promo"/>
+        <link type="boardgameexpansion" id="244302" value="51st State: Master Set – Border Tiles Promo"/>
+        <link type="boardgameexpansion" id="205165" value="51st State: Master Set – FLGS Promo"/>
+        <link type="boardgameexpansion" id="280332" value="51st State: Master Set – Mississippi & University Factions"/>
+        <link type="boardgameexpansion" id="314563" value="51st State: Master Set – Moloch"/>
+        <link type="boardgameexpansion" id="203888" value="51st State: Master Set – Pre-Order Promos"/>
+        <link type="boardgameexpansion" id="219108" value="51st State: Master Set – Promo Set 1"/>
+        <link type="boardgameexpansion" id="210696" value="51st State: Master Set – Scavengers"/>
+        <link type="boardgameexpansion" id="219105" value="51st State: Master Set – Texas and Hegemony Factions"/>
+        <link type="boardgameexpansion" id="219104" value="51st State: Master Set – Three Cities Mini Expansion"/>
+        <link type="boardgameexpansion" id="231506" value="Brettspiel Adventskalender 2017"/>
+        <link type="boardgameimplementation" id="73369" value="51st State" inbound="true"/>
+        <link type="boardgamedesigner" id="4735" value="Ignacy Trzewiczek"/>
+        <link type="boardgameartist" id="77570" value="Grzegorz Bobrowski"/>
+        <link type="boardgamepublisher" id="2726" value="Portal Games"/>
+        <link type="boardgamepublisher" id="2973" value="Edge Entertainment"/>
+        <link type="boardgamepublisher" id="29194" value="GaGa Games"/>
+        <statistics page="1">
+            <ratings>
+                <usersrated value="5477"/>
+                <average value="7.64815"/>
+                <bayesaverage value="7.11535"/>
+                <ranks>
+                    <rank type="subtype" id="1" name="boardgame" friendlyname="Board Game Rank" value="300"
+                          bayesaverage="7.11535"/>
+                    <rank type="family" id="5497" name="strategygames" friendlyname="Strategy Game Rank" value="186"
+                          bayesaverage="7.21911"/>
+                </ranks>
+                <stddev value="1.30369"/>
+                <median value="0"/>
+                <owned value="8133"/>
+                <trading value="164"/>
+                <wanting value="364"/>
+                <wishing value="2062"/>
+                <numcomments value="1075"/>
+                <numweights value="184"/>
+                <averageweight value="2.9185"/>
+            </ratings>
+        </statistics>
+    </item>
+</items>
