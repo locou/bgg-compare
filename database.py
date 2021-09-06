@@ -1,7 +1,7 @@
 import os
 import uuid
 import json
-import cv2
+# import cv2
 import psycopg2
 from datetime import datetime, timedelta
 from bottle_postgresql import Configuration, Database
@@ -9,8 +9,8 @@ from psycopg2.extras import execute_values
 
 from bgg_request import handle_collection_request, request_games
 from dotenv import load_dotenv
-from skimage import io
-from sklearn.cluster import MiniBatchKMeans
+# from skimage import io
+# from sklearn.cluster import MiniBatchKMeans
 
 load_dotenv()
 
@@ -26,16 +26,19 @@ configuration_dict = {
 
 
 def calc_cluster(img):
-    def rgb2hex(r, g, b):
-        return "#{:02x}{:02x}{:02x}".format(r, g, b)
-    image = io.imread(img)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image = cv2.resize(image, (15, 15))
-    reshape = image.reshape((image.shape[0] * image.shape[1], 3))
+    return []
 
-    cluster = MiniBatchKMeans(n_clusters=2).fit(reshape)
-    rgb_cluster = [rgb2hex(int(r), int(g), int(b)) for b, g, r in cluster.cluster_centers_]
-    return rgb_cluster
+# def calc_cluster(img):
+#     def rgb2hex(r, g, b):
+#         return "#{:02x}{:02x}{:02x}".format(r, g, b)
+#     image = io.imread(img)
+#     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+#     image = cv2.resize(image, (15, 15))
+#     reshape = image.reshape((image.shape[0] * image.shape[1], 3))
+#
+#     cluster = MiniBatchKMeans(n_clusters=2).fit(reshape)
+#     rgb_cluster = [rgb2hex(int(r), int(g), int(b)) for b, g, r in cluster.cluster_centers_]
+#     return rgb_cluster
 
 
 def connect():

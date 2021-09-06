@@ -61,7 +61,7 @@ def bgg(username):
     collection = calc_ratings(collection)
 
     loading_status = build_collection_url(loading_status)
-    loading_status = sorted(loading_status, key=lambda k: k['mean_diff_rating'])
+    loading_status = sorted(loading_status, key=lambda k: k['mean_diff_rating'] or 11)
     # TODO: scroll up button
     # TODO: show/hide filter button
     # TODO: show/hide all tags for an easier reverse search
