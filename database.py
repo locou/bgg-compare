@@ -54,13 +54,11 @@ def connect_psy():
 def refresh_collection_cache(username):
     with connect() as connection:
         (
-            # TODO: set up database to accept Null in updated at
             connection
             .execute("UPDATE \"bgg-compare\".user_collection "
                      "SET updated_at = %(updated_at)s "
                      "WHERE LOWER(username) = LOWER(%(username)s)",
-                     {"username": username, "updated_at": datetime.now() - timedelta(days=31)}
-                     )
+                     {"username": username, "updated_at": None})
         )
 
 
@@ -136,10 +134,6 @@ def update_game_colours(parameter_values):
 
 
 def get_or_create_games(collection_game_ids):
-    # TODO: fetch & save (?) games with https://api.geekdo.com/xmlapi2/thing?id=174388 /
-    #  subtype and categories are there
-    # TODO: calc color based on that preview image
-    # TODO: collections with many games would do that many api calls as well (worth it?) (cache for a week?)
     # CREATE UNIQUE INDEX index_game_id ON  "bgg-compare".games(game_id);
 
     games_found = select_games(tuple(collection_game_ids))
@@ -231,7 +225,7 @@ def get_or_create_collection(username):
     if query_result:
         # TODO: limit how many collections can be requested at the same time.
         #  ex: if 4 of 10 users are cached, but outdated, don't update them
-        if divmod((datetime.now() - query_result.updated_at).total_seconds(), 3600)[0] > int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)):
+        if query_result.updated_at is None or divmod((datetime.now() - query_result.updated_at).total_seconds(), 3600)[0] > int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)):
             result = handle_collection_request(username)
             if result["message"]["status"] == 1:
                 update_collection(username, result)

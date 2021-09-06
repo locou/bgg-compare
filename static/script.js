@@ -5,6 +5,8 @@ $(document).ready(function() {
         var button_icon = button.find('i');
         var tag = $(this).data('tag');
 
+        var tag_group = $(this).data('tag_group');
+
         var class_show = "fa-eye"
         var class_hidden = "fa-eye-slash"
         var o = button.hasClass("hidden") ? "show" : "hidden";
@@ -19,11 +21,11 @@ $(document).ready(function() {
                 if(o == "hidden") {
                 if($(this).data("hidden_by") == "") {
                     $(this).hide();
-                    $(this).data("hidden_by", "tag");
+                    $(this).data("hidden_by", tag_group);
                     $("#count_items").text(item.filter(":visible").length);
                 }
                 } else {
-                if($(this).data("hidden_by") == "tag") {
+                if($(this).data("hidden_by") == tag_group) {
                     $(this).show();
                     $(this).data("hidden_by", "");
                     $("#count_items").text(item.filter(":visible").length);
@@ -37,13 +39,13 @@ $(document).ready(function() {
                 }).each(function() {
                     if($(this).data("hidden_by") == "") {
                         $(this).hide();
-                        $(this).data("hidden_by", "combined");
+                        $(this).data("hidden_by", tag_group);
                         $("#count_items").text(item.filter(":visible").length);
                     }
                 });
             } else {
                 $("div[data-"+tag+"]").each(function() {
-                    if($(this).data("hidden_by") == "combined") {
+                    if($(this).data("hidden_by") == tag_group) {
                         $(this).show();
                         $(this).data("hidden_by", "");
                         $("#count_items").text(item.filter(":visible").length);

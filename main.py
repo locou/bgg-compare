@@ -15,8 +15,6 @@ def stylesheets(filename):
 @route("/cache")
 @view("views/cache")
 def cache():
-    # TODO: remove this page? or clean it up
-    # TODO: fuzzy cache date?
     result = get_cached_usernames()
     grouped_users_by_updated_at = dict()
     for user in result:
@@ -29,8 +27,6 @@ def cache():
 @route("/")
 @view("views/index")
 def index():
-    # TODO: remove auto select of 5 random users
-    # TODO: checkbox to refresh the cache
     return dict(cache_hours=int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)))
 
 

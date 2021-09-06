@@ -121,23 +121,25 @@
     </div>
     <h3><i class="fas fa-filter"></i> Filter</h3>
     <div>
-        Tags from <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
-           data-tooltip="open {{main_user}}s boardgamegeek profile"><i class="fas fa-user"></i> {{main_user}}</a>
-        <div class="toggle_tag tag" data-tag="my_tag_own">own <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_prevowned">prev. owned <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_preordered">preordered <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_wishlist">wishlist <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_fortrade">for trade <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_want">want <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_wanttoplay">want to play <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_wanttobuy">want to buy <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_any"><em>without tag</em> <i class="fas fa-eye"></i></div>
+        Boardgame  <div class="toggle_tag tag" data-tag="boardgame_tag_exp" data-tag_group="type">Expansion<i class="fas fa-eye"></i></div>
+    </div>
+    <div>
+        Tags from <i class="fas fa-user"></i> {{main_user}}
+        <div class="toggle_tag tag" data-tag="my_tag_own" data-tag_group="tag">own <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_prevowned" data-tag_group="tag">prev. owned <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_preordered" data-tag_group="tag">preordered <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_wishlist" data-tag_group="tag">wishlist <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_fortrade" data-tag_group="tag">for trade <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_want" data-tag_group="tag">want <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_wanttoplay" data-tag_group="tag">want to play <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_wanttobuy" data-tag_group="tag">want to buy <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="my_tag_any" data-tag_group="tag"><em>without tag</em> <i class="fas fa-eye"></i></div>
     </div>
     <div>
         Combined <span id="toggle_combined_slider"></span>
-        <div class="toggle_tag tag" data-tag="combined_count_users">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> users <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="combined_count_ratings">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> ratings <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="combined_count_comments">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> comments <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="combined_count_users" data-tag_group="combined">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> users <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="combined_count_ratings" data-tag_group="combined">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> ratings <i class="fas fa-eye"></i></div>
+        <div class="toggle_tag tag" data-tag="combined_count_comments" data-tag_group="combined">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> comments <i class="fas fa-eye"></i></div>
         <script>
 $(document).ready(function() {
     $("#toggle_combined_slider").slider({
@@ -168,8 +170,7 @@ $(document).ready(function() {
         <div class="sort tag" data-sort="boardgame_numrating">Number of Ratings <i class="fas fa-sort"></i></div>
     </div>
     <div>
-        <a class="tooltip" href="https://boardgamegeek.com/user/{{main_user}}"
-           data-tooltip="open {{main_user}}s boardgamegeek profile"><i class="fas fa-user"></i> {{main_user}}</a>s stats
+        <i class="fas fa-user"></i> {{main_user}}s stats
         <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
         <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
     </div>
@@ -193,6 +194,7 @@ $(document).ready(function() {
      data-boardgame_year="{{ item['yearpublished']}}"
      data-boardgame_numowned="{{item['stats']['numowned']}}"
      data-boardgame_numrating="{{item['stats']['numrating']}}"
+     data-boardgame_tag_exp="{{ 1 if item['type'] == 'boardgameexpansion' else 0 }}"
      data-my_rating="{{item['user']['rating']}}"
      data-my_numplays="{{item['user']['numplays']}}"
      data-my_tag_own="{{item['user']['status']['own']}}"
@@ -219,6 +221,9 @@ $(document).ready(function() {
         </div>
         <div class="grid_bg_title">
             <a class="bg_title" id="{{ item['title']}}" href="https://boardgamegeek.com/{{item['type']}}/{{key}}/">{{item['title']}}</a> (<i>{{item['yearpublished']}}</i>)
+            % if item['type'] == 'boardgameexpansion':
+            <span class="tag">Expansion</span>
+            % end
         </div>
         <div class="grid_bg_info">
             <ul>

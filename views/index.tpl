@@ -47,9 +47,9 @@
         <label for="include_buddies" class="button checkbox">
             <i class="far fa-circle"></i> Include 5 random Buddies
         </label>
-        <input id="include_random_users" type="checkbox" name="include_random_users" hidden checked>
+        <input id="include_random_users" type="checkbox" name="include_random_users" hidden>
         <label for="include_random_users" class="button checkbox">
-            <i class="fas fa-check-circle"></i> Include 5 random, cached Users
+            <i class="far fa-circle"></i> Include 5 random, cached Users
         </label>
         <input id="refresh_cache" type="checkbox" name="refresh_cache" hidden>
         <label for="refresh_cache" class="button checkbox">
