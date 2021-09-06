@@ -64,6 +64,7 @@ def create_user_collection(username):
             "match_items": 0,
             "match_items_rating": 0,
             "match_items_comment": 0,
+            "mean_diff_rating": -100,
         })
     elif result["message"]["status"] == 1 and "item" in result["collection"]["items"]:
         try:
@@ -148,6 +149,7 @@ def create_user_collection(username):
                 "match_items_rating": match_items_rating,
                 "total_items_comment": match_items_comment,
                 "match_items_comment": match_items_comment,
+                "mean_diff_rating": -100,
             })
         except AttributeError:
             loading_status.append({"username": username, "status": 0, "message": "Unknown error"})
