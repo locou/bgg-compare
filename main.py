@@ -50,6 +50,8 @@ def process():
     parameters = list()
     for user in users:
         parameters.append((user, "add_user"))
+    for etag in request.POST.getall('exclude'):
+        parameters.append((etag, "exclude"))
     if request.POST.get('exclude_tag_own'):
         parameters.append(("own", "exclude"))
     if request.POST.get('exclude_tag_prevowned'):

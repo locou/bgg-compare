@@ -41,6 +41,9 @@
         <div class="grid_add_user block-primary">
             <p>Add additional users to the current collection.</p>
             <form id="form_build_collection" method="post" action="/process" onsubmit="send_user_form()">
+                % for etag in exclude_tags:
+                <input type="text" name="exclude" value="{{etag}}" hidden>
+                % end
                 <input type="text" name="main_user" value="{{main_user}}" hidden>
                 % for key, a_user in enumerate(loading_status):
                 % if key != 0:
