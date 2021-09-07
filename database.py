@@ -152,8 +152,6 @@ def get_or_create_games(collection_game_ids):
 
         games = request_games(game_ids)
         if games:
-            if isinstance(games["items"]["item"], dict):
-                games["items"]["item"] = [games["items"]["item"]]
             for game in games["items"]["item"]:
                 if isinstance(game["name"], list):
                     title = game["name"][0]["@value"]
@@ -178,7 +176,7 @@ def get_or_create_games(collection_game_ids):
     i = 0
     update_colors_values = list()
     for game in games_found:
-        if i < 25 and game[5] is None and game[3] is not None and game[3] != "None":
+        if i < 25 and (game[5] is None or len(game[5]) != 2) and game[3] is not None and game[3] != "None":
             i += 1
             print(str(i)+" calc_cluster "+str(game[2]) + " - " + str(game[3]))
             dominant_colours = calc_cluster(game[3])
