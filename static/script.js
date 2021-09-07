@@ -1,6 +1,19 @@
 $(document).ready(function() {
+
+    $('.checkbox').click(function() {
+        var icon = $(this).find('i');
+        icon.toggleClass("fas fa-check-circle");
+        icon.toggleClass("far fa-circle");
+    });
+
+    $('#toggle_sort_filter_block').click(function () {
+        $('#sort_filter_block').slideToggle(100);
+        $(this).find("i").toggleClass("fa-sort-up").toggleClass("fa-sort-down");
+        $(this).find("span").toggle();
+    });
+
     var items = $('div#game_container'), item = items.children('div.wrapper');
-    $('.toggle_tag').click(function() {
+    $('.toggle_tag').not('.deactivated').click(function() {
         var button = $(this);
         var button_icon = button.find('i');
         var tag = $(this).data('tag');
@@ -54,7 +67,7 @@ $(document).ready(function() {
             }
         }
     });
-    $('.sort').click(function () {
+    $('.sort').not('.deactivated').click(function () {
         var button = $(this);
         var button_icon = button.find('i');
         var class_neutral = "fa-sort"
@@ -114,12 +127,6 @@ $(document).ready(function() {
         $('.add_user_field').each(function() {
             $(this).remove();
         });
-    });
-
-    $('.checkbox').click(function() {
-        var icon = $(this).find('i');
-        icon.toggleClass("fas fa-check-circle");
-        icon.toggleClass("far fa-circle");
     });
 });
 

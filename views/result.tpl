@@ -41,7 +41,7 @@
         <div class="grid_add_user block-primary">
             <p>Add additional users to the current collection.</p>
             <form id="form_build_collection" method="post" action="/process" onsubmit="send_user_form()">
-                <input id="main_user" type="text" name="main_user" value="{{user['username']}}" hidden>
+                <input type="text" name="main_user" value="{{main_user}}" hidden>
                 % for key, a_user in enumerate(loading_status):
                 % if key != 0:
                 <input type="text" class="add_user_input" name="add_user" value="{{a_user['username']}}" hidden>
@@ -95,7 +95,7 @@
             </span>
         </div>
         <div class="grid_rating">
-            % if user['mean_diff_rating']:
+            % if user['mean_diff_rating'] is not None:
             mean difference in ratings: <div class="tag tooltip rating diff-rating-{{make_int(user['mean_diff_rating'])}}" data-tooltip="mean between all differences in ratings">{{user['mean_diff_rating']}}</div>
             % else:
             <span class="error">No ratings to compare</span>
@@ -118,70 +118,154 @@
 <div id="sort_container" class="container">
     <div class="block block-primary">
         <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user_total_items}}</span> games</h2>
+        <div class="clickable" id="toggle_sort_filter_block"><i class="fas fa-sort-up"></i> <span>Collapse</span><span style="display:none;">Expand</span></div>
     </div>
-    <h3><i class="fas fa-filter"></i> Filter</h3>
-    <div>
-        Boardgame  <div class="toggle_tag tag" data-tag="boardgame_tag_exp" data-tag_group="type">Expansion<i class="fas fa-eye"></i></div>
-    </div>
-    <div>
-        Tags from <i class="fas fa-user"></i> {{main_user}}
-        <div class="toggle_tag tag" data-tag="my_tag_own" data-tag_group="tag">own <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_prevowned" data-tag_group="tag">prev. owned <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_preordered" data-tag_group="tag">preordered <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_wishlist" data-tag_group="tag">wishlist <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_fortrade" data-tag_group="tag">for trade <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_want" data-tag_group="tag">want <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_wanttoplay" data-tag_group="tag">want to play <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_wanttobuy" data-tag_group="tag">want to buy <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="my_tag_any" data-tag_group="tag"><em>without tag</em> <i class="fas fa-eye"></i></div>
-    </div>
-    <div>
-        Combined <span id="toggle_combined_slider"></span>
-        <div class="toggle_tag tag" data-tag="combined_count_users" data-tag_group="combined">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> users <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="combined_count_ratings" data-tag_group="combined">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> ratings <i class="fas fa-eye"></i></div>
-        <div class="toggle_tag tag" data-tag="combined_count_comments" data-tag_group="combined">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> comments <i class="fas fa-eye"></i></div>
-        <script>
-$(document).ready(function() {
-    $("#toggle_combined_slider").slider({
-        min: 1,
-        max: {{len(loading_status)-1}},
-        value: {{len(loading_status)-1}},
-        step: 1,
-        animate: true,
-        slide: function (event, ui) {
-            $(".toggle_value").text(ui.value);
-        },
-        classes: {
-            "ui-slider": "",
-            "ui-slider-handle": "",
-            "ui-slider-range": ""
+    <div id="sort_filter_block">
+        <h3><i class="fas fa-filter"></i> Hard Filter</h3>
+        <em>Will refresh the page and affect calculations (ex: mean difference)</em>
+            <form id="form_hard_filter" method="post" action="/process">
+                <input type="text" name="main_user" value="{{main_user}}" hidden>
+                % for key, a_user in enumerate(loading_status):
+                % if key != 0:
+                <input type="text" class="add_user_input" name="add_user" value="{{a_user['username']}}" hidden>
+                % end
+                % end
+                <div>
+                    Exclude Type
+                    <script>
+    $(document).ready(function() {
+        function set_checkbox(button) {
+            var button_label = "#"+button+"_label";
+            console.log(button_label);
+            $(button_label).click();
         }
+                    % from bottle import request
+                    % for param in exclude_tags:
+        set_checkbox("exclude_tag_{{param}}");
+                    % end
     });
-});
-        </script>
-    </div>
-    <h3><i class="fas fa-sort-amount-down"></i> Sort</h3>
-    <div>
-        Boardgame stats
-        <div class="sort tag" data-sort="boardgame_title">Title <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="boardgame_rating">Rating <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="boardgame_year">Year <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="boardgame_numowned">Number of Owners <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="boardgame_numrating">Number of Ratings <i class="fas fa-sort"></i></div>
-    </div>
-    <div>
-        <i class="fas fa-user"></i> {{main_user}}s stats
-        <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
-    </div>
-    <div>
-        Combined stats
-        <div class="sort tag" data-sort="combined_numplays">Number of Plays <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_mean_rating">Rating <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_mean_diff_rating">Difference Rating <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_count_users">Number of users <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_count_ratings">Number of Ratings <i class="fas fa-sort"></i></div>
-        <div class="sort tag" data-sort="combined_count_comments">Number of Comments <i class="fas fa-sort"></i></div>
+                    </script>
+                    <input id="exclude_tag_boardgame" type="checkbox" name="exclude_tag_boardgame" hidden>
+                    <label for="exclude_tag_boardgame" id="exclude_tag_boardgame_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> Boardgame
+                    </label>
+                    <input id="exclude_tag_boardgameexpansion" type="checkbox" name="exclude_tag_boardgameexpansion" hidden>
+                    <label for="exclude_tag_boardgameexpansion" id="exclude_tag_boardgameexpansion_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> Boardgame Expansion
+                    </label>
+                </div>
+                <div>
+                    Exclude Tags from <i class="fas fa-user"></i> {{main_user}}
+                    <input id="exclude_tag_own" type="checkbox" name="exclude_tag_own" hidden>
+                    <label for="exclude_tag_own" id="exclude_tag_own_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> own
+                    </label>
+                    <input id="exclude_tag_prevowned" type="checkbox" name="exclude_tag_prevowned" hidden>
+                    <label for="exclude_tag_prevowned" id="exclude_tag_prevowned_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> prev. owned
+                    </label>
+                    <input id="exclude_tag_preordered" type="checkbox" name="exclude_tag_preordered" hidden>
+                    <label for="exclude_tag_preordered" id="exclude_tag_preordered_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> preordered
+                    </label>
+                    <input id="exclude_tag_wishlist" type="checkbox" name="exclude_tag_wishlist" hidden>
+                    <label for="exclude_tag_wishlist" id="exclude_tag_wishlist_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> wishlist
+                    </label>
+                    <input id="exclude_tag_fortrade" type="checkbox" name="exclude_tag_fortrade" hidden>
+                    <label for="exclude_tag_fortrade" id="exclude_tag_fortrade_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> for trade
+                    </label>
+                    <input id="exclude_tag_want" type="checkbox" name="exclude_tag_want" hidden>
+                    <label for="exclude_tag_want" id="exclude_tag_want_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> want
+                    </label>
+                    <input id="exclude_tag_wanttoplay" type="checkbox" name="exclude_tag_wanttoplay" hidden>
+                    <label for="exclude_tag_wanttoplay" id="exclude_tag_wanttoplay_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> want to play
+                    </label>
+                    <input id="exclude_tag_wanttobuy" type="checkbox" name="exclude_tag_wanttobuy" hidden>
+                    <label for="exclude_tag_wanttobuy" id="exclude_tag_wanttobuy_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> want to buy
+                    </label>
+                    <input id="exclude_tag_notag" type="checkbox" name="exclude_tag_notag" hidden>
+                    <label for="exclude_tag_notag" id="exclude_tag_notag_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> without tag
+                    </label>
+                </div>
+                <div>
+                    <button class="button" type="submit"><i class="fas fa-cubes"></i> Submit</button>
+                    <button id="reset_fields" class="button reverse-color" type="reset"><i class="fas fa-redo-alt"></i> Reset</button>
+                </div>
+
+            </form>
+        <h3><i class="fas fa-filter"></i> Soft Filter</h3>
+        <div>
+            Boardgame
+            <div class="toggle_tag tag{{' deactivated' if 'boardgame' in exclude_tags else ''}}" data-tag="boardgame_tag_bg" data-tag_group="type">Boardgame<i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'boardgameexpansion' in exclude_tags else ''}}" data-tag="boardgame_tag_bgexp" data-tag_group="type">Boardgame Expansion<i class="fas fa-eye"></i></div>
+        </div>
+        <div>
+            Tags from <i class="fas fa-user"></i> {{main_user}}
+            <div class="toggle_tag tag{{' deactivated' if 'own' in exclude_tags else ''}}" data-tag="my_tag_own" data-tag_group="tag">own <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'prevowned' in exclude_tags else ''}}" data-tag="my_tag_prevowned" data-tag_group="tag">prev. owned <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'preordered' in exclude_tags else ''}}" data-tag="my_tag_preordered" data-tag_group="tag">preordered <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'wishlist' in exclude_tags else ''}}" data-tag="my_tag_wishlist" data-tag_group="tag">wishlist <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'fortrade' in exclude_tags else ''}}" data-tag="my_tag_fortrade" data-tag_group="tag">for trade <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'want' in exclude_tags else ''}}" data-tag="my_tag_want" data-tag_group="tag">want <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'wanttoplay' in exclude_tags else ''}}" data-tag="my_tag_wanttoplay" data-tag_group="tag">want to play <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'wanttobuy' in exclude_tags else ''}}" data-tag="my_tag_wanttobuy" data-tag_group="tag">want to buy <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'notag' in exclude_tags else ''}}" data-tag="my_tag_any" data-tag_group="tag"><em>without tag</em> <i class="fas fa-eye"></i></div>
+        </div>
+        <div>
+            Combined <span id="toggle_combined_slider" class="{{' deactivated' if len(loading_status)-1 <= 1 else ''}}"></span>
+            <div class="toggle_tag tag{{' deactivated' if len(loading_status)-1 <= 1 else ''}}" data-tag="combined_count_users" data-tag_group="combined">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> users <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if len(loading_status)-1 == 0 else ''}}" data-tag="combined_count_ratings" data-tag_group="combined">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> ratings <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if len(loading_status)-1 == 0 else ''}}" data-tag="combined_count_comments" data-tag_group="combined">with less then <span class="toggle_value">{{len(loading_status)-1}}</span> comments <i class="fas fa-eye"></i></div>
+            <script>
+    $(document).ready(function() {
+        $("#toggle_combined_slider").slider({
+            min: 1,
+            max: {{len(loading_status)-1}},
+            value: {{len(loading_status)-1}},
+            step: 1,
+            animate: true,
+            slide: function (event, ui) {
+                $(".toggle_value").text(ui.value);
+            },
+            classes: {
+                "ui-slider": "",
+                "ui-slider-handle": "",
+                "ui-slider-range": ""
+            }
+        });
+    });
+            </script>
+        </div>
+        <h3><i class="fas fa-sort-amount-down"></i> Sort</h3>
+        <div>
+            Boardgame stats
+            <div class="sort tag" data-sort="boardgame_title">Title <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="boardgame_rating">Rating <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="boardgame_weight">Weight <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="boardgame_year">Year <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="boardgame_numowned">Number of Owners <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="boardgame_numrating">Number of Ratings <i class="fas fa-sort"></i></div>
+        </div>
+        <div>
+            <i class="fas fa-user"></i> {{main_user}}s stats
+            <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
+        </div>
+        <div>
+            Combined stats
+            <div class="sort tag" data-sort="combined_numplays">Number of Plays <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="combined_mean_rating">Rating <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="combined_mean_diff_rating">Difference Rating <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="combined_count_users">Number of users <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="combined_count_ratings">Number of Ratings <i class="fas fa-sort"></i></div>
+            <div class="sort tag" data-sort="combined_count_comments">Number of Comments <i class="fas fa-sort"></i></div>
+        </div>
     </div>
 </div>
 
@@ -194,7 +278,9 @@ $(document).ready(function() {
      data-boardgame_year="{{ item['yearpublished']}}"
      data-boardgame_numowned="{{item['stats']['numowned']}}"
      data-boardgame_numrating="{{item['stats']['numrating']}}"
-     data-boardgame_tag_exp="{{ 1 if item['type'] == 'boardgameexpansion' else 0 }}"
+     data-boardgame_weight="{{item['stats']['averageweight']}}"
+     data-boardgame_tag_bg="{{ 1 if item['type'] == 'boardgame' else 0 }}"
+     data-boardgame_tag_bgexp="{{ 1 if item['type'] == 'boardgameexpansion' else 0 }}"
      data-my_rating="{{item['user']['rating']}}"
      data-my_numplays="{{item['user']['numplays']}}"
      data-my_tag_own="{{item['user']['status']['own']}}"
@@ -215,7 +301,7 @@ $(document).ready(function() {
     <div class="bg_img">
         <img src="{{item['thumbnail']}}">
     </div>
-    <div class="bg_head wrapper_bg_head" style="background: linear-gradient(110deg, #2d2944, {{item['dominant_colors'][0]}}40), linear-gradient(15deg, {{item['dominant_colors'][0]}}, {{item['dominant_colors'][1]}});">
+    <div class="bg_head wrapper_bg_head" style="background: linear-gradient(110deg, #2d2944, {{item['dominant_colors'][0]}}00), linear-gradient(15deg, {{item['dominant_colors'][0]}}, {{item['dominant_colors'][1]}});">
         <div class="grid_bg_rating">
             <div class="tag rating rating-{{make_int(item['stats']['average'])}}">{{item['stats']['average'] if item['stats']['average'] > 0 else '-'}}</div>
         </div>
@@ -237,6 +323,11 @@ $(document).ready(function() {
                 <li>{{item['stats']['minplaytime']}} - {{item['stats']['maxplaytime']}} Min Playing Time</li>
                 % else:
                 <li>{{item['stats']['minplaytime']}} Min Playing Time</li>
+                % end
+                % if item['stats']['averageweight']:
+                <li>{{item['stats']['averageweight']}} / 5 Weight</li>
+                % else:
+                <li>- Weight</li>
                 % end
             </ul>
         </div>

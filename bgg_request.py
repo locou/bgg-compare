@@ -49,15 +49,16 @@ def handle_user_request(username):
 
 
 def handle_collection_request(username):
-    # TODO: custom error message for "retry another time"
-    # TODO: custom error message for "Unknown error"
-    message = {"username": username, "status": 0, "message": "Unknown error"}
+    message = {"username": username, "status": 0, "errors": "Unknown error"}
     try:
         request = request_collection(username)
         if "items" in request:
             message = {"username": username, "status": 1}
         elif "message" in request:
-            message = {"username": username, "status": 0, "message": request.get("message", "")}
+            api_message = request.get("message", "")
+            if api_message == "Your request for this collection has been accepted and will be processed.  Please try again later for access.":
+                api_message = "Collection was requested. Reload this page in a few seconds to show the result."
+            message = {"username": username, "status": 0, "message": api_message}
         else:
             try:
                 if "errors" in request:

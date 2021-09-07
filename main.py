@@ -47,13 +47,39 @@ def process():
         query_users = [u.username for u in get_cached_usernames(exclude_usernames=users)]
         random.shuffle(query_users)
         users = users + query_users[:5]
-    redirect("/bgg/"+build_url(users))
+    parameters = list()
+    for user in users:
+        parameters.append((user, "add_user"))
+    if request.POST.get('exclude_tag_own'):
+        parameters.append(("own", "exclude"))
+    if request.POST.get('exclude_tag_prevowned'):
+        parameters.append(("prevowned", "exclude"))
+    if request.POST.get('exclude_tag_preordered'):
+        parameters.append(("preordered", "exclude"))
+    if request.POST.get('exclude_tag_wishlist'):
+        parameters.append(("wishlist", "exclude"))
+    if request.POST.get('exclude_tag_fortrade'):
+        parameters.append(("fortrade", "exclude"))
+    if request.POST.get('exclude_tag_want'):
+        parameters.append(("want", "exclude"))
+    if request.POST.get('exclude_tag_wanttoplay'):
+        parameters.append(("wanttoplay", "exclude"))
+    if request.POST.get('exclude_tag_wanttobuy'):
+        parameters.append(("wanttobuy", "exclude"))
+    if request.POST.get('exclude_tag_notag'):
+        parameters.append(("notag", "exclude"))
+    if request.POST.get('exclude_tag_boardgame'):
+        parameters.append(("boardgame", "exclude"))
+    if request.POST.get('exclude_tag_boardgameexpansion'):
+        parameters.append(("boardgameexpansion", "exclude"))
+    redirect("/bgg/"+build_url(parameters))
 
 
 @route("/bgg/<username>")
 @view("views/result")
 def bgg(username):
-    collection, loading_status = create_user_collection(username)
+    exclude_tags = request.GET.getall('exclude')
+    collection, loading_status = create_user_collection(username, exclude_tags)
     users_to_compare = request.GET.getall('add_user')
     if users_to_compare:
         for user_to_compare in users_to_compare:
@@ -61,15 +87,12 @@ def bgg(username):
     collection = calc_ratings(collection)
 
     loading_status = build_collection_url(loading_status)
-    loading_status = sorted(loading_status, key=lambda k: k['mean_diff_rating'] or 11)
+    loading_status = sorted(loading_status, key=lambda k: 11 if k.get('mean_diff_rating', 11) is None else k.get('mean_diff_rating', 11))
     # TODO: scroll up button
     # TODO: show/hide filter button
     # TODO: show/hide all tags for an easier reverse search
-    # TODO: sort loading_status by compability
     # TODO: display loading icon when sorting
-    # TODO: mean diff of 0 displays the errormessage for no ratings to compare
-    # TODO: remove user button for "Unknown error"
-    return dict(collection=collection, loading_status=loading_status, main_user=username)
+    return dict(collection=collection, loading_status=loading_status, main_user=username, exclude_tags=exclude_tags)
 
 
 if os.environ.get('APP_LOCATION') == 'heroku':

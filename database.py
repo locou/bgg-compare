@@ -183,6 +183,11 @@ def get_or_create_games(collection_game_ids):
             update_colors_values.append((game[1], dominant_colours))
         else:
             dominant_colours = []
+        averageweight = game[6]["statistics"]["ratings"]["averageweight"]["@value"]
+
+        if float(averageweight) < 1:
+            averageweight = None
+
         games_data[game[1]] = {"title": game[2],
                                "thumbnail": game[3],
                                "type": game[4],
@@ -196,8 +201,7 @@ def get_or_create_games(collection_game_ids):
                                    "numcomments": game[6]["statistics"]["ratings"]["numcomments"][
                                        "@value"],
                                    "numweights": game[6]["statistics"]["ratings"]["numweights"]["@value"],
-                                   "averageweight": game[6]["statistics"]["ratings"]["averageweight"][
-                                       "@value"],
+                                   "averageweight": averageweight,
                                    "numrating": game[6]["statistics"]["ratings"]["usersrated"]["@value"],
                                    "average": game[6]["statistics"]["ratings"]["average"]["@value"],
                                    "bayesaverage": game[6]["statistics"]["ratings"]["bayesaverage"][

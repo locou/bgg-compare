@@ -1,4 +1,5 @@
 :root {
+    --highlight-color: #ec4f08;
     --body-bg-color: #262435;
     --dark-color: black;
     --primary-color: #3f3a60;
@@ -23,12 +24,29 @@ body button {
 
 h1 i,
 h2 i {
-    color: #ec4f08;
+    color: var(--highlight-color);
 }
 
 .footer {
     text-align: center;
     font-size: .7em;
+}
+
+#sort_container .block {
+    display: flow-root;
+}
+#sort_container .block h2 {
+    float:left;
+}
+#toggle_sort_filter_block {
+    float: right;
+    display: inline-block;
+    font-size: 1.17em;
+    line-height: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
 }
 
 .bg_head a,
@@ -102,6 +120,22 @@ h2 i {
 .button.reverse-color:hover {
     background: var(--primary-color);
     color: var(--primary-color-lighter);
+}
+
+.button span {
+    margin-left: .5em;
+    padding-left: .5em;
+    border-left: 1px solid var(--primary-color-lighter);
+}
+.button:hover span {
+    border-left: 1px solid var(--primary-color);
+}
+
+.button.reverse-color span {
+    border-left: 1px solid var(--primary-color);
+}
+.button.reverse-color:hover span {
+    border-left: 1px solid var(--primary-color-lighter);
 }
 
 a,
@@ -183,6 +217,10 @@ display: inline-block;
     font-size: 1.4em;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 .button {
     background: var(--primary-color);
     border-radius: 5px;
@@ -191,6 +229,10 @@ display: inline-block;
     padding: .3em .5em;
     border: 0;
     color: var(--primary-color-lighter);
+    font-weight: 100;
+}
+
+.button.is-bold {
     font-weight: 700;
 }
 
@@ -217,6 +259,17 @@ display: inline-block;
 .tag-wanttoplay,
 .tag-wanttobuy,
 .tag-wishlist   {color: var(--primary-color); background: var(--primary-color-light);}
+
+.deactivated {
+    color: #8a8a8a !important;
+    background: #cecece !important;
+    cursor: default !important;
+}
+.deactivated .ui-slider-handle {
+    color: #8a8a8a !important;
+    background: #8a8a8a !important;
+    cursor: default !important;
+}
 
 .rating {
     color: white;
@@ -297,6 +350,10 @@ span.error {
     cursor: pointer;
     color: var(--primary-color);
     background: var(--primary-color-lighter);
+}
+
+i.fas.fa-check-circle {
+    color: var(--highlight-color);
 }
 
 .sort i,
