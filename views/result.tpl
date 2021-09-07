@@ -15,6 +15,7 @@
 <body>
 <div class="container">
     <div class="wrapper_loading_status">
+        % main_user_total_items = 0
         % for key, user in enumerate(loading_status):
         % if user['status'] == 1:
         % if key == 0:
@@ -118,6 +119,7 @@
         % end
     </div>
 </div>
+% if main_user_total_items:
 <div id="sort_container" class="container">
     <div class="block block-primary">
         <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user_total_items}}</span> games</h2>
@@ -271,7 +273,7 @@
         </div>
     </div>
 </div>
-
+% end
 <div id="game_container">
 % for key, item in collection.items():
 <div class="wrapper"
