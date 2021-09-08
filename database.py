@@ -26,7 +26,7 @@ configuration_dict = {
 
 
 def calc_cluster(img):
-    return []
+    return None
 
 # def calc_cluster(img):
 #     def rgb2hex(r, g, b):
@@ -152,6 +152,8 @@ def get_or_create_games(collection_game_ids):
 
         games = request_games(game_ids)
         if games:
+            if isinstance(games["items"]["item"], dict):
+                games["items"]["item"] = [games["items"]["item"]]
             for game in games["items"]["item"]:
                 if isinstance(game["name"], list):
                     title = game["name"][0]["@value"]
@@ -182,9 +184,9 @@ def get_or_create_games(collection_game_ids):
             dominant_colours = calc_cluster(game[3])
             update_colors_values.append((game[1], dominant_colours))
         else:
-            dominant_colours = []
-        averageweight = game[6]["statistics"]["ratings"]["averageweight"]["@value"]
+            dominant_colours = None
 
+        averageweight = game[6]["statistics"]["ratings"]["averageweight"]["@value"]
         if float(averageweight) < 1:
             averageweight = None
 

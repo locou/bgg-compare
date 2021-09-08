@@ -64,7 +64,7 @@
         </div>
         <h3><i class="fas fa-filter"></i> Advanced Filter</h3>
         <div>
-            Exclude Type
+            <h4>Exclude Type</h4>
             <input id="exclude_tag_boardgame" type="checkbox" name="exclude_tag_boardgame" hidden>
             <label for="exclude_tag_boardgame" id="exclude_tag_boardgame_label" class="button checkbox">
                 <i class="far fa-circle"></i> Boardgame
@@ -75,7 +75,7 @@
             </label>
         </div>
         <div>
-            Exclude Tags
+            <h4>Exclude Tags</h4>
             <input id="exclude_tag_own" type="checkbox" name="exclude_tag_own" hidden>
             <label for="exclude_tag_own" id="exclude_tag_own_label" class="button checkbox">
                 <i class="far fa-circle"></i> own
@@ -110,7 +110,22 @@
             </label>
             <input id="exclude_tag_notag" type="checkbox" name="exclude_tag_notag" hidden>
             <label for="exclude_tag_notag" id="exclude_tag_notag_label" class="button checkbox">
-                <i class="far fa-circle"></i> without tag
+                <i class="far fa-circle"></i> <em>without tag</em>
+            </label>
+        </div>
+        <div>
+            <h4>Exclude Input</h4>
+            <input id="exclude_tag_norating" type="checkbox" name="exclude_tag_norating" hidden>
+            <label for="exclude_tag_norating" id="exclude_tag_norating_label" class="button checkbox">
+                <i class="far fa-circle"></i> without rating
+            </label>
+            <input id="exclude_tag_nocomment" type="checkbox" name="exclude_tag_nocomment" hidden>
+            <label for="exclude_tag_nocomment" id="exclude_tag_nocomment_label" class="button checkbox">
+                <i class="far fa-circle"></i> without comment
+            </label>
+            <input id="exclude_tag_noplays" type="checkbox" name="exclude_tag_noplays" hidden>
+            <label for="exclude_tag_noplays" id="exclude_tag_noplays_label" class="button checkbox">
+                <i class="far fa-circle"></i> without plays
             </label>
         </div>
     </form>

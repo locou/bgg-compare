@@ -74,6 +74,12 @@ def process():
         parameters.append(("boardgame", "exclude"))
     if request.POST.get('exclude_tag_boardgameexpansion'):
         parameters.append(("boardgameexpansion", "exclude"))
+    if request.POST.get('exclude_tag_norating'):
+        parameters.append(("norating", "exclude"))
+    if request.POST.get('exclude_tag_nocomment'):
+        parameters.append(("nocomment", "exclude"))
+    if request.POST.get('exclude_tag_noplays'):
+        parameters.append(("noplays", "exclude"))
     redirect("/bgg/"+build_url(parameters))
 
 

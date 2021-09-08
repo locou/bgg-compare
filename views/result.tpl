@@ -107,7 +107,7 @@
         </div>
         <div class="grid_diff_ratings">
             % for diff in user['diff_ratings']:
-            <a href="#{{diff['title']}}"><div class="tag tooltip rating diff-rating-{{diff['diff_rating']}}" data-tooltip="{{diff['title']}}" ></div></a>
+            <a href="#{{diff['title']}}"><div class="tag tooltip rating diff-rating-{{make_int(diff['diff_rating'])}}" data-tooltip="{{diff['title']}}" ></div></a>
             % end
         </div>
         % end
@@ -195,7 +195,22 @@
                     </label>
                     <input id="exclude_tag_notag" type="checkbox" name="exclude_tag_notag" hidden>
                     <label for="exclude_tag_notag" id="exclude_tag_notag_label" class="button checkbox reverse-color">
-                        <i class="far fa-circle"></i> without tag
+                        <i class="far fa-circle"></i> <em>without tag</em>
+                    </label>
+                </div>
+                <div>
+                    Exclude Input from <i class="fas fa-user"></i> {{main_user}}
+                    <input id="exclude_tag_norating" type="checkbox" name="exclude_tag_norating" hidden>
+                    <label for="exclude_tag_norating" id="exclude_tag_norating_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> without rating
+                    </label>
+                    <input id="exclude_tag_nocomment" type="checkbox" name="exclude_tag_nocomment" hidden>
+                    <label for="exclude_tag_nocomment" id="exclude_tag_nocomment_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> without comment
+                    </label>
+                    <input id="exclude_tag_noplays" type="checkbox" name="exclude_tag_noplays" hidden>
+                    <label for="exclude_tag_noplays" id="exclude_tag_noplays_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> without plays
                     </label>
                 </div>
                 <div>
@@ -371,14 +386,14 @@
                 % end
             </div>
             <div class="user_rating">
-                <div class="tag rating rating-{{stats['rating']}}">
-                    {{stats['rating'] if stats['rating'] and stats['rating'] > 0 else '-'}}
+                <div class="tag rating rating-{{make_int(stats['rating'])}}">
+                    {{f"{stats['rating']:g}" if stats['rating'] and stats['rating'] > 0 else '-'}}
                 </div>
                 Rating with <b>{{stats['numplays']}}</b> Play/s
             </div>
             <div class="user_diff_rating">
-                % if isinstance(stats['diff_rating'], int):
-                <div class="tag tooltip rating diff-rating-{{stats['diff_rating']}}" data-tooltip="Difference between {{main_user}} and {{username}}s rating">{{stats['diff_rating']}}</div> Difference
+                % if isinstance(stats['diff_rating'], float):
+                <div class="tag tooltip rating diff-rating-{{make_int(stats['diff_rating'])}}" data-tooltip="Difference between {{main_user}} and {{username}}s rating">{{f"{stats['diff_rating']:g}"}}</div> Difference
                 % end
             </div>
             % if stats['comment']:

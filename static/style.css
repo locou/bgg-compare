@@ -2,6 +2,7 @@
     --highlight-color: #ec4f08;
     --body-bg-color: #262435;
     --dark-color: black;
+    --light-color: white;
     --primary-color: #3f3a60;
     --primary-color-dark: #3b3c3f;
     --primary-color-light: #b6bacd;
@@ -95,6 +96,8 @@ h2 i {
 }
 
 .button:hover {
+    text-decoration: none;
+    font-weight: 100;
     cursor: pointer;
 }
 
@@ -107,19 +110,27 @@ h2 i {
     color: var(--primary-color-lighter);
 }
 
+.tag.asc:hover,
+.tag.desc:hover,
+.tag.hidden:hover,
+.button:hover {
+    background: var(--body-bg-color);
+    color: var(--light-color);
+}
+
 .button.reverse-color,
 .button.reverse-color:hover,
 .button.reverse-color:active,
 .button.reverse-color:focus,
-.button.reverse-color:visited,
-.button:hover {
+.button.reverse-color:visited {
     color: var(--primary-color);
     background: var(--primary-color-lighter);
 }
 
+.tag:hover,
 .button.reverse-color:hover {
-    background: var(--primary-color);
-    color: var(--primary-color-lighter);
+    background: var(--light-color);
+    color: var(--body-bg-color);
 }
 
 .button span {
@@ -307,7 +318,8 @@ display: inline-block;
     background: var(--secondary-color);
 }
 
-.container h3 {
+.container h3,
+.container h4 {
     color: var(--primary-color);
 }
 

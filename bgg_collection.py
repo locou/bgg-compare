@@ -97,12 +97,17 @@ def create_user_collection(username, paramenters):
                     user_tags.append("wishlist")
                 if item.get("status").get("@preordered") == "1":
                     user_tags.append("preordered")
-
                 if item.get("status").get("@own") == "0" and item.get("status").get("@prevowned") == "0" and item.get(
                         "status").get("@fortrade") == "0" and item.get("status").get("@want") == "0" and item.get(
                         "status").get("@wanttoplay") == "0" and item.get("status").get("@wanttobuy") == "0" and item.get(
                         "status").get("@wishlist") == "0" and item.get("status").get("@preordered") == "0":
                     user_tags.append("notag")
+                if make_int(item.get("stats").get("rating").get("@value", None)) is None:
+                    user_tags.append("norating")
+                if item.get("comment", "") == "":
+                    user_tags.append("nocomment")
+                if make_int(item.get("numplays", None)) == 0:
+                    user_tags.append("noplays")
 
                 if game.get("type"):
                     user_tags.append(game.get("type"))
@@ -130,7 +135,7 @@ def create_user_collection(username, paramenters):
                         },
                         "users": {
                             username: {
-                                "rating": make_int(item.get("stats").get("rating").get("@value", None)),
+                                "rating": make_float(item.get("stats").get("rating").get("@value", None)),
                                 "diff_rating": None,
                                 "numplays": make_int(item.get("numplays", None)),
                                 "comment": item.get("comment", ""),
@@ -149,7 +154,7 @@ def create_user_collection(username, paramenters):
                             }
                         },
                         "user": {
-                            "rating": make_int(item.get("stats").get("rating").get("@value", None)),
+                            "rating": make_float(item.get("stats").get("rating").get("@value", None)),
                             "numplays": make_int(item.get("numplays", None)),
                             "comment": item.get("comment", ""),
                             "status": {
@@ -211,10 +216,10 @@ def add_user_to_collection(collection, loading_status, username):
                         total_items_comment += 1
                     if item["@objectid"] in collection.keys():
                         match_items += 1
-                        diff_rating = calc_diff(make_int(item.get("stats").get("rating").get("@value", None)),
-                                                collection[item["@objectid"]]["user"]["rating"])
+                        diff_rating = make_float(calc_diff(make_float(item.get("stats").get("rating").get("@value", None)),
+                                                collection[item["@objectid"]]["user"]["rating"]))
                         collection[item["@objectid"]]["users"][username] = {
-                            "rating": make_int(item.get("stats").get("rating").get("@value", None)),
+                            "rating": make_float(item.get("stats").get("rating").get("@value", None)),
                             "diff_rating": diff_rating,
                             "numplays": make_int(item.get("numplays", None)),
                             "comment": item.get("comment", ""),
@@ -235,7 +240,7 @@ def add_user_to_collection(collection, loading_status, username):
                             match_items_rating += 1
                         if item.get("comment"):
                             match_items_comment += 1
-                        if isinstance(diff_rating, int) and diff_rating >= 0:
+                        if isinstance(diff_rating, float) and diff_rating >= 0:
                             title = get_title(item.get("originalname", ""), item.get("name").get("#text", ""), "title")
                             diff_ratings.append({"title": title, "diff_rating": diff_rating})
 
@@ -268,10 +273,10 @@ def calc_ratings(collection):
         count_ratings = 0
         count_users = 0
         for _, user in item["users"].items():
-            if user["rating"] in range(1, 11):
+            if make_int(user["rating"]) in range(1, 11):
                 ratings.append(user["rating"])
                 count_ratings += 1
-            if user["diff_rating"] in range(0, 10):
+            if isinstance(user["diff_rating"], float) and user["diff_rating"] >= 0:
                 diff_ratings.append(user["diff_rating"])
             if user["numplays"]:
                 numplays.append(user["numplays"])
