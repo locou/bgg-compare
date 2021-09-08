@@ -100,7 +100,7 @@ def bgg(username):
     # TODO: show/hide filter button
     # TODO: show/hide all tags for an easier reverse search
     # TODO: display loading icon when sorting
-    return dict(collection=collection, loading_status=loading_status, main_user=username, exclude_tags=exclude_tags)
+    return dict(collection=collection, loading_status=loading_status, main_user=loading_status[0], exclude_tags=exclude_tags)
 
 
 if os.environ.get('APP_LOCATION') == 'heroku':

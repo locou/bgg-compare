@@ -37,10 +37,13 @@ h2 i {
     display: flow-root;
 }
 #sort_container .block h2 {
-    float:left;
+    width: 50%;
+    display: inline-block;
 }
 #toggle_sort_filter_block {
+    width: 50%;
     float: right;
+    text-align: right;
     display: inline-block;
     font-size: 1.17em;
     line-height: 1.5em;

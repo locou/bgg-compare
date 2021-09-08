@@ -15,8 +15,6 @@
 <body>
 <div class="container">
     <div class="wrapper_loading_status">
-        % main_user_total_items = 0
-        % main_user_match_items = 0
         % for key, user in enumerate(loading_status):
         % if user['status'] == 1:
         % if key == 0:
@@ -29,11 +27,9 @@
                 </a>
             </h1>
             <div>
-                % main_user_total_items = user['total_items']
-                % main_user_match_items = user['match_items']
                 <i class="fas fa-cubes"></i> {{user['total_items']}} games with
-                <i class="fas fa-star-half-alt"></i> {{user['match_items_rating']}} ratings and
-                <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
+                <i class="fas fa-star-half-alt"></i> {{user['total_items_rating']}} ratings and
+                <i class="far fa-comment"></i> {{user['total_items_comment']}} comments
                 <em class="tooltip" data-tooltip="Cache last updated">
                     ({{user['updated_at']}})
                 </em>
@@ -47,7 +43,7 @@
                 % for etag in exclude_tags:
                 <input type="text" name="exclude" value="{{etag}}" hidden>
                 % end
-                <input type="text" name="main_user" value="{{main_user}}" hidden>
+                <input type="text" name="main_user" value="{{main_user['username']}}" hidden>
                 % for key, a_user in enumerate(loading_status):
                 % if key != 0:
                 <input type="text" class="add_user_input" name="add_user" value="{{a_user['username']}}" hidden>
@@ -121,17 +117,22 @@
         % end
     </div>
 </div>
-% if main_user_total_items:
+% if main_user['total_items']:
 <div id="sort_container" class="container">
     <div class="block block-primary">
-        <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user_match_items}} of {{main_user_total_items}}</span> games</h2>
+        <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user['match_items']}}</span> games</h2>
         <div class="clickable" id="toggle_sort_filter_block"><i class="fas fa-sort-up"></i> <span>Collapse</span><span style="display:none;">Expand</span></div>
+        <div>
+            <i class="fas fa-star-half-alt"></i> <span id="count_ratings">{{main_user['match_items_rating']}}</span> ratings and
+            <i class="far fa-comment"></i> <span id="count_comments">{{main_user['match_items_comment']}}</span> comments
+            from <i class="fas fa-user"></i> {{main_user['username']}}
+        </div>
     </div>
     <div id="sort_filter_block">
         <h3><i class="fas fa-filter"></i> Hard Filter</h3>
         <em>Will refresh the page and affect calculations (ex: mean difference)</em>
             <form id="form_hard_filter" method="post" action="/process">
-                <input type="text" name="main_user" value="{{main_user}}" hidden>
+                <input type="text" name="main_user" value="{{main_user['username']}}" hidden>
                 % for key, a_user in enumerate(loading_status):
                 % if key != 0:
                 <input type="text" class="add_user_input" name="add_user" value="{{a_user['username']}}" hidden>
@@ -162,7 +163,7 @@
                     </label>
                 </div>
                 <div>
-                    Exclude Tags from <i class="fas fa-user"></i> {{main_user}}
+                    Exclude Tags from <i class="fas fa-user"></i> {{main_user['username']}}
                     <input id="exclude_tag_own" type="checkbox" name="exclude_tag_own" hidden>
                     <label for="exclude_tag_own" id="exclude_tag_own_label" class="button checkbox reverse-color">
                         <i class="far fa-circle"></i> own
@@ -201,7 +202,7 @@
                     </label>
                 </div>
                 <div>
-                    Exclude Input from <i class="fas fa-user"></i> {{main_user}}
+                    Exclude Input from <i class="fas fa-user"></i> {{main_user['username']}}
                     <input id="exclude_tag_norating" type="checkbox" name="exclude_tag_norating" hidden>
                     <label for="exclude_tag_norating" id="exclude_tag_norating_label" class="button checkbox reverse-color">
                         <i class="far fa-circle"></i> without rating
@@ -228,7 +229,7 @@
             <div class="toggle_tag tag{{' deactivated' if 'boardgameexpansion' in exclude_tags else ''}}" data-tag="boardgame_tag_bgexp" data-tag_group="type">Boardgame Expansion<i class="fas fa-eye"></i></div>
         </div>
         <div>
-            Tags from <i class="fas fa-user"></i> {{main_user}}
+            Tags from <i class="fas fa-user"></i> {{main_user['username']}}
             <div class="toggle_tag tag{{' deactivated' if 'own' in exclude_tags else ''}}" data-tag="my_tag_own" data-tag_group="tag">own <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' deactivated' if 'prevowned' in exclude_tags else ''}}" data-tag="my_tag_prevowned" data-tag_group="tag">prev. owned <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' deactivated' if 'preordered' in exclude_tags else ''}}" data-tag="my_tag_preordered" data-tag_group="tag">preordered <i class="fas fa-eye"></i></div>
@@ -275,7 +276,7 @@
             <div class="sort tag" data-sort="boardgame_numrating">Number of Ratings <i class="fas fa-sort"></i></div>
         </div>
         <div>
-            <i class="fas fa-user"></i> {{main_user}}s stats
+            <i class="fas fa-user"></i> {{main_user['username']}}s stats
             <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
             <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
         </div>
@@ -301,8 +302,10 @@
      data-boardgame_numowned="{{item['stats']['numowned']}}"
      data-boardgame_numrating="{{item['stats']['numrating']}}"
      data-boardgame_weight="{{item['stats']['averageweight']}}"
-     data-boardgame_tag_bg="{{ 1 if item['type'] == 'boardgame' else 0 }}"
-     data-boardgame_tag_bgexp="{{ 1 if item['type'] == 'boardgameexpansion' else 0 }}"
+     data-boardgame_tag_bg="{{ 1 if item['type'] == 'boardgame' else 0}}"
+     data-boardgame_tag_bgexp="{{ 1 if item['type'] == 'boardgameexpansion' else 0}}"
+     data-my_has_rating="{{ 1 if item['user']['rating'] else 0}}"
+     data-my_has_comment="{{ 1 if item['user']['comment'] else 0}}"
      data-my_rating="{{item['user']['rating']}}"
      data-my_numplays="{{item['user']['numplays']}}"
      data-my_tag_own="{{item['user']['status']['own']}}"
@@ -395,7 +398,7 @@
             </div>
             <div class="user_diff_rating">
                 % if isinstance(stats['diff_rating'], float):
-                <div class="tag tooltip rating diff-rating-{{make_int(stats['diff_rating'])}}" data-tooltip="Difference between {{main_user}} and {{username}}s rating">{{f"{stats['diff_rating']:g}"}}</div> Difference
+                <div class="tag tooltip rating diff-rating-{{make_int(stats['diff_rating'])}}" data-tooltip="Difference between {{main_user['username']}} and {{username}}s rating">{{f"{stats['diff_rating']:g}"}}</div> Difference
                 % end
             </div>
             % if stats['comment']:

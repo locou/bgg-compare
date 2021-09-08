@@ -36,12 +36,24 @@ $(document).ready(function() {
                     $(this).hide();
                     $(this).data("hidden_by", tag_group);
                     $("#count_items").text(item.filter(":visible").length);
+                    $("#count_ratings").text(item.filter(function() {
+                      return $(this).data("my_has_rating") == 1
+                    }).filter(":visible").length);
+                    $("#count_comments").text(item.filter(function() {
+                      return $(this).data("my_has_comment") == 1
+                    }).filter(":visible").length);
                 }
                 } else {
                 if($(this).data("hidden_by") == tag_group) {
                     $(this).show();
                     $(this).data("hidden_by", "");
                     $("#count_items").text(item.filter(":visible").length);
+                    $("#count_ratings").text(item.filter(function() {
+                      return $(this).data("my_has_rating") == 1
+                    }).filter(":visible").length);
+                    $("#count_comments").text(item.filter(function() {
+                      return $(this).data("my_has_comment") == 1
+                    }).filter(":visible").length);
                 }
                 }
             });
@@ -54,6 +66,12 @@ $(document).ready(function() {
                         $(this).hide();
                         $(this).data("hidden_by", tag_group);
                         $("#count_items").text(item.filter(":visible").length);
+                        $("#count_ratings").text(item.filter(function() {
+                          return $(this).data("my_has_rating") == 1
+                        }).filter(":visible").length);
+                        $("#count_comments").text(item.filter(function() {
+                          return $(this).data("my_has_comment") == 1
+                        }).filter(":visible").length);
                     }
                 });
             } else {
@@ -62,6 +80,12 @@ $(document).ready(function() {
                         $(this).show();
                         $(this).data("hidden_by", "");
                         $("#count_items").text(item.filter(":visible").length);
+                        $("#count_ratings").text(item.filter(function() {
+                          return $(this).data("my_has_rating") == 1
+                        }).filter(":visible").length);
+                        $("#count_comments").text(item.filter(function() {
+                          return $(this).data("my_has_comment") == 1
+                        }).filter(":visible").length);
                     }
                 });
             }

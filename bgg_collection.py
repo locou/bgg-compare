@@ -77,7 +77,9 @@ def create_user_collection(username, paramenters):
             games = get_or_create_games(game_ids)
             total_items = 0
             match_items = 0
+            total_items_rating = 0
             match_items_rating = 0
+            total_items_comment = 0
             match_items_comment = 0
             for item in result["collection"].get("items").get("item"):
                 game = games.get(int(item["@objectid"]))
@@ -113,8 +115,8 @@ def create_user_collection(username, paramenters):
                 if game.get("type"):
                     user_tags.append(game.get("type"))
 
-                total_items += 1
                 if not any(x in user_tags for x in paramenters):
+                    total_items += 1
                     match_items += 1
                     collection[item["@objectid"]] = {
                         "type": game.get("type"),
@@ -174,17 +176,25 @@ def create_user_collection(username, paramenters):
                     }
                     if make_int(item.get("stats").get("rating").get("@value", None)):
                         match_items_rating += 1
+                        total_items_rating += 1
                     if item.get("comment"):
                         match_items_comment += 1
+                        total_items_comment += 1
+                else:
+                    total_items += 1
+                    if make_int(item.get("stats").get("rating").get("@value", None)):
+                        total_items_rating += 1
+                    if item.get("comment"):
+                        total_items_comment += 1
             loading_status.append({
                 "username": username,
                 "status": 1,
                 "updated_at": datetime.strftime(result["message"]["updated_at"], "%Y-%m-%d"),
                 "total_items": total_items,
                 "match_items": match_items,
-                "total_items_rating": match_items_rating,
+                "total_items_rating": total_items_rating,
                 "match_items_rating": match_items_rating,
-                "total_items_comment": match_items_comment,
+                "total_items_comment": total_items_comment,
                 "match_items_comment": match_items_comment,
                 "mean_diff_rating": -100,
             })
