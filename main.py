@@ -3,7 +3,7 @@ import random
 
 from bgg_collection import calc_ratings, build_url, build_collection_url, add_user_to_collection, create_user_collection
 from bgg_request import handle_user_request
-from database import get_cached_usernames, refresh_collection_cache
+from database import get_cached_usernames, refresh_collection_cache, batch_update_dominant_color
 from bottle import route, run, view, request, static_file, get, redirect, post
 
 
@@ -11,6 +11,11 @@ from bottle import route, run, view, request, static_file, get, redirect, post
 def stylesheets(filename):
     return static_file(filename, root='static/')
 
+@route("/updatecolor")
+@view("views/index")
+def color():
+    batch_update_dominant_color()
+    return dict(cache_hours=int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)))
 
 @route("/cache")
 @view("views/cache")
