@@ -1,4 +1,5 @@
 import os
+import urllib
 import uuid
 import json
 # import cv2
@@ -26,19 +27,22 @@ configuration_dict = {
 
 
 def calc_cluster(img):
-    return None
+    def rgb2hex(r, g, b):
+        return "#{:02x}{:02x}{:02x}".format(r, g, b)
+    import cv2
+    from skimage import io
+    from sklearn.cluster import MiniBatchKMeans
+    try:
+        image = io.imread(img)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.resize(image, (25, 25))
+        reshape = image.reshape((image.shape[0] * image.shape[1], 3))
 
-# def calc_cluster(img):
-#     def rgb2hex(r, g, b):
-#         return "#{:02x}{:02x}{:02x}".format(r, g, b)
-#     image = io.imread(img)
-#     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-#     image = cv2.resize(image, (15, 15))
-#     reshape = image.reshape((image.shape[0] * image.shape[1], 3))
-#
-#     cluster = MiniBatchKMeans(n_clusters=2).fit(reshape)
-#     rgb_cluster = [rgb2hex(int(r), int(g), int(b)) for b, g, r in cluster.cluster_centers_]
-#     return rgb_cluster
+        cluster = MiniBatchKMeans(n_clusters=2).fit(reshape)
+        rgb_cluster = [rgb2hex(int(r), int(g), int(b)) for b, g, r in cluster.cluster_centers_]
+        return rgb_cluster
+    except urllib.error.HTTPError:
+        return None
 
 
 def connect():
@@ -97,6 +101,34 @@ def select_games(game_ids):
     conn.close()
 
     return games_found
+
+
+def select_games_without_colours():
+    conn = connect_psy()
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT game_id, title, thumbnail FROM \"bgg-compare\".games WHERE thumbnail IS NOT NULL AND LOWER(thumbnail) != 'none' AND dominant_colors IS NULL ORDER BY type LIMIT 1500;")
+            games_found = cur.fetchall()
+            cur.execute("SELECT type, COUNT(*) FROM \"bgg-compare\".games WHERE dominant_colors IS NULL AND LOWER(thumbnail) != 'none' GROUP BY type")
+            without_color = cur.fetchall()
+    conn.close()
+    print(without_color)
+    return games_found
+
+
+def batch_update_dominant_color():
+    games = select_games_without_colours()
+    i = 0
+    update_colors_values = list()
+    for game in games:
+        i += 1
+        print(str(datetime.now()) + " : " + str(i) + " calc_cluster " + str(game[1]) + " --- " + str(game[2]))
+        dominant_colours = calc_cluster(game[2])
+        update_colors_values.append((game[0], dominant_colours))
+        if i % 100 == 0:
+            print("UPDATE")
+            update_game_colours(update_colors_values)
 
 
 def insert_and_select_games(game_ids, parameter_values):
@@ -176,7 +208,7 @@ def get_or_create_games(collection_game_ids):
     i = 0
     update_colors_values = list()
     for game in games_found:
-        if i < 25 and (game[5] is None or len(game[5]) != 2) and game[3] is not None and game[3] != "None":
+        if i < 250 and (game[5] is None or len(game[5]) != 2) and game[3] is not None and game[3] != "None":
             i += 1
             print(str(i)+" calc_cluster "+str(game[2]) + " - " + str(game[3]))
             dominant_colours = calc_cluster(game[3])
@@ -208,7 +240,7 @@ def get_or_create_games(collection_game_ids):
                                        "@value"],
                                },
                                }
-    # update_game_colours(update_colors_values)
+    update_game_colours(update_colors_values)
     return games_data
 
 
