@@ -129,6 +129,9 @@ def batch_update_dominant_color():
         if i % 100 == 0:
             print("UPDATE")
             update_game_colours(update_colors_values)
+    if len(update_colors_values) > 0:
+        print("UPDATE")
+        update_game_colours(update_colors_values)
 
 
 def insert_and_select_games(game_ids, parameter_values):
