@@ -76,6 +76,7 @@ def create_user_collection(username, paramenters):
                 game_ids.append(item["@objectid"])
             games = get_or_create_games(game_ids)
             total_items = 0
+            match_items = 0
             match_items_rating = 0
             match_items_comment = 0
             for item in result["collection"].get("items").get("item"):
@@ -112,8 +113,9 @@ def create_user_collection(username, paramenters):
                 if game.get("type"):
                     user_tags.append(game.get("type"))
 
+                total_items += 1
                 if not any(x in user_tags for x in paramenters):
-                    total_items += 1
+                    match_items += 1
                     collection[item["@objectid"]] = {
                         "type": game.get("type"),
                         "title": game.get("title"),
@@ -179,7 +181,7 @@ def create_user_collection(username, paramenters):
                 "status": 1,
                 "updated_at": datetime.strftime(result["message"]["updated_at"], "%Y-%m-%d"),
                 "total_items": total_items,
-                "match_items": total_items,
+                "match_items": match_items,
                 "total_items_rating": match_items_rating,
                 "match_items_rating": match_items_rating,
                 "total_items_comment": match_items_comment,

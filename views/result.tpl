@@ -16,6 +16,7 @@
 <div class="container">
     <div class="wrapper_loading_status">
         % main_user_total_items = 0
+        % main_user_match_items = 0
         % for key, user in enumerate(loading_status):
         % if user['status'] == 1:
         % if key == 0:
@@ -29,6 +30,7 @@
             </h1>
             <div>
                 % main_user_total_items = user['total_items']
+                % main_user_match_items = user['match_items']
                 <i class="fas fa-cubes"></i> {{user['total_items']}} games with
                 <i class="fas fa-star-half-alt"></i> {{user['match_items_rating']}} ratings and
                 <i class="far fa-comment"></i> {{user['match_items_comment']}} comments
@@ -122,7 +124,7 @@
 % if main_user_total_items:
 <div id="sort_container" class="container">
     <div class="block block-primary">
-        <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user_total_items}}</span> games</h2>
+        <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user_match_items}} of {{main_user_total_items}}</span> games</h2>
         <div class="clickable" id="toggle_sort_filter_block"><i class="fas fa-sort-up"></i> <span>Collapse</span><span style="display:none;">Expand</span></div>
     </div>
     <div id="sort_filter_block">
