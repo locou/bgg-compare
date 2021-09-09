@@ -50,6 +50,37 @@ def build_url(parameters):
     return url
 
 
+def item_status_into_list(item_status):
+    user_tags = dict()
+    if item_status.get("@own") == "1":
+        user_tags["own"] = "own"
+    if item_status.get("@prevowned") == "1":
+        user_tags["prevowned"] = "prev. owned"
+    if item_status.get("@fortrade") == "1":
+        user_tags["fortrade"] = "for trade"
+    if item_status.get("@want") == "1":
+        user_tags["want"] = "want"
+    if item_status.get("@wanttoplay") == "1":
+        user_tags["wanttoplay"] = "want to play"
+    if item_status.get("@wanttobuy") == "1":
+        user_tags["wanttobuy"] = "want to buy"
+    if item_status.get("@wishlist") == "1":
+        user_tags["wishlist"+str(item_status.get("@wishlistpriority", 0))] = \
+            "wishlist "+str(item_status.get("@wishlistpriority", 0))
+    if item_status.get("@preordered") == "1":
+        user_tags["preordered"] = "preordered"
+    if item_status.get("@own") == "0" and \
+            item_status.get("@prevowned") == "0" and \
+            item_status.get("@fortrade") == "0" and \
+            item_status.get("@want") == "0" and \
+            item_status.get("@wanttoplay") == "0" and \
+            item_status.get("@wanttobuy") == "0" and \
+            item_status.get("@wishlist") == "0" and \
+            item_status.get("@preordered") == "0":
+        user_tags["notag"] = "notag"
+    return user_tags
+
+
 def create_user_collection(username, paramenters):
     loading_status = list()
     result = get_or_create_collection(username)
@@ -63,7 +94,9 @@ def create_user_collection(username, paramenters):
             "updated_at": datetime.strftime(result["message"]["updated_at"], "%Y-%m-%d"),
             "total_items": 0,
             "match_items": 0,
+            "total_items_rating": 0,
             "match_items_rating": 0,
+            "total_items_comment": 0,
             "match_items_comment": 0,
             "mean_diff_rating": -100,
         })
@@ -83,41 +116,24 @@ def create_user_collection(username, paramenters):
             match_items_comment = 0
             for item in result["collection"].get("items").get("item"):
                 game = games.get(int(item["@objectid"]))
-                user_tags = list()
-                if item.get("status").get("@own") == "1":
-                    user_tags.append("own")
-                if item.get("status").get("@prevowned") == "1":
-                    user_tags.append("prevowned")
-                if item.get("status").get("@fortrade") == "1":
-                    user_tags.append("fortrade")
-                if item.get("status").get("@want") == "1":
-                    user_tags.append("want")
-                if item.get("status").get("@wanttoplay") == "1":
-                    user_tags.append("wanttoplay")
-                if item.get("status").get("@wanttobuy") == "1":
-                    user_tags.append("wanttobuy")
-                if item.get("status").get("@wishlist") == "1":
-                    user_tags.append("wishlist")
-                if item.get("status").get("@preordered") == "1":
-                    user_tags.append("preordered")
-                if item.get("status").get("@own") == "0" and item.get("status").get("@prevowned") == "0" and item.get(
-                        "status").get("@fortrade") == "0" and item.get("status").get("@want") == "0" and item.get(
-                        "status").get("@wanttoplay") == "0" and item.get("status").get("@wanttobuy") == "0" and item.get(
-                        "status").get("@wishlist") == "0" and item.get("status").get("@preordered") == "0":
-                    user_tags.append("notag")
+
+                user_tags = item_status_into_list(item.get("status"))
+                item_tags = list(user_tags.keys())
+
                 if make_int(item.get("stats").get("rating").get("@value", None)) is None:
-                    user_tags.append("norating")
+                    item_tags.append("norating")
                 if item.get("comment", "") == "":
-                    user_tags.append("nocomment")
-                if make_int(item.get("numplays", None)) == 0:
-                    user_tags.append("noplays")
+                    item_tags.append("nocomment")
+                if make_int(item.get("numplays", 0)) == 0:
+                    item_tags.append("noplays")
 
                 if game.get("type"):
-                    user_tags.append(game.get("type"))
+                    item_tags.append(game.get("type"))
 
-                if not any(x in user_tags for x in paramenters):
+                if not any(x in item_tags for x in paramenters):
                     total_items += 1
                     match_items += 1
+
                     collection[item["@objectid"]] = {
                         "type": game.get("type"),
                         "title": game.get("title"),
@@ -143,35 +159,17 @@ def create_user_collection(username, paramenters):
                                 "diff_rating": None,
                                 "numplays": make_int(item.get("numplays", None)),
                                 "comment": item.get("comment", ""),
-                                "status": {
-                                    "own": item.get("status").get("@own", 0),
-                                    "prevowned": item.get("status").get("@prevowned", 0),
-                                    "fortrade": item.get("status").get("@fortrade", 0),
-                                    "want": item.get("status").get("@want", 0),
-                                    "wanttoplay": item.get("status").get("@wanttoplay", 0),
-                                    "wanttobuy": item.get("status").get("@wanttobuy", 0),
-                                    "wishlist": item.get("status").get("@wishlist", 0),
-                                    "preordered": item.get("status").get("@preordered", 0),
-                                    "lastmodified": datetime.strptime(item.get("status").get("@lastmodified", 0),
+                                "tags": user_tags,
+                                "lastmodified": datetime.strptime(item.get("status").get("@lastmodified", 0),
                                                                       '%Y-%m-%d %H:%M:%S').strftime("%b %Y"),
-                                }
                             }
                         },
                         "user": {
                             "rating": make_float(item.get("stats").get("rating").get("@value", None)),
                             "numplays": make_int(item.get("numplays", None)),
                             "comment": item.get("comment", ""),
-                            "status": {
-                                "own": item.get("status").get("@own", 0),
-                                "prevowned": item.get("status").get("@prevowned", 0),
-                                "fortrade": item.get("status").get("@fortrade", 0),
-                                "want": item.get("status").get("@want", 0),
-                                "wanttoplay": item.get("status").get("@wanttoplay", 0),
-                                "wanttobuy": item.get("status").get("@wanttobuy", 0),
-                                "wishlist": item.get("status").get("@wishlist", 0),
-                                "preordered": item.get("status").get("@preordered", 0),
-                                "lastmodified": item.get("status").get("@lastmodified", 0),
-                            }
+                            "tags": user_tags,
+                            "lastmodified": item.get("status").get("@lastmodified", 0),
                         }
                     }
                     if make_int(item.get("stats").get("rating").get("@value", None)):
@@ -222,6 +220,8 @@ def add_user_to_collection(collection, loading_status, username):
                     result["collection"]["items"]["item"] = [result["collection"].get("items").get("item")]
                 for item in result["collection"].get("items").get("item"):
                     total_items += 1
+                    user_tags = item_status_into_list(item.get("status"))
+
                     if make_int(item.get("stats").get("rating").get("@value", None)):
                         total_items_rating += 1
                     if item.get("comment"):
@@ -235,18 +235,9 @@ def add_user_to_collection(collection, loading_status, username):
                             "diff_rating": diff_rating,
                             "numplays": make_int(item.get("numplays", None)),
                             "comment": item.get("comment", ""),
-                            "status": {
-                                "own": item.get("status").get("@own", 0),
-                                "prevowned": item.get("status").get("@prevowned", 0),
-                                "fortrade": item.get("status").get("@fortrade", 0),
-                                "want": item.get("status").get("@want", 0),
-                                "wanttoplay": item.get("status").get("@wanttoplay", 0),
-                                "wanttobuy": item.get("status").get("@wanttobuy", 0),
-                                "wishlist": item.get("status").get("@wishlist", 0),
-                                "preordered": item.get("status").get("@preordered", 0),
-                                "lastmodified": datetime.strptime(item.get("status").get("@lastmodified", 0),
-                                                                  '%Y-%m-%d %H:%M:%S').strftime("%b %Y"),
-                            }
+                            "tags": user_tags,
+                            "lastmodified": datetime.strptime(item.get("status").get("@lastmodified", 0),
+                                                              '%Y-%m-%d %H:%M:%S').strftime("%b %Y"),
                         }
                         if make_int(item.get("stats").get("rating").get("@value", None)):
                             match_items_rating += 1
@@ -310,7 +301,7 @@ def calc_ratings(collection):
 
 def build_collection_url(loading_status):
     if len(loading_status) > 1:
-        for user_status in loading_status:
+        for key, user_status in enumerate(loading_status):
             # move the user to the front of the list
             user_list = [u["username"] for u in loading_status]
             user_list.insert(0, user_list.pop(user_list.index(user_status["username"])))

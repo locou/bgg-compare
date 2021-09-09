@@ -58,8 +58,16 @@ def process():
         parameters.append(("prevowned", "exclude"))
     if request.POST.get('exclude_tag_preordered'):
         parameters.append(("preordered", "exclude"))
-    if request.POST.get('exclude_tag_wishlist'):
-        parameters.append(("wishlist", "exclude"))
+    if request.POST.get('exclude_tag_wishlist1'):
+        parameters.append(("wishlist1", "exclude"))
+    if request.POST.get('exclude_tag_wishlist2'):
+        parameters.append(("wishlist2", "exclude"))
+    if request.POST.get('exclude_tag_wishlist3'):
+        parameters.append(("wishlist3", "exclude"))
+    if request.POST.get('exclude_tag_wishlist4'):
+        parameters.append(("wishlist4", "exclude"))
+    if request.POST.get('exclude_tag_wishlist5'):
+        parameters.append(("wishlist5", "exclude"))
     if request.POST.get('exclude_tag_fortrade'):
         parameters.append(("fortrade", "exclude"))
     if request.POST.get('exclude_tag_want'):

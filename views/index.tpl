@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -8,6 +9,7 @@
     <script src="https://kit.fontawesome.com/9e34df6d41.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script.js"></script>
+    <title>bgg-compare</title>
 </head>
 <body>
 <div class="container">
@@ -88,9 +90,25 @@
             <label for="exclude_tag_preordered" id="exclude_tag_preordered_label" class="button checkbox">
                 <i class="far fa-circle"></i> preordered
             </label>
-            <input id="exclude_tag_wishlist" type="checkbox" name="exclude_tag_wishlist" hidden>
-            <label for="exclude_tag_wishlist" id="exclude_tag_wishlist_label" class="button checkbox">
-                <i class="far fa-circle"></i> wishlist
+            <input id="exclude_tag_wishlist1" type="checkbox" name="exclude_tag_wishlist1" hidden>
+            <label for="exclude_tag_wishlist1" id="exclude_tag_wishlist1_label" class="button checkbox">
+                <i class="far fa-circle"></i> wishlist 1
+            </label>
+            <input id="exclude_tag_wishlist2" type="checkbox" name="exclude_tag_wishlist2" hidden>
+            <label for="exclude_tag_wishlist2" id="exclude_tag_wishlist2_label" class="button checkbox">
+                <i class="far fa-circle"></i> wishlist 2
+            </label>
+            <input id="exclude_tag_wishlist3" type="checkbox" name="exclude_tag_wishlist3" hidden>
+            <label for="exclude_tag_wishlist3" id="exclude_tag_wishlist3_label" class="button checkbox">
+                <i class="far fa-circle"></i> wishlist 3
+            </label>
+            <input id="exclude_tag_wishlist4" type="checkbox" name="exclude_tag_wishlist4" hidden>
+            <label for="exclude_tag_wishlist4" id="exclude_tag_wishlist4_label" class="button checkbox">
+                <i class="far fa-circle"></i> wishlist 4
+            </label>
+            <input id="exclude_tag_wishlist5" type="checkbox" name="exclude_tag_wishlist5" hidden>
+            <label for="exclude_tag_wishlist5" id="exclude_tag_wishlist5_label" class="button checkbox">
+                <i class="far fa-circle"></i> wishlist 5
             </label>
             <input id="exclude_tag_fortrade" type="checkbox" name="exclude_tag_fortrade" hidden>
             <label for="exclude_tag_fortrade" id="exclude_tag_fortrade_label" class="button checkbox">

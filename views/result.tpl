@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -10,6 +11,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     <script src="/script.js"></script>
+    <title>bgg-compare | {{main_user['username']}}s collection</title>
 </head>
 % from bgg_collection import make_int
 <body>
@@ -72,7 +74,7 @@
         </div>
         <div class="grid_collection">
             <span class="tooltip" data-tooltip="matched {{user['match_items']}} of {{user['total_items']}} games">
-                <i class="fas fa-cubes"></i>
+                <i class="fas light fa-cubes"></i>
                 % if user['total_items'] > 0:
                 <b>{{user['match_items']}}</b> / {{user['total_items']}}
                 % else:
@@ -80,7 +82,7 @@
                 % end
             </span>
             <span class="tooltip" data-tooltip="providing {{user['match_items_rating']}} of {{user['total_items_rating']}} ratings">
-                <i class="fas fa-star-half-alt"></i>
+                <i class="fas light fa-star-half-alt"></i>
                 % if user['total_items_rating'] > 0:
                 <b>{{user['match_items_rating']}}</b> / {{user['total_items_rating']}}
                 % else:
@@ -88,7 +90,7 @@
                 % end
             </span>
             <span class="tooltip" data-tooltip="providing {{user['match_items_comment']}} of {{user['total_items_comment']}} comments">
-                <i class="far fa-comment"></i>
+                <i class="far light fa-comment"></i>
                 % if user['total_items_comment'] > 0:
                 <b>{{user['match_items_comment']}}</b> / {{user['total_items_comment']}}
                 % else:
@@ -117,7 +119,7 @@
         % end
     </div>
 </div>
-% if main_user['total_items']:
+% if main_user.get('total_items', None):
 <div id="sort_container" class="container">
     <div class="block block-primary">
         <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user['match_items']}}</span> games</h2>
@@ -163,7 +165,7 @@
                     </label>
                 </div>
                 <div>
-                    Exclude Tags from <i class="fas fa-user"></i> {{main_user['username']}}
+                    Exclude Tags from <i class="fas light fa-user"></i> {{main_user['username']}}
                     <input id="exclude_tag_own" type="checkbox" name="exclude_tag_own" hidden>
                     <label for="exclude_tag_own" id="exclude_tag_own_label" class="button checkbox reverse-color">
                         <i class="far fa-circle"></i> own
@@ -176,9 +178,25 @@
                     <label for="exclude_tag_preordered" id="exclude_tag_preordered_label" class="button checkbox reverse-color">
                         <i class="far fa-circle"></i> preordered
                     </label>
-                    <input id="exclude_tag_wishlist" type="checkbox" name="exclude_tag_wishlist" hidden>
-                    <label for="exclude_tag_wishlist" id="exclude_tag_wishlist_label" class="button checkbox reverse-color">
-                        <i class="far fa-circle"></i> wishlist
+                    <input id="exclude_tag_wishlist1" type="checkbox" name="exclude_tag_wishlist1" hidden>
+                    <label for="exclude_tag_wishlist1" id="exclude_tag_wishlist1_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> wishlist 1
+                    </label>
+                    <input id="exclude_tag_wishlist2" type="checkbox" name="exclude_tag_wishlist2" hidden>
+                    <label for="exclude_tag_wishlist2" id="exclude_tag_wishlist2_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> wishlist 2
+                    </label>
+                    <input id="exclude_tag_wishlist3" type="checkbox" name="exclude_tag_wishlist3" hidden>
+                    <label for="exclude_tag_wishlist3" id="exclude_tag_wishlist3_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> wishlist 3
+                    </label>
+                    <input id="exclude_tag_wishlist4" type="checkbox" name="exclude_tag_wishlist4" hidden>
+                    <label for="exclude_tag_wishlist4" id="exclude_tag_wishlist4_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> wishlist 4
+                    </label>
+                    <input id="exclude_tag_wishlist5" type="checkbox" name="exclude_tag_wishlist5" hidden>
+                    <label for="exclude_tag_wishlist5" id="exclude_tag_wishlist5_label" class="button checkbox reverse-color">
+                        <i class="far fa-circle"></i> wishlist 5
                     </label>
                     <input id="exclude_tag_fortrade" type="checkbox" name="exclude_tag_fortrade" hidden>
                     <label for="exclude_tag_fortrade" id="exclude_tag_fortrade_label" class="button checkbox reverse-color">
@@ -202,7 +220,7 @@
                     </label>
                 </div>
                 <div>
-                    Exclude Input from <i class="fas fa-user"></i> {{main_user['username']}}
+                    Exclude Input from <i class="fas light fa-user"></i> {{main_user['username']}}
                     <input id="exclude_tag_norating" type="checkbox" name="exclude_tag_norating" hidden>
                     <label for="exclude_tag_norating" id="exclude_tag_norating_label" class="button checkbox reverse-color">
                         <i class="far fa-circle"></i> without rating
@@ -229,16 +247,20 @@
             <div class="toggle_tag tag{{' deactivated' if 'boardgameexpansion' in exclude_tags else ''}}" data-tag="boardgame_tag_bgexp" data-tag_group="type">Boardgame Expansion<i class="fas fa-eye"></i></div>
         </div>
         <div>
-            Tags from <i class="fas fa-user"></i> {{main_user['username']}}
+            Tags from <i class="fas light fa-user"></i> {{main_user['username']}}
             <div class="toggle_tag tag{{' deactivated' if 'own' in exclude_tags else ''}}" data-tag="my_tag_own" data-tag_group="tag">own <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' deactivated' if 'prevowned' in exclude_tags else ''}}" data-tag="my_tag_prevowned" data-tag_group="tag">prev. owned <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' deactivated' if 'preordered' in exclude_tags else ''}}" data-tag="my_tag_preordered" data-tag_group="tag">preordered <i class="fas fa-eye"></i></div>
-            <div class="toggle_tag tag{{' deactivated' if 'wishlist' in exclude_tags else ''}}" data-tag="my_tag_wishlist" data-tag_group="tag">wishlist <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'wishlist1' in exclude_tags else ''}}" data-tag="my_tag_wishlist1" data-tag_group="tag">wishlist 1 <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'wishlist2' in exclude_tags else ''}}" data-tag="my_tag_wishlist2" data-tag_group="tag">wishlist 2 <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'wishlist3' in exclude_tags else ''}}" data-tag="my_tag_wishlist3" data-tag_group="tag">wishlist 3 <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'wishlist4' in exclude_tags else ''}}" data-tag="my_tag_wishlist4" data-tag_group="tag">wishlist 4 <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'wishlist5' in exclude_tags else ''}}" data-tag="my_tag_wishlist5" data-tag_group="tag">wishlist 5 <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' deactivated' if 'fortrade' in exclude_tags else ''}}" data-tag="my_tag_fortrade" data-tag_group="tag">for trade <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' deactivated' if 'want' in exclude_tags else ''}}" data-tag="my_tag_want" data-tag_group="tag">want <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' deactivated' if 'wanttoplay' in exclude_tags else ''}}" data-tag="my_tag_wanttoplay" data-tag_group="tag">want to play <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' deactivated' if 'wanttobuy' in exclude_tags else ''}}" data-tag="my_tag_wanttobuy" data-tag_group="tag">want to buy <i class="fas fa-eye"></i></div>
-            <div class="toggle_tag tag{{' deactivated' if 'notag' in exclude_tags else ''}}" data-tag="my_tag_any" data-tag_group="tag"><em>without tag</em> <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' deactivated' if 'notag' in exclude_tags else ''}}" data-tag="my_tag_notag" data-tag_group="tag"><em>without tag</em> <i class="fas fa-eye"></i></div>
         </div>
         <div>
             Combined <span id="toggle_combined_slider" class="{{' deactivated' if len(loading_status)-1 <= 1 else ''}}"></span>
@@ -276,7 +298,7 @@
             <div class="sort tag" data-sort="boardgame_numrating">Number of Ratings <i class="fas fa-sort"></i></div>
         </div>
         <div>
-            <i class="fas fa-user"></i> {{main_user['username']}}s stats
+            <i class="fas light fa-user"></i> {{main_user['username']}}s stats
             <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
             <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
         </div>
@@ -308,15 +330,19 @@
      data-my_has_comment="{{ 1 if item['user']['comment'] else 0}}"
      data-my_rating="{{item['user']['rating']}}"
      data-my_numplays="{{item['user']['numplays']}}"
-     data-my_tag_own="{{item['user']['status']['own']}}"
-     data-my_tag_prevowned="{{item['user']['status']['prevowned']}}"
-     data-my_tag_wishlist="{{item['user']['status']['wishlist']}}"
-     data-my_tag_wanttobuy="{{item['user']['status']['wanttobuy']}}"
-     data-my_tag_preordered="{{item['user']['status']['preordered']}}"
-     data-my_tag_fortrade="{{item['user']['status']['fortrade']}}"
-     data-my_tag_want="{{item['user']['status']['want']}}"
-     data-my_tag_wanttoplay="{{item['user']['status']['wanttoplay']}}"
-     data-my_tag_any="{{ 0 if int(item['user']['status']['own']) + int(item['user']['status']['prevowned']) + int(item['user']['status']['wishlist']) + int(item['user']['status']['wanttobuy']) > 0 else 1}}"
+     data-my_tag_own="{{1 if 'own' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_prevowned="{{1 if 'prevowned' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_wishlist1="{{1 if 'wishlist1' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_wishlist2="{{1 if 'wishlist2' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_wishlist3="{{1 if 'wishlist3' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_wishlist4="{{1 if 'wishlist4' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_wishlist5="{{1 if 'wishlist5' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_wanttobuy="{{1 if 'wanttobuy' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_preordered="{{1 if 'preordered' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_fortrade="{{1 if 'fortrade' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_want="{{1 if 'want' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_wanttoplay="{{1 if 'wanttoplay' in list(item['user']['tags'].keys()) else 0}}"
+     data-my_tag_notag="{{1 if 'notag' in list(item['user']['tags'].keys()) else 0}}"
      data-combined_numplays="{{item['calc']['sum_numplays']}}"
      data-combined_mean_rating="{{item['calc']['mean_rating']}}"
      data-combined_mean_diff_rating="{{item['calc']['mean_diff_rating']}}"
@@ -381,12 +407,14 @@
         % for username, stats in item['users'].items():
         <div class="wrapper_user_stats">
             <div class="user_name">
-                <a class="tooltip" href="https://boardgamegeek.com/user/{{username}}" data-tooltip="open {{username}}s boardgamegeek profile">{{username}}</a>
+                <i class="fas light fa-user"></i> <a class="tooltip" href="https://boardgamegeek.com/user/{{username}}" data-tooltip="open {{username}}s boardgamegeek profile">{{username}}</a>
             </div>
             <div class="user_tags">
-                % for key, stat in stats['status'].items():
-                % if stat == "1":
-                <div class="tag tag-{{key}}">{{key}}</div>
+                % for key, tag in stats['tags'].items():
+                % if key != 'notag':
+                <div class="tag tag-{{key}}">
+                    {{tag}}
+                </div>
                 % end
                 % end
             </div>
@@ -404,7 +432,7 @@
             % if stats['comment']:
             <div class="user_comment">
                 <div class="comment-arrow"></div>
-                <div class="comment">{{stats['comment']}}<span class="comment_timestamp">{{stats['status']['lastmodified']}}</span></div>
+                <div class="comment">{{stats['comment']}}<span class="comment_timestamp">{{stats['lastmodified']}}</span></div>
             </div>
             % end
         </div>
