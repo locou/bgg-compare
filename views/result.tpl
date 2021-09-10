@@ -354,7 +354,13 @@
     </div>
     <div class="bg_head wrapper_bg_head" style="background: linear-gradient(110deg, #2d2944, {{item['dominant_colors'][0]}}00), linear-gradient(15deg, {{item['dominant_colors'][0]}}, {{item['dominant_colors'][1]}});">
         <div class="grid_bg_rating">
-            <div class="tag rating rating-{{make_int(item['stats']['average'])}}">{{item['stats']['average'] if item['stats']['average'] > 0 else '-'}}</div>
+            <div class="hexagon rating rating-{{make_int(item['stats']['average']) if item['stats']['numrating'] >= 30 else 0}}">
+                % if item['stats']['average'] == 10:
+                {{f"{item['stats']['average']:g}"}}
+                % else:
+                {{item['stats']['average'] if item['stats']['average'] > 0 else '-'}}
+                % end
+            </div>
         </div>
         <div class="grid_bg_title">
             <a class="bg_title" id="{{ item['title']}}" href="https://boardgamegeek.com/{{item['type']}}/{{key}}/">{{item['title']}}</a> (<i>{{item['yearpublished']}}</i>)
