@@ -192,7 +192,7 @@ ul, li {
     min-height: 1.2em;
 }
 
-#button-scoll-up {
+#button-scroll-up {
     padding: 1em;
     background: var(--highlight-color);
     color: #fff;
@@ -200,6 +200,7 @@ ul, li {
     bottom: 0;
     right: 5px;
     display: none;
+    z-index: 50;
 }
 
 input[type="text"] {

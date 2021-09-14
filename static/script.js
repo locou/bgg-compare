@@ -1,13 +1,13 @@
 $(document).ready(function() {
     $(window).scroll(function() {
         if ($(this).scrollTop()) {
-            $('#button-scoll-up').fadeIn(200);
+            $('#button-scroll-up').fadeIn(200);
         } else {
-            $('#button-scoll-up').fadeOut(200);
+            $('#button-scroll-up').fadeOut(200);
         }
     });
 
-    $("#button-scoll-up").click(function() {
+    $("#button-scroll-up").click(function() {
         $("html, body").animate({scrollTop: 0}, 200);
     });
 

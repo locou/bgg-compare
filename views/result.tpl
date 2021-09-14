@@ -15,7 +15,7 @@
 </head>
 % from bgg_collection import make_int
 <body>
-<button class="button" id='button-scoll-up'><i class="fas fa-angle-double-up"></i> Scroll back up</button>
+<button class="button" id='button-scroll-up'><i class="fas fa-angle-double-up"></i> Scroll back up</button>
 <div class="container">
     <div class="wrapper_loading_status">
         % for key, user in enumerate(loading_status):

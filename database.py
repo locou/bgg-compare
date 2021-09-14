@@ -151,7 +151,7 @@ def get_or_create_games(collection_game_ids):
     for game_ids in game_ids_not_found_chunks:
 
         games = request_games(game_ids)
-        if games:
+        if games and games["items"].get("item"):
             if isinstance(games["items"]["item"], dict):
                 games["items"]["item"] = [games["items"]["item"]]
             for game in games["items"]["item"]:
