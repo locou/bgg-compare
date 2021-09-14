@@ -104,9 +104,10 @@ def bgg(username):
 
     loading_status = build_collection_url(loading_status)
     loading_status = sorted(loading_status, key=lambda k: 11 if k.get('mean_diff_rating', 11) is None else k.get('mean_diff_rating', 11))
-    # TODO: scroll up button
-    # TODO: show/hide filter button
-    # TODO: show/hide all tags for an easier reverse search
+
+    # Sort collection by rating
+    collection = dict(sorted(collection.items(), key=lambda item: (-1 if item[1].get("user").get("rating") is None else item[1].get("user").get("rating")), reverse=True))
+
     # TODO: display loading icon when sorting
     return dict(collection=collection, loading_status=loading_status, main_user=loading_status[0], exclude_tags=exclude_tags)
 

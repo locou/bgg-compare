@@ -15,6 +15,7 @@
 </head>
 % from bgg_collection import make_int
 <body>
+<button class="button" id='button-scoll-up'><i class="fas fa-angle-double-up"></i> Scroll back up</button>
 <div class="container">
     <div class="wrapper_loading_status">
         % for key, user in enumerate(loading_status):
@@ -300,7 +301,7 @@
         <div>
             <i class="fas light fa-user"></i> {{main_user['username']}}s stats
             <div class="sort tag" data-sort="my_numplays">Number of Plays <i class="fas fa-sort"></i></div>
-            <div class="sort tag" data-sort="my_rating">Rating <i class="fas fa-sort"></i></div>
+            <div class="sort tag desc" data-sort="my_rating">Rating <i class="fas fa-sort-up"></i></div>
         </div>
         <div>
             Combined stats

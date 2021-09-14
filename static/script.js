@@ -1,4 +1,15 @@
 $(document).ready(function() {
+    $(window).scroll(function() {
+        if ($(this).scrollTop()) {
+            $('#button-scoll-up').fadeIn(200);
+        } else {
+            $('#button-scoll-up').fadeOut(200);
+        }
+    });
+
+    $("#button-scoll-up").click(function() {
+        $("html, body").animate({scrollTop: 0}, 200);
+    });
 
     $('.checkbox').click(function() {
         var icon = $(this).find('i');
@@ -109,7 +120,14 @@ $(document).ready(function() {
         item.detach().sort(function(a, b) {
             var astts = $(a).data(sort_by);
             var bstts = $(b).data(sort_by);
-
+            console.log(astts);
+            console.log(bstts);
+            if (!isNaN(parseFloat(astts))) {
+                astts = parseFloat(astts);
+            }
+            if (!isNaN(parseFloat(bstts))) {
+                bstts = parseFloat(bstts);
+            }
             if (astts == "None") {
                 return 1;
             }
