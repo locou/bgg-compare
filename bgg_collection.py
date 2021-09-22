@@ -128,7 +128,7 @@ def create_user_collection(username, paramenters):
             total_items_comment = 0
             match_items_comment = 0
             for item in result["collection"].get("items").get("item"):
-                game = games.get(int(item["@objectid"]))
+                game = games.get(int(item["@objectid"]), None)
 
                 user_tags = item_status_into_list(item.get("status"))
                 item_tags = list(user_tags.keys())
@@ -140,10 +140,10 @@ def create_user_collection(username, paramenters):
                 if make_int(item.get("numplays", 0)) == 0:
                     item_tags.append("noplays")
 
-                if game.get("type"):
+                if game and game.get("type"):
                     item_tags.append(game.get("type"))
 
-                if not any(x in item_tags for x in paramenters):
+                if game and not any(x in item_tags for x in paramenters):
                     total_items += 1
                     match_items += 1
 
