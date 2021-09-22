@@ -80,9 +80,9 @@ def test_create_user_collection_1_game(mocker, request_collection_with_1_game, s
                                              "averageweight": 2.08, "numrating": 415, "average": 7.7,
                                              "bayesaverage": 5.9}
     assert collection["307002"]["users"] == {
-        "foo": {"rating": None, "diff_rating": None, "numplays": 0, "comment": "", "tags": {"notag": "notag"},
+        "foo": {"rating": None, "diff_rating": None, "numplays": 0, "comment": "", "tags": {"notag": ("notag", None)},
                 "lastmodified": "Aug 2021"}}
-    assert collection["307002"]["user"] == {"rating": None, "numplays": 0, "comment": "", "tags": {"notag": "notag"},
+    assert collection["307002"]["user"] == {"rating": None, "numplays": 0, "comment": "", "tags": {"notag": ("notag", None)},
                                             "lastmodified": "2021-08-15 11:32:26"}
 
 
@@ -114,12 +114,12 @@ def test_create_user_collection_many_games(mocker, request_collection_with_56_ga
                                                      'lastmodified': 'Jan 2019',
                                                      'numplays': 0,
                                                      'rating': 6.0,
-                                                     'tags': {'own': 'own'}}}
+                                                     'tags': {'own': ('own', None)}}}
     assert collection["177210"]["user"] == {'comment': '',
                                             'lastmodified': '2019-01-16 01:05:50',
                                             'numplays': 0,
                                             'rating': 6.0,
-                                            'tags': {'own': 'own'}}
+                                            'tags': {'own': ('own', None)}}
 
 
 def test_create_user_collection_rated_multiple_versions(mocker, request_collection_with_multiple_versions, select_games_1_game):
@@ -164,6 +164,10 @@ def test_get_or_create_many_games():
 
 
 def test_get_or_create_games_game_id_not_found():
+    pass
+
+
+def test_user_tags():
     pass
 
 

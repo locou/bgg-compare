@@ -286,6 +286,8 @@ display: inline-block;
     display: inline-block;
 }
 
+.tag-expansion {color: var(--light-color); background: var(--body-bg-color);}
+
 .tag-own         {color: var(--dark-color); background: var(--primary-color-lighter);}
 .tag-fortrade,
 .tag-preordered,
@@ -495,6 +497,14 @@ i.fas.fa-check-circle {
     background: #ec4f07;
     border: none;
 }
+
+
+.weight-light,
+.weight-heavy {
+    transition: color .2s;
+}
+.wrapper:hover .weight-light {color: var(--rating-color-best);}
+.wrapper:hover .weight-heavy {color: var(--highlight-color);}
 
 #toggle_combined_slider {
     background: var(--primary-color-lighter);

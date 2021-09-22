@@ -120,8 +120,6 @@ $(document).ready(function() {
         item.detach().sort(function(a, b) {
             var astts = $(a).data(sort_by);
             var bstts = $(b).data(sort_by);
-            console.log(astts);
-            console.log(bstts);
             if (!isNaN(parseFloat(astts))) {
                 astts = parseFloat(astts);
             }

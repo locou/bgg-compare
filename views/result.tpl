@@ -353,7 +353,7 @@
         <div class="grid_bg_title">
             <a class="bg_title" id="{{ item['title']}}" href="https://boardgamegeek.com/{{item['type']}}/{{key}}/">{{item['title']}}</a> (<i>{{item['yearpublished']}}</i>)
             % if item['type'] == 'boardgameexpansion':
-            <span class="tag">Expansion</span>
+            <span class="tag tag-expansion">Expansion</span>
             % end
         </div>
         <div class="grid_bg_info">
@@ -370,14 +370,15 @@
                 <li>{{item['stats']['minplaytime']}} Min Playing Time</li>
                 % end
                 % if item['stats']['averageweight']:
-                <li>{{item['stats']['averageweight']}} / 5 Weight</li>
+                <li>
+                    <span class="weight-{{'light' if item['stats']['averageweight'] <= 3 else 'heavy'}}">{{f"{item['stats']['averageweight']:.2f}"}}</span> / 5 Weight</li>
                 % else:
                 <li>- Weight</li>
                 % end
             </ul>
         </div>
     </div>
-    <div class="user_calc block-primary">
+    <div class="user_calc block-primary" style="background: linear-gradient(175deg, #3f3a60 10%, #3f3a6000), linear-gradient(-90deg, {{item['dominant_colors'][0]}}, {{item['dominant_colors'][1]}});">
         <div class="wrapper_user_stats">
             <div class="user_name tooltip" data-tooltip="{{item['calc']['count_users']}} User/s | {{item['calc']['count_ratings']}} Rating/s | {{item['calc']['count_comments']}} Comment/s">
                 Combined <i class="fas fa-users"></i> {{item['calc']['count_users']}} <i class="fas fa-star-half-alt"></i> {{item['calc']['count_ratings']}} <i class="far fa-comment"></i> {{item['calc']['count_comments']}}
@@ -406,9 +407,11 @@
             <div class="user_tags">
                 % for key, tag in stats['tags'].items():
                 % if key != 'notag':
-                <div class="tag tag-{{key}}">
-                    {{tag}}
-                </div>
+                % if tag[1] is None:
+                <div class="tag tag-{{key}}">{{tag[0]}}</div>
+                % else:
+                <div class="tag tag-{{key}} tooltip" data-tooltip="{{tag[1]}}">{{tag[0]}}</div>
+                % end
                 % end
                 % end
             </div>

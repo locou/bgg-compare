@@ -53,20 +53,33 @@ def build_url(parameters):
 def item_status_into_list(item_status):
     user_tags = dict()
     if item_status.get("@own") == "1":
-        user_tags["own"] = "own"
+        user_tags["own"] = ("own", None)
     if item_status.get("@prevowned") == "1":
-        user_tags["prevowned"] = "prev. owned"
+        user_tags["prevowned"] = ("prev. owned", "Previously owned this game")
     if item_status.get("@fortrade") == "1":
-        user_tags["fortrade"] = "for trade"
+        user_tags["fortrade"] = ("for trade", None)
     if item_status.get("@want") == "1":
-        user_tags["want"] = "want"
+        user_tags["want"] = ("want", None)
     if item_status.get("@wanttoplay") == "1":
-        user_tags["wanttoplay"] = "want to play"
+        user_tags["wanttoplay"] = ("want to play", None)
     if item_status.get("@wanttobuy") == "1":
-        user_tags["wanttobuy"] = "want to buy"
+        user_tags["wanttobuy"] = ("want to buy", None)
     if item_status.get("@wishlist") == "1":
-        user_tags["wishlist"+str(item_status.get("@wishlistpriority", 0))] = \
-            "wishlist "+str(item_status.get("@wishlistpriority", 0))
+        prio = item_status.get("@wishlistpriority", 0)
+        if prio == "1":
+            wishlist_txt = "Must have"
+        elif prio == "2":
+            wishlist_txt = "Love to have"
+        elif prio == "3":
+            wishlist_txt = "Like to have"
+        elif prio == "4":
+            wishlist_txt = "Thinking about it"
+        elif prio == "5":
+            wishlist_txt = "Don't buy this"
+        else:
+            wishlist_txt = ""
+
+        user_tags["wishlist" + str(prio)] = ("wishlist " + str(prio), wishlist_txt)
     if item_status.get("@preordered") == "1":
         user_tags["preordered"] = "preordered"
     if item_status.get("@own") == "0" and \
@@ -77,7 +90,7 @@ def item_status_into_list(item_status):
             item_status.get("@wanttobuy") == "0" and \
             item_status.get("@wishlist") == "0" and \
             item_status.get("@preordered") == "0":
-        user_tags["notag"] = "notag"
+        user_tags["notag"] = ("notag", None)
     return user_tags
 
 
