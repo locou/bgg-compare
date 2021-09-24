@@ -1,4 +1,93 @@
+function filterGlobal () {
+    $('#collection_table').DataTable().search($('#global_filter').val()).draw();
+}
+
+function filterColumn (i, val) {
+    $('#collection_table').DataTable().column(i).search(val).draw();
+}
+
+function orderColumn(i, direction) {
+    $('#collection_table').DataTable().order([i, direction]).draw();
+}
+
 $(document).ready(function() {
+    jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+        "non-empty-string-asc": function (str1, str2) {
+            if (!isNaN(parseFloat(str1))) {
+                str1 = parseFloat(str1);
+            }
+            if (!isNaN(parseFloat(str2))) {
+                str2 = parseFloat(str2);
+            }
+            if(str1 == "")
+                return 1;
+            if(str2 == "")
+                return -1;
+            return ((str1 < str2) ? -1 : ((str1 > str2) ? 1 : 0));
+        },
+
+        "non-empty-string-desc": function (str1, str2) {
+            if (!isNaN(parseFloat(str1))) {
+                str1 = parseFloat(str1);
+            }
+            if (!isNaN(parseFloat(str2))) {
+                str2 = parseFloat(str2);
+            }
+            if(str1 == "")
+                return 1;
+            if(str2 == "")
+                return -1;
+            return ((str1 < str2) ? 1 : ((str1 > str2) ? -1 : 0));
+        }
+    } );
+    $('input.global_filter').on( 'keyup click', function () {
+        filterGlobal();
+    });
+
+    $('input.column_filter').on( 'keyup click', function () {
+        filterColumn($(this).attr('data-column'), $(this).val());
+    });
+
+    var collection_table = $("#collection_table").DataTable({
+        "dom": '<"container"il>pr<"game_container"t>p',
+        "lengthMenu": [ 25, 50, 100, 500 ],
+        "order": [[ 18, 'desc' ]],
+        columnDefs: [
+           {type: 'non-empty-string', targets: 0},
+           {type: 'non-empty-string', targets: 1},
+           {type: 'non-empty-string', targets: 2},
+           {type: 'non-empty-string', targets: 3},
+           {type: 'non-empty-string', targets: 4},
+           {type: 'non-empty-string', targets: 5},
+           {type: 'non-empty-string', targets: 6},
+           {type: 'non-empty-string', targets: 7},
+           {type: 'non-empty-string', targets: 8},
+           {type: 'non-empty-string', targets: 9},
+           {type: 'non-empty-string', targets: 10},
+           {type: 'non-empty-string', targets: 11},
+           {type: 'non-empty-string', targets: 12},
+           {type: 'non-empty-string', targets: 13},
+           {type: 'non-empty-string', targets: 14},
+           {type: 'non-empty-string', targets: 15},
+           {type: 'non-empty-string', targets: 16},
+           {type: 'non-empty-string', targets: 17},
+           {type: 'non-empty-string', targets: 18},
+           {type: 'non-empty-string', targets: 19},
+           {type: 'non-empty-string', targets: 20},
+           {type: 'non-empty-string', targets: 21},
+           {type: 'non-empty-string', targets: 22},
+           {type: 'non-empty-string', targets: 23},
+           {type: 'non-empty-string', targets: 24},
+           {type: 'non-empty-string', targets: 25},
+           {type: 'non-empty-string', targets: 26},
+           {type: 'non-empty-string', targets: 27},
+           {type: 'non-empty-string', targets: 28},
+           {type: 'non-empty-string', targets: 29},
+           {type: 'non-empty-string', targets: 30},
+           {type: 'non-empty-string', targets: 31},
+           {type: 'non-empty-string', targets: 32},
+        ]
+    });
     $(window).scroll(function() {
         if ($(this).scrollTop()) {
             $('#button-scroll-up').fadeIn(200);
@@ -24,12 +113,10 @@ $(document).ready(function() {
     });
 
     var items = $('div#game_container'), item = items.children('div.wrapper');
-    $('.toggle_tag').not('.deactivated').click(function() {
+    $('.toggle_tag').not('.disabled').click(function() {
         var button = $(this);
         var button_icon = button.find('i');
         var tag = $(this).data('tag');
-
-        var tag_group = $(this).data('tag_group');
 
         var class_show = "fa-eye"
         var class_hidden = "fa-eye-slash"
@@ -38,71 +125,13 @@ $(document).ready(function() {
         button_icon.removeClass(class_show).removeClass(class_hidden).addClass(oi)
         button.removeClass("show").removeClass("hidden").addClass(o);
 
-        var button_value = button.find("span.toggle_value").text();
-        if (button_value === "") {
-            $("div[data-"+tag+"='1']").each(function() {
-
-                if(o == "hidden") {
-                if($(this).data("hidden_by") == "") {
-                    $(this).hide();
-                    $(this).data("hidden_by", tag_group);
-                    $("#count_items").text(item.filter(":visible").length);
-                    $("#count_ratings").text(item.filter(function() {
-                      return $(this).data("my_has_rating") == 1
-                    }).filter(":visible").length);
-                    $("#count_comments").text(item.filter(function() {
-                      return $(this).data("my_has_comment") == 1
-                    }).filter(":visible").length);
-                }
-                } else {
-                if($(this).data("hidden_by") == tag_group) {
-                    $(this).show();
-                    $(this).data("hidden_by", "");
-                    $("#count_items").text(item.filter(":visible").length);
-                    $("#count_ratings").text(item.filter(function() {
-                      return $(this).data("my_has_rating") == 1
-                    }).filter(":visible").length);
-                    $("#count_comments").text(item.filter(function() {
-                      return $(this).data("my_has_comment") == 1
-                    }).filter(":visible").length);
-                }
-                }
-            });
+        if(o == "hidden") {
+            filterColumn($(this).attr('data-column'), '0');
         } else {
-            if(o == "hidden") {
-                $("div[data-"+tag+"]").filter(function() {
-                    return $(this).data(tag) < button_value;
-                }).each(function() {
-                    if($(this).data("hidden_by") == "") {
-                        $(this).hide();
-                        $(this).data("hidden_by", tag_group);
-                        $("#count_items").text(item.filter(":visible").length);
-                        $("#count_ratings").text(item.filter(function() {
-                          return $(this).data("my_has_rating") == 1
-                        }).filter(":visible").length);
-                        $("#count_comments").text(item.filter(function() {
-                          return $(this).data("my_has_comment") == 1
-                        }).filter(":visible").length);
-                    }
-                });
-            } else {
-                $("div[data-"+tag+"]").each(function() {
-                    if($(this).data("hidden_by") == tag_group) {
-                        $(this).show();
-                        $(this).data("hidden_by", "");
-                        $("#count_items").text(item.filter(":visible").length);
-                        $("#count_ratings").text(item.filter(function() {
-                          return $(this).data("my_has_rating") == 1
-                        }).filter(":visible").length);
-                        $("#count_comments").text(item.filter(function() {
-                          return $(this).data("my_has_comment") == 1
-                        }).filter(":visible").length);
-                    }
-                });
-            }
+            filterColumn($(this).attr('data-column'), '');
         }
     });
-    $('.sort').not('.deactivated').click(function () {
+    $('.sort').not('.disabled').click(function () {
         var button = $(this);
         var button_icon = button.find('i');
         var class_neutral = "fa-sort"
@@ -117,30 +146,7 @@ $(document).ready(function() {
         })
         button.addClass(o);
         button_icon.addClass(oi);
-        item.detach().sort(function(a, b) {
-            var astts = $(a).data(sort_by);
-            var bstts = $(b).data(sort_by);
-            if (!isNaN(parseFloat(astts))) {
-                astts = parseFloat(astts);
-            }
-            if (!isNaN(parseFloat(bstts))) {
-                bstts = parseFloat(bstts);
-            }
-            if (astts == "None") {
-                return 1;
-            }
-            if (bstts == "None") {
-                return -1;
-            }
-            if (astts > bstts) {
-                return button.hasClass("asc") ? 1 : -1;
-            }
-            if (astts < bstts) {
-                return button.hasClass("asc") ? -1 : 1;
-            }
-            return 0;
-        });
-        items.append(item);
+        orderColumn($(this).attr('data-column'), o);
     });
 
 

@@ -17,6 +17,13 @@
     --rating-color-none: #666e75;
 }
 
+table#collection_table th {
+    display: inline-block;
+    margin: .1em;
+    padding: .1em;
+    background: #a9aec7;
+}
+
 body {
     background: var(--body-bg-color);
 }
@@ -27,7 +34,8 @@ body {
 
 body,
 body input,
-body button {
+body button,
+body select {
     font-family: 'Fira Sans', sans-serif;
     font-size: 16px;
     margin: 0;
@@ -42,6 +50,10 @@ h2 i {
 .footer {
     text-align: center;
     font-size: .7em;
+}
+
+.hidden {
+    display: none;
 }
 
 #sort_container .block {
@@ -103,11 +115,17 @@ h2 i {
 .button:hover,
 .button:active,
 .button:focus,
-.button:visited {
+.button:visited,
+.paginate_button,
+.paginate_button:hover,
+.paginate_button:active,
+.paginate_button:focus,
+.paginate_button:visited {
     text-decoration: none;
 }
 
-.button:hover {
+.button:hover,
+.paginate_button:hover {
     text-decoration: none;
     font-weight: 100;
     cursor: pointer;
@@ -125,7 +143,8 @@ h2 i {
 .button.asc:hover,
 .button.desc:hover,
 .button.hidden:hover,
-.button:hover {
+.button:hover,
+.paginate_button:hover {
     background: var(--body-bg-color);
     color: var(--light-color);
 }
@@ -203,6 +222,7 @@ ul, li {
     z-index: 50;
 }
 
+select,
 input[type="text"] {
     border-radius: 5px;
     border: 0;
@@ -218,8 +238,9 @@ input[type="text"] {
     margin-bottom: .2em;
 }
 
+.filter_input,
 .user_stats div {
-display: inline-block;
+    display: inline-block;
 }
 
 .comment {
@@ -256,7 +277,18 @@ display: inline-block;
     cursor: pointer;
 }
 
-.button {
+.dataTables_info,
+.dataTables_length,
+.dataTables_paginate {
+    text-align: center;
+}
+
+.dataTables_paginate {
+    margin-bottom: 2em;
+}
+
+.button,
+.paginate_button {
     background: var(--primary-color);
     border-radius: 5px;
     display: inline-block;
@@ -265,6 +297,18 @@ display: inline-block;
     border: 0;
     color: var(--primary-color-lighter);
     font-weight: 100;
+}
+
+.paginate_button {
+    min-width: 1em;
+    margin-right: .2em;
+}
+
+.paginate_button.current {
+    background: var(--highlight-color);
+}
+.paginate_button.current:hover {
+    cursor: default !important;
 }
 
 .button.is-bold {
@@ -301,17 +345,17 @@ display: inline-block;
 .tag-wishlist4  {color: var(--primary-color); background: var(--primary-color-light);}
 .tag-wishlist5  {color: var(--primary-color-lighter); background: var(--highlight-color);}
 
-.deactivated {
+.disabled {
     color: #8a8a8a !important;
     background: #cecece !important;
     cursor: default !important;
 }
-.deactivated:hover {
+.disabled:hover {
     color: #8a8a8a !important;
     background: #cecece !important;
     cursor: default !important;
 }
-.deactivated .ui-slider-handle {
+.disabled .ui-slider-handle {
     color: #8a8a8a !important;
     background: #8a8a8a !important;
     cursor: default !important;
@@ -579,7 +623,7 @@ i.fas.fa-check-circle {
     grid-template-columns: 1fr;
     grid-gap: 2px;
     grid-template-rows: max-content;
-    margin: 2em auto 2em auto;
+    margin: 0 auto 2em auto;
     width: 100%;
 }
 .wrapper .bg_head,
@@ -743,11 +787,7 @@ i.fas.fa-check-circle {
         margin: auto 0 auto 0;
     }
     .wrapper {
-        display: grid;
         grid-template-columns: 150px 1fr 3fr;
-        grid-gap: 2px;
-        grid-template-rows: max-content;
-        margin: 2em auto 2em auto;
     }
 
     .bg_head {
