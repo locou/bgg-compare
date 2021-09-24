@@ -384,10 +384,6 @@ input[type="text"] {
 .rating-5 {background: var(--rating-color-neutral)}
 .diff-rating-4,
 .rating-4,
-.rating-4.hexagon,
-.rating-3.hexagon,
-.rating-2.hexagon,
-.rating-1.hexagon,
 .rating-3 {background: var(--rating-color-bad)}
 .diff-rating-5,
 .diff-rating-6,
@@ -395,6 +391,10 @@ input[type="text"] {
 .diff-rating-8,
 .diff-rating-9,
 .diff-rating-10,
+.rating-4.hexagon,
+.rating-3.hexagon,
+.rating-2.hexagon,
+.rating-1.hexagon,
 .rating-2,
 .rating-1 {background: var(--rating-color-worst)}
 .rating-0,
