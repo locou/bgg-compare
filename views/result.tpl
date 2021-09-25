@@ -251,6 +251,41 @@
             <div class="toggle_tag tag{{' disabled' if 'notag' in  exclude_tags else ''}}" data-column="19"><em>without tag</em> <i class="fas fa-eye"></i></div>
         </div>
         <div>
+            Combined <span id="toggle_combined_slider" class="{{' disabled' if len(loading_status) <= 1 else ''}}"></span>
+            <div class="toggle_tag slider_tag tag{{' disabled' if len(loading_status) <= 1 else ''}}"
+                 data-column="10"
+                 data-min="{{len(loading_status)}}"
+                 data-max="{{len(loading_status)}}">with less then <span class="toggle_value">{{len(loading_status)}}</span> users <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag slider_tag tag{{' disabled' if len(loading_status)-1 == 0 else ''}}"
+                 data-column="9"
+                 data-min="{{len(loading_status)}}"
+                 data-max="{{len(loading_status)}}">with less then <span class="toggle_value">{{len(loading_status)}}</span> ratings <i class="fas fa-eye"></i></div>
+            <div class="toggle_tag slider_tag tag{{' disabled' if len(loading_status)-1 == 0 else ''}}"
+                 data-column="8"
+                 data-min="{{len(loading_status)}}"
+                 data-max="{{len(loading_status)}}">with less then <span class="toggle_value">{{len(loading_status)}}</span> comments <i class="fas fa-eye"></i></div>
+            <script>
+    $(document).ready(function() {
+        $("#toggle_combined_slider").slider({
+            min: 1,
+            max: {{len(loading_status)}},
+            value: {{len(loading_status)}},
+            step: 1,
+            animate: true,
+            slide: function (event, ui) {
+                $(".toggle_value").text(ui.value);
+                $(".slider_tag").data("min", ui.value);
+            },
+            classes: {
+                "ui-slider": "",
+                "ui-slider-handle": "",
+                "ui-slider-range": ""
+            }
+        });
+    });
+            </script>
+        </div>
+        <div>
             Search by text
             <div class="filter_input"><input type="text" class="global_filter" id="global_filter" placeholder="Global"></div>
             <div class="filter_input"><input type="text" class="column_filter" id="col5_filter" data-column="5" placeholder="Boardgame title"></div>

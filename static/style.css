@@ -24,6 +24,15 @@ table#collection_table th {
     background: #a9aec7;
 }
 
+td.dataTables_empty {
+    text-align: center;
+    margin-bottom: 1.5em;
+    font-size: 1.5em;
+    font-style: italic;
+    color: var(--highlight-color);
+    display: block;
+}
+
 body {
     background: var(--body-bg-color);
 }

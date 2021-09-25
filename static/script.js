@@ -2,8 +2,27 @@ function filterGlobal () {
     $('#collection_table').DataTable().search($('#global_filter').val()).draw();
 }
 
+function lessThanRegex(val, max) {
+    var arr = []
+    for(i=parseFloat(val); i<=parseFloat(max); i++) {
+        arr.push(i);
+    }
+    console.log(arr.length > 0 ? "^("+arr.join("|")+")$" : "");
+    return "^("+arr.join("|")+")$";
+}
+
 function filterColumn (i, val) {
-    $('#collection_table').DataTable().column(i).search(val).draw();
+    var regex = false;
+    var smart = true;
+    $('#collection_table').DataTable().column(i).search(val,regex,smart).draw();
+}
+
+function filterColumnRange (i, val, max) {
+    var regex = true;
+    var smart = false;
+    console.log("i: "+i +" val:"+ val +" max="+ max+1);
+    val = lessThanRegex(val, max);
+    $('#collection_table').DataTable().column(i).search(val,regex,smart).draw();
 }
 
 function orderColumn(i, direction) {
@@ -45,7 +64,7 @@ $(document).ready(function() {
     });
 
     $('input.column_filter').on( 'keyup click', function () {
-        filterColumn($(this).attr('data-column'), $(this).val());
+        filterColumn($(this).data('column'), $(this).val());
     });
 
     var collection_table = $("#collection_table").DataTable({
@@ -117,7 +136,7 @@ $(document).ready(function() {
         var button = $(this);
         var button_icon = button.find('i');
         var tag = $(this).data('tag');
-
+        var column = $(this).data('column');
         var class_show = "fa-eye"
         var class_hidden = "fa-eye-slash"
         var o = button.hasClass("hidden") ? "show" : "hidden";
@@ -126,9 +145,13 @@ $(document).ready(function() {
         button.removeClass("show").removeClass("hidden").addClass(o);
 
         if(o == "hidden") {
-            filterColumn($(this).attr('data-column'), '0');
+            if (column == 8 || column == 9 || column == 10) {
+                filterColumnRange(column, $(this).data('min'), $(this).data('max'));
+            } else {
+                filterColumn(column, '0');
+            }
         } else {
-            filterColumn($(this).attr('data-column'), '');
+            filterColumn(column, '');
         }
     });
     $('.sort').not('.disabled').click(function () {
