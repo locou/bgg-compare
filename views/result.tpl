@@ -134,7 +134,6 @@
     $(document).ready(function() {
         function set_checkbox(button) {
             var button_label = "#"+button+"_label";
-            console.log(button_label);
             $(button_label).click();
         }
                     % from bottle import request

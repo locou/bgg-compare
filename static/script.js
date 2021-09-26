@@ -7,7 +7,6 @@ function lessThanRegex(val, max) {
     for(i=parseFloat(val); i<=parseFloat(max); i++) {
         arr.push(i);
     }
-    console.log(arr.length > 0 ? "^("+arr.join("|")+")$" : "");
     return "^("+arr.join("|")+")$";
 }
 
@@ -20,7 +19,6 @@ function filterColumn (i, val) {
 function filterColumnRange (i, val, max) {
     var regex = true;
     var smart = false;
-    console.log("i: "+i +" val:"+ val +" max="+ max+1);
     val = lessThanRegex(val, max);
     $('#collection_table').DataTable().column(i).search(val,regex,smart).draw();
 }
@@ -153,6 +151,11 @@ $(document).ready(function() {
         } else {
             filterColumn(column, '');
         }
+    });
+    $("#toggle_combined_slider").on( "slide change" ,function (event, ui) {
+        $(".slider_tag.hidden").each(function () {
+            filterColumnRange($(this).data('column'), ui.value, $(this).data('max'));
+        });
     });
     $('.sort').not('.disabled').click(function () {
         var button = $(this);

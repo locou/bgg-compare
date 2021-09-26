@@ -108,7 +108,7 @@ def bgg(username):
     # Sort collection by rating
     collection = dict(sorted(collection.items(), key=lambda item: (-1 if item[1].get("user").get("rating") is None else item[1].get("user").get("rating")), reverse=True))
 
-    # TODO: display loading icon when sorting
+    # TODO: keep hard filters when switching to another collection
     return dict(collection=collection, loading_status=loading_status, main_user=loading_status[0], exclude_tags=exclude_tags)
 
 
