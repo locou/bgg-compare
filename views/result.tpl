@@ -107,7 +107,7 @@
         % end
     </div>
 </div>
-% if main_user.get('total_items', None):
+% if len(collection.items()) > 0:
 <div id="sort_container" class="container">
     <div class="block block-primary">
         <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user['match_items']}}</span> games</h2>
