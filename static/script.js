@@ -31,28 +31,30 @@ $(document).ready(function() {
     jQuery.extend( jQuery.fn.dataTableExt.oSort, {
         "non-empty-string-asc": function (str1, str2) {
             if (!isNaN(parseFloat(str1))) {
+                console.log(str1+" -- "+parseFloat(str1));
                 str1 = parseFloat(str1);
             }
             if (!isNaN(parseFloat(str2))) {
                 str2 = parseFloat(str2);
             }
-            if(str1 == "")
+            if(str1 == "" || str1 == "None")
                 return 1;
-            if(str2 == "")
+            if(str2 == "" || str2 == "None")
                 return -1;
             return ((str1 < str2) ? -1 : ((str1 > str2) ? 1 : 0));
         },
 
         "non-empty-string-desc": function (str1, str2) {
             if (!isNaN(parseFloat(str1))) {
+                console.log(str1+" -- "+parseFloat(str1));
                 str1 = parseFloat(str1);
             }
             if (!isNaN(parseFloat(str2))) {
                 str2 = parseFloat(str2);
             }
-            if(str1 == "")
+            if(str1 == "" || str1 == "None")
                 return 1;
-            if(str2 == "")
+            if(str2 == "" || str2 == "None")
                 return -1;
             return ((str1 < str2) ? 1 : ((str1 > str2) ? -1 : 0));
         }

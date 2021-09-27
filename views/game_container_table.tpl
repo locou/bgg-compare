@@ -60,25 +60,25 @@
         <td class="hidden" data-column="boardgame_weight">
             {{item['stats']['averageweight']}}
         </td>
-        <td class="hidden" data-column="boardgame_year" data-order="{{item['yearpublished']}}">
+        <td class="hidden" data-column="boardgame_year">
             {{item['yearpublished']}}
         </td>
-        <td class="hidden" data-column="combined_count_comments" data-order="{{item['calc']['count_comments']}}">
+        <td class="hidden" data-column="combined_count_comments">
             {{item['calc']['count_comments']}}
         </td>
-        <td class="hidden" data-column="combined_count_ratings" data-order="{{item['calc']['count_ratings']}}">
+        <td class="hidden" data-column="combined_count_ratings">
             {{item['calc']['count_ratings']}}
         </td>
-        <td class="hidden" data-column="combined_count_users" data-order="{{item['calc']['count_users']}}">
+        <td class="hidden" data-column="combined_count_users">
             {{item['calc']['count_users']}}
         </td>
-        <td class="hidden" data-column="combined_mean_diff_rating" data-order="{{make_float(item['calc']['mean_diff_rating'])}}">
+        <td class="hidden" data-column="combined_mean_diff_rating">
             {{item['calc']['mean_diff_rating']}}
         </td>
-        <td class="hidden" data-column="combined_mean_rating" data-order="{{make_float(item['calc']['mean_rating'])}}">
+        <td class="hidden" data-column="combined_mean_rating">
             {{item['calc']['mean_rating']}}
         </td>
-        <td class="hidden" data-column="combined_numplays" data-order="{{item['calc']['sum_numplays']}}">
+        <td class="hidden" data-column="combined_numplays">
             {{item['calc']['sum_numplays']}}
         </td>
         <td class="hidden" data-column="my_has_comment">

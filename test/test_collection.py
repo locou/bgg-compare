@@ -48,8 +48,10 @@ from bgg_collection import create_user_collection, add_user_to_collection, calc_
 )
 def test_collection_hard_filter(parameter, expected, mocker, request_collection_with_56_games, select_games_56_games):
     mocker.patch("database.select_games", return_value=select_games_56_games)
+    mocker.patch("database.request_games", return_value=[])
+    mocker.patch("database.insert_and_select_games", return_value=select_games_56_games)
     mocker.patch("database.select_collection", return_value=DictWrapper(
-        {"username": "foo", "updated_at": datetime.now(),
+        {"username": "foo", "updated_at": datetime.now(), "total_items": 56, "total_ratings": 50, "total_comments": 10,
          "collection": json.loads(json.dumps(request_collection_with_56_games))}))
     collection, _ = create_user_collection("foo", parameter)
     assert len(collection) == expected
@@ -57,7 +59,7 @@ def test_collection_hard_filter(parameter, expected, mocker, request_collection_
 
 def test_create_user_collection_0_games(mocker, request_collection_with_0_games):
     mocker.patch("database.select_collection", return_value=DictWrapper(
-        {"username": "foo", "updated_at": datetime.now(),
+        {"username": "foo", "updated_at": datetime.now(), "total_items": 56, "total_ratings": 50, "total_comments": 10,
          "collection": json.loads(json.dumps(request_collection_with_0_games))}))
     collection, _ = create_user_collection("foo", [])
     assert len(collection) == 0
@@ -66,7 +68,7 @@ def test_create_user_collection_0_games(mocker, request_collection_with_0_games)
 def test_create_user_collection_1_game(mocker, request_collection_with_1_game, select_games_1_game):
     mocker.patch("database.select_games", return_value=select_games_1_game)
     mocker.patch("database.select_collection", return_value=DictWrapper(
-        {"username": "foo", "updated_at": datetime.now(),
+        {"username": "foo", "updated_at": datetime.now(), "total_items": 56, "total_ratings": 50, "total_comments": 10,
          "collection": json.loads(json.dumps(request_collection_with_1_game))}))
     collection, _ = create_user_collection("foo", [])
     assert len(collection) == 1
@@ -89,7 +91,7 @@ def test_create_user_collection_1_game(mocker, request_collection_with_1_game, s
 def test_create_user_collection_many_games(mocker, request_collection_with_56_games, select_games_56_games):
     mocker.patch("database.select_games", return_value=select_games_56_games)
     mocker.patch("database.select_collection", return_value=DictWrapper(
-        {"username": "foo", "updated_at": datetime.now(),
+        {"username": "foo", "updated_at": datetime.now(), "total_items": 56, "total_ratings": 50, "total_comments": 10,
          "collection": json.loads(json.dumps(request_collection_with_56_games))}))
     collection, _ = create_user_collection("foo", [])
     assert len(collection) == 56
@@ -125,7 +127,7 @@ def test_create_user_collection_many_games(mocker, request_collection_with_56_ga
 def test_create_user_collection_rated_multiple_versions(mocker, request_collection_with_multiple_versions, select_games_1_game):
     mocker.patch("database.select_games", return_value=select_games_1_game)
     mocker.patch("database.select_collection", return_value=DictWrapper(
-        {"username": "foo", "updated_at": datetime.now(),
+        {"username": "foo", "updated_at": datetime.now(), "total_items": 56, "total_ratings": 50, "total_comments": 10,
          "collection": json.loads(json.dumps(request_collection_with_multiple_versions))}))
     collection, _ = create_user_collection("foo", [])
     assert len(collection) == 1

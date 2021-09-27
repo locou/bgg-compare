@@ -30,7 +30,7 @@ def request_user(username):
 
 def request_games(game_ids):
     try:
-        with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/thing?stats=1&id=" + ",".join(game_ids), timeout=10) as response:
+        with urllib.request.urlopen("https://api.geekdo.com/xmlapi2/thing?stats=1&id=" + ",".join(str(x) for x in game_ids), timeout=10) as response:
             time.sleep(2)
             return xmltodict.parse(response.read())
     except socket.timeout:

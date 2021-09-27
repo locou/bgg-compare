@@ -118,33 +118,31 @@ def create_user_collection(username, paramenters):
             if isinstance(result["collection"].get("items").get("item"), dict):
                 result["collection"]["items"]["item"] = [result["collection"].get("items").get("item")]
             game_ids = list()
+            user_tags = dict()
+            item_tags = dict()
             for item in result["collection"].get("items").get("item"):
-                game_ids.append(item["@objectid"])
-            games = get_or_create_games(game_ids)
-            total_items = 0
-            match_items = 0
-            total_items_rating = 0
-            match_items_rating = 0
-            total_items_comment = 0
-            match_items_comment = 0
-            for item in result["collection"].get("items").get("item"):
-                game = games.get(int(item["@objectid"]), None)
-
-                user_tags = item_status_into_list(item.get("status"))
-                item_tags = list(user_tags.keys())
+                item_id = int(item["@objectid"])
+                user_tags[item_id] = item_status_into_list(item.get("status"))
+                item_tags[item_id] = list(user_tags[item_id].keys())
 
                 if make_int(item.get("stats").get("rating").get("@value", None)) is None:
-                    item_tags.append("norating")
+                    item_tags[item_id].append("norating")
                 if item.get("comment", "") == "":
-                    item_tags.append("nocomment")
+                    item_tags[item_id].append("nocomment")
                 if make_int(item.get("numplays", 0)) == 0:
-                    item_tags.append("noplays")
-
+                    item_tags[item_id].append("noplays")
+                if not any(x in item_tags[item_id] for x in paramenters):
+                    game_ids.append(item_id)
+            games = get_or_create_games(game_ids)
+            match_items = 0
+            match_items_rating = 0
+            match_items_comment = 0
+            for game_id, game in games.items():
                 if game and game.get("type"):
-                    item_tags.append(game.get("type"))
+                    item_tags[game_id].append(game.get("type"))
 
-                if game and not any(x in item_tags for x in paramenters):
-                    total_items += 1
+                if game and not any(x in item_tags[game_id] for x in paramenters):
+                    item = next(item for item in result["collection"].get("items").get("item") if int(item["@objectid"]) == game_id)
                     match_items += 1
 
                     collection[item["@objectid"]] = {
@@ -172,7 +170,7 @@ def create_user_collection(username, paramenters):
                                 "diff_rating": None,
                                 "numplays": make_int(item.get("numplays", None)),
                                 "comment": item.get("comment", ""),
-                                "tags": user_tags,
+                                "tags": user_tags[game_id],
                                 "lastmodified": datetime.strptime(item.get("status").get("@lastmodified", 0),
                                                                       '%Y-%m-%d %H:%M:%S').strftime("%b %Y"),
                             }
@@ -181,31 +179,23 @@ def create_user_collection(username, paramenters):
                             "rating": make_float(item.get("stats").get("rating").get("@value", None)),
                             "numplays": make_int(item.get("numplays", None)),
                             "comment": item.get("comment", ""),
-                            "tags": user_tags,
+                            "tags": user_tags[game_id],
                             "lastmodified": item.get("status").get("@lastmodified", 0),
                         }
                     }
                     if make_int(item.get("stats").get("rating").get("@value", None)):
                         match_items_rating += 1
-                        total_items_rating += 1
                     if item.get("comment"):
                         match_items_comment += 1
-                        total_items_comment += 1
-                else:
-                    total_items += 1
-                    if make_int(item.get("stats").get("rating").get("@value", None)):
-                        total_items_rating += 1
-                    if item.get("comment"):
-                        total_items_comment += 1
             loading_status.append({
                 "username": username,
                 "status": 1,
                 "updated_at": datetime.strftime(result["message"]["updated_at"], "%Y-%m-%d"),
-                "total_items": total_items,
+                "total_items": make_int(result["message"]["total_items"]) or 0,
                 "match_items": match_items,
-                "total_items_rating": total_items_rating,
+                "total_items_rating": make_int(result["message"]["total_ratings"]) or 0,
                 "match_items_rating": match_items_rating,
-                "total_items_comment": total_items_comment,
+                "total_items_comment": make_int(result["message"]["total_comments"]) or 0,
                 "match_items_comment": match_items_comment,
                 "mean_diff_rating": -100,
             })
@@ -222,23 +212,15 @@ def add_user_to_collection(collection, loading_status, username):
     elif result["message"]["status"] == 1:
         try:
             diff_ratings = list()
-            total_items = 0
             match_items = 0
-            total_items_rating = 0
             match_items_rating = 0
-            total_items_comment = 0
             match_items_comment = 0
             if make_int(result["collection"].get("items").get("@totalitems")) > 0:
                 if make_int(result["collection"].get("items").get("@totalitems")) == 1:
                     result["collection"]["items"]["item"] = [result["collection"].get("items").get("item")]
                 for item in result["collection"].get("items").get("item"):
-                    total_items += 1
                     user_tags = item_status_into_list(item.get("status"))
 
-                    if make_int(item.get("stats").get("rating").get("@value", None)):
-                        total_items_rating += 1
-                    if item.get("comment"):
-                        total_items_comment += 1
                     if item["@objectid"] in collection.keys():
                         match_items += 1
                         diff_rating = make_float(calc_diff(make_float(item.get("stats").get("rating").get("@value", None)),
@@ -267,11 +249,11 @@ def add_user_to_collection(collection, loading_status, username):
                 "mean_diff_rating": make_float(statistics.mean([i["diff_rating"] for i in diff_ratings])) if len(
                     diff_ratings) > 0 else None,
                 "diff_ratings": sorted(diff_ratings, key=lambda item: item["diff_rating"]),
-                "total_items": total_items,
+                "total_items": make_int(result["message"]["total_items"]) or 0,
                 "match_items": match_items,
-                "total_items_rating": total_items_rating,
+                "total_items_rating": make_int(result["message"]["total_ratings"]) or 0,
                 "match_items_rating": match_items_rating,
-                "total_items_comment": total_items_comment,
+                "total_items_comment": make_int(result["message"]["total_comments"]) or 0,
                 "match_items_comment": match_items_comment,
             })
         except TypeError:

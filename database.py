@@ -25,6 +25,25 @@ configuration_dict = {
 }
 
 
+def calc_item_totals(result):
+    total_items = 0
+    total_ratings = 0
+    total_comments = 0
+    try:
+        total_items = int(json.loads(result["result"])["items"]["@totalitems"])
+        if total_items:
+            total_ratings = sum(map(lambda item: item.get("stats").get("rating").get("@value", "N/A") != "N/A",
+                                    json.loads(result["result"])["items"]["item"]))
+            total_comments = sum(
+                map(lambda item: item.get("comment", None) is not None, json.loads(result["result"])["items"]["item"]))
+    except AttributeError as err:
+        print(err)
+    except KeyError as err:
+        print(err)
+
+    return total_items, total_ratings, total_comments
+
+
 def calc_cluster(img):
     return None
 
@@ -76,13 +95,26 @@ def select_collection(username):
 
 
 def update_collection(username, result):
+    total_items, total_ratings, total_comments = calc_item_totals(result)
+
     with connect() as connection:
         (
             connection
             .execute("UPDATE \"bgg-compare\".user_collection "
-                     "SET updated_at = %(updated_at)s, collection = %(collection)s "
+                     "SET "
+                     "updated_at = %(updated_at)s, "
+                     "collection = %(collection)s, "
+                     "total_items = %(total_items)s, "
+                     "total_ratings = %(total_ratings)s, "
+                     "total_comments = %(total_comments)s "
                      "WHERE LOWER(username) = LOWER(%(username)s)",
-                     {"username": username, "updated_at": datetime.now(), "collection": result["result"]}
+                     {"username": username,
+                      "updated_at": datetime.now(),
+                      "collection": result["result"],
+                      "total_items": total_items,
+                      "total_ratings": total_ratings,
+                      "total_comments": total_comments,
+                      }
                      )
         )
 
@@ -140,8 +172,8 @@ def get_or_create_games(collection_game_ids):
     # CREATE UNIQUE INDEX index_game_id ON  "bgg-compare".games(game_id);
 
     games_found = select_games(tuple(collection_game_ids))
-
-    game_ids_found = [str(g[1]) for g in games_found]
+    print(str(len(games_found)) + " games requested")
+    game_ids_found = [int(g[1]) for g in games_found]
     game_ids_not_found = list(set(collection_game_ids) ^ set(game_ids_found))
 
     print(str(len(game_ids_not_found))+" games not found")
@@ -215,6 +247,7 @@ def get_or_create_games(collection_game_ids):
 
 
 def insert_collection(username, result):
+    total_items, total_ratings, total_comments = calc_item_totals(result)
     with connect() as connection:
         return (
             connection
@@ -224,6 +257,9 @@ def insert_collection(username, result):
             .set("collection", result["result"])
             .set("created_at", datetime.now())
             .set("updated_at", datetime.now())
+            .set("total_items", total_items)
+            .set("total_ratings", total_ratings)
+            .set("total_comments", total_comments)
             .execute()
             .fetch_one()
         )
@@ -240,9 +276,17 @@ def get_or_create_collection(username):
                 update_collection(username, result)
                 result["collection"] = json.loads(result["result"])
                 result["message"]["updated_at"] = datetime.now()
+                result["message"]["total_items"] = query_result.total_items
+                result["message"]["total_ratings"] = query_result.total_ratings
+                result["message"]["total_comments"] = query_result.total_comments
         else:
             result = {"username": username,
-                      "message": {"username": username, "status": 1, "updated_at": query_result.updated_at},
+                      "message": {"username": username,
+                                  "status": 1,
+                                  "updated_at": query_result.updated_at,
+                                  "total_items": query_result.total_items,
+                                  "total_ratings": query_result.total_ratings,
+                                  "total_comments": query_result.total_comments},
                       "collection": query_result.collection}
     else:
         result = handle_collection_request(username)
@@ -250,6 +294,9 @@ def get_or_create_collection(username):
             query_result = insert_collection(username, result)
             result["collection"] = query_result.collection
             result["message"]["updated_at"] = datetime.now()
+            result["message"]["total_items"] = query_result.total_items
+            result["message"]["total_ratings"] = query_result.total_ratings
+            result["message"]["total_comments"] = query_result.total_comments
 
     return result
 
