@@ -42,9 +42,9 @@
                     <a href="/bgg/{{user['username']}}?exclude=prevowned&exclude=preordered&exclude=wishlist1&exclude=wishlist2&exclude=wishlist3&exclude=wishlist4&exclude=wishlist5&exclude=fortrade&exclude=want&exclude=wanttoplay&exclude=wanttobuy&exclude=notag" class="tooltip" data-tooltip="Open Collection with the tag 'own'"><i class="fas light fa-cubes"></i> Collection <i>[tag='own']</i></a> -
                     <a href="https://boardgamegeek.com/user/{{user['username']}}" class="tooltip" data-tooltip="Open {{user['username']}}s BGG Profile"><i class="far light fa-user"></i> BGG</a>
                 </td>
-                <td data-order="{{user['total_items']}}"><i class="fas light fa-cubes"></i> {{user['total_items'] or "?"}}</td>
-                <td data-order="{{user['total_ratings']}}"><i class="fas light fa-star-half-alt"></i> {{user['total_ratings'] or "?"}}</td>
-                <td data-order="{{user['total_comments']}}"><i class="far light fa-comment"></i> {{user['total_comments'] or "?"}}</td>
+                <td data-order="{{user['total_items']}}"><i class="fas light fa-cubes"></i> {{"?" if user['total_items'] is None else user['total_items']}}</td>
+                <td data-order="{{user['total_ratings']}}"><i class="fas light fa-star-half-alt"></i> {{"?" if user['total_ratings'] is None else user['total_ratings']}}</td>
+                <td data-order="{{user['total_comments']}}"><i class="far light fa-comment"></i> {{"?" if user['total_comments'] is None else user['total_comments']}}</td>
                 <td data-order="{{user['updated_at']}}">
                     % if user['expired']:
                     <span class="tooltip" data-tooltip="Cache expired">

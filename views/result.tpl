@@ -17,9 +17,9 @@
                 </a>
             </h1>
             <div>
-                <i class="fas fa-cubes"></i> {{user['total_items'] or "?"}} games with
-                <i class="fas fa-star-half-alt"></i> {{user['total_items_rating'] or "?"}} ratings and
-                <i class="far fa-comment"></i> {{user['total_items_comment'] or "?"}} comments
+                <i class="fas fa-cubes"></i> {{"?" if user['total_items'] is None else user['total_items']}} games with
+                <i class="fas fa-star-half-alt"></i> {{"?" if user['total_items_rating'] is None else user['total_items_rating']}} ratings and
+                <i class="far fa-comment"></i> {{"?" if user['total_items_comment'] is None else user['total_items_comment']}} comments
                 <em class="tooltip" data-tooltip="Cache last updated">
                     ({{user['updated_at']}})
                 </em>
