@@ -17,9 +17,9 @@
                 </a>
             </h1>
             <div>
-                <i class="fas fa-cubes"></i> {{user['total_items']}} games with
-                <i class="fas fa-star-half-alt"></i> {{user['total_items_rating']}} ratings and
-                <i class="far fa-comment"></i> {{user['total_items_comment']}} comments
+                <i class="fas fa-cubes"></i> {{user['total_items'] or "?"}} games with
+                <i class="fas fa-star-half-alt"></i> {{user['total_items_rating'] or "?"}} ratings and
+                <i class="far fa-comment"></i> {{user['total_items_comment'] or "?"}} comments
                 <em class="tooltip" data-tooltip="Cache last updated">
                     ({{user['updated_at']}})
                 </em>
@@ -107,7 +107,7 @@
         % end
     </div>
 </div>
-% if len(collection.items()) > 0:
+% if main_user['status'] == 1:
 <div id="sort_container" class="container">
     <div class="block block-primary">
         <h2><i class="fas fa-cubes"></i> Showing <span id="count_items">{{main_user['match_items']}}</span> games</h2>
@@ -120,7 +120,7 @@
     </div>
     <div id="sort_filter_block">
         <h3><i class="fas fa-filter"></i> Hard Filter</h3>
-        <em>Will refresh the page and affect calculations (ex: mean difference)</em>
+        <em>Exclude games by type, tags or <i class="fas light fa-user"></i> {{main_user['username']}}s stats. Select the checkboxes below and hit Submit. This will apply the filter, refresh the page and affect calculations (ex: mean difference)</em>
             <form id="form_hard_filter" method="post" action="/process">
                 <input type="text" name="main_user" value="{{main_user['username']}}" hidden>
                 % for key, a_user in enumerate(loading_status):
@@ -129,7 +129,7 @@
                 % end
                 % end
                 <div>
-                    Exclude Type
+                    Exclude by type
                     <script>
     $(document).ready(function() {
         function set_checkbox(button) {
@@ -152,7 +152,7 @@
                     </label>
                 </div>
                 <div>
-                    Exclude Tags from <i class="fas light fa-user"></i> {{main_user['username']}}
+                    Exclude by <i class="fas light fa-user"></i> {{main_user['username']}}s tags
                     <input id="exclude_tag_own" type="checkbox" name="exclude_tag_own" hidden>
                     <label for="exclude_tag_own" id="exclude_tag_own_label" class="button checkbox reverse-color">
                         <i class="far fa-circle"></i> own
@@ -207,7 +207,7 @@
                     </label>
                 </div>
                 <div>
-                    Exclude Input from <i class="fas light fa-user"></i> {{main_user['username']}}
+                    Exclude by <i class="fas light fa-user"></i> {{main_user['username']}}s stats
                     <input id="exclude_tag_norating" type="checkbox" name="exclude_tag_norating" hidden>
                     <label for="exclude_tag_norating" id="exclude_tag_norating_label" class="button checkbox reverse-color">
                         <i class="far fa-circle"></i> without rating
@@ -227,14 +227,16 @@
                 </div>
 
             </form>
+        % if main_user['status'] == 1 and main_user['match_items'] > 0:
         <h3><i class="fas fa-filter"></i> Soft Filter</h3>
+        <em>Show/Hide games without reloading the page. Tags will be disabled, if they're already filtered by the Hard Filter</em>
         <div>
-            Boardgame
-            <div class="toggle_tag tag{{' disabled' if 'boardgame' in exclude_tags else ''}}" data-tag="boardgame_tag_bg" data-tag_group="type">Boardgame<i class="fas fa-eye"></i></div>
-            <div class="toggle_tag tag{{' disabled' if 'boardgameexpansion' in exclude_tags else ''}}" data-tag="boardgame_tag_bgexp" data-tag_group="type">Boardgame Expansion<i class="fas fa-eye"></i></div>
+            Toggle by type
+            <div class="toggle_tag tag{{' disabled' if 'boardgame' in exclude_tags or 'boardgameexpansion' in exclude_tags else ''}}" data-tag="boardgame_tag_bg" data-tag_group="type">Boardgame<i class="fas fa-eye"></i></div>
+            <div class="toggle_tag tag{{' disabled' if 'boardgame' in exclude_tags or 'boardgameexpansion' in exclude_tags else ''}}" data-tag="boardgame_tag_bgexp" data-tag_group="type">Boardgame Expansion<i class="fas fa-eye"></i></div>
         </div>
         <div>
-            Tags from <i class="fas light fa-user"></i> {{main_user['username']}}
+            Toggle by <i class="fas light fa-user"></i> {{main_user['username']}}s tags
             <div class="toggle_tag tag{{' disabled' if 'own' in  exclude_tags else ''}}" data-column="20">own <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' disabled' if 'prevowned' in  exclude_tags else ''}}" data-column="22">prev. owned <i class="fas fa-eye"></i></div>
             <div class="toggle_tag tag{{' disabled' if 'preordered' in  exclude_tags else ''}}" data-column="21">preordered <i class="fas fa-eye"></i></div>
@@ -250,7 +252,7 @@
             <div class="toggle_tag tag{{' disabled' if 'notag' in  exclude_tags else ''}}" data-column="19"><em>without tag</em> <i class="fas fa-eye"></i></div>
         </div>
         <div>
-            Combined <span id="toggle_combined_slider" class="{{' disabled' if len(loading_status) <= 1 else ''}}"></span>
+            Toggle combined stats <span id="toggle_combined_slider" class="{{' disabled' if len(loading_status) <= 1 else ''}}"></span>
             <div class="toggle_tag slider_tag tag{{' disabled' if len(loading_status) <= 1 else ''}}"
                  data-column="10"
                  data-min="{{len(loading_status)}}"
@@ -313,11 +315,13 @@
             <div class="sort tag" data-column="9">Number of Ratings <i class="fas fa-sort"></i></div>
             <div class="sort tag" data-column="8">Number of Comments <i class="fas fa-sort"></i></div>
         </div>
+        % end
     </div>
 </div>
 % end
-
+% if main_user['status'] == 1 and main_user['match_items'] > 0:
 % include('game_container_table.tpl', collection=collection, main_user=main_user)
+% end
 
 % include('footer.tpl')
 </body>

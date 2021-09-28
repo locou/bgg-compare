@@ -191,11 +191,11 @@ def create_user_collection(username, paramenters):
                 "username": username,
                 "status": 1,
                 "updated_at": datetime.strftime(result["message"]["updated_at"], "%Y-%m-%d"),
-                "total_items": make_int(result["message"]["total_items"]) or 0,
+                "total_items": make_int(result["message"]["total_items"]),
                 "match_items": match_items,
-                "total_items_rating": make_int(result["message"]["total_ratings"]) or 0,
+                "total_items_rating": make_int(result["message"]["total_ratings"]),
                 "match_items_rating": match_items_rating,
-                "total_items_comment": make_int(result["message"]["total_comments"]) or 0,
+                "total_items_comment": make_int(result["message"]["total_comments"]),
                 "match_items_comment": match_items_comment,
                 "mean_diff_rating": -100,
             })
@@ -249,11 +249,11 @@ def add_user_to_collection(collection, loading_status, username):
                 "mean_diff_rating": make_float(statistics.mean([i["diff_rating"] for i in diff_ratings])) if len(
                     diff_ratings) > 0 else None,
                 "diff_ratings": sorted(diff_ratings, key=lambda item: item["diff_rating"]),
-                "total_items": make_int(result["message"]["total_items"]) or 0,
+                "total_items": make_int(result["message"]["total_items"]),
                 "match_items": match_items,
-                "total_items_rating": make_int(result["message"]["total_ratings"]) or 0,
+                "total_items_rating": make_int(result["message"]["total_ratings"]),
                 "match_items_rating": match_items_rating,
-                "total_items_comment": make_int(result["message"]["total_comments"]) or 0,
+                "total_items_comment": make_int(result["message"]["total_comments"]),
                 "match_items_comment": match_items_comment,
             })
         except TypeError:
@@ -294,25 +294,28 @@ def calc_ratings(collection):
     return collection
 
 
-def build_collection_url(loading_status):
+def build_collection_url(loading_status, exclude_tags=[]):
     if len(loading_status) > 1:
+        tag_parameters = []
+        for exclude_tag in exclude_tags:
+            tag_parameters.append((exclude_tag, "exclude"))
         for key, user_status in enumerate(loading_status):
             # move the user to the front of the list
             user_list = [u["username"] for u in loading_status]
             user_list.insert(0, user_list.pop(user_list.index(user_status["username"])))
 
-            parameters = list()
+            user_parameters = list()
             for user in user_list:
-                parameters.append((user, "add_user"))
-            user_status["collection_url"] = build_url(parameters)
+                user_parameters.append((user, "add_user"))
+            user_status["collection_url"] = build_url(user_parameters+tag_parameters)
 
             # remove user from list
             remove_list = [u["username"] for u in loading_status]
             remove_list.pop(remove_list.index(user_status["username"]))
-            parameters = list()
+            user_parameters = list()
             for user in remove_list:
-                parameters.append((user, "add_user"))
-            user_status["remove_collection_url"] = build_url(parameters)
+                user_parameters.append((user, "add_user"))
+            user_status["remove_collection_url"] = build_url(user_parameters+tag_parameters)
         return loading_status
     elif loading_status:
         loading_status[0]["collection_url"] = None

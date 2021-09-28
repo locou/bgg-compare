@@ -117,18 +117,21 @@ def update_collection(username, result):
                       }
                      )
         )
+        return total_items, total_ratings, total_comments
 
 
 def select_games(game_ids):
-    conn = connect_psy()
-    with conn:
-        with conn.cursor() as cur:
-            cur.execute("SELECT * FROM \"bgg-compare\".games WHERE game_id IN %(game_ids)s;",
-                        {"game_ids": game_ids, "cache_date": datetime.now() - timedelta(days=31)})
-            games_found = cur.fetchall()
-    conn.close()
-
-    return games_found
+    if len(game_ids) > 0:
+        conn = connect_psy()
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT * FROM \"bgg-compare\".games WHERE game_id IN %(game_ids)s;",
+                            {"game_ids": game_ids, "cache_date": datetime.now() - timedelta(days=31)})
+                games_found = cur.fetchall()
+        conn.close()
+        return games_found
+    else:
+        return []
 
 
 def insert_and_select_games(game_ids, parameter_values):
@@ -273,12 +276,12 @@ def get_or_create_collection(username):
         if query_result.updated_at is None or divmod((datetime.now() - query_result.updated_at).total_seconds(), 3600)[0] > int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)):
             result = handle_collection_request(username)
             if result["message"]["status"] == 1:
-                update_collection(username, result)
+                total_items, total_ratings, total_comments = update_collection(username, result)
                 result["collection"] = json.loads(result["result"])
                 result["message"]["updated_at"] = datetime.now()
-                result["message"]["total_items"] = query_result.total_items
-                result["message"]["total_ratings"] = query_result.total_ratings
-                result["message"]["total_comments"] = query_result.total_comments
+                result["message"]["total_items"] = total_items
+                result["message"]["total_ratings"] = total_ratings
+                result["message"]["total_comments"] = total_comments
         else:
             result = {"username": username,
                       "message": {"username": username,
@@ -310,7 +313,10 @@ def get_cached_usernames(exclude_usernames=[""]):
                 .execute("SELECT "
                          "username, "
                          "to_char(created_at, 'YYYY-MM-DD') as created_at, "
-                         "to_char(updated_at, 'YYYY-MM-DD') as updated_at "
+                         "to_char(updated_at, 'YYYY-MM-DD') as updated_at, "
+                         "total_items, "
+                         "total_ratings, "
+                         "total_comments "
                          "FROM \"bgg-compare\".user_collection "
                          "WHERE LOWER(username) NOT IN %(exclude_usernames)s "
                          "ORDER BY updated_at DESC;",

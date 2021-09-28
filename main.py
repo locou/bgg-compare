@@ -1,6 +1,7 @@
 import os
 import random
 
+from datetime import datetime
 from bgg_collection import calc_ratings, build_url, build_collection_url, add_user_to_collection, create_user_collection
 from bgg_request import handle_user_request
 from database import get_cached_usernames, refresh_collection_cache
@@ -16,12 +17,12 @@ def stylesheets(filename):
 @view("views/cache")
 def cache():
     result = get_cached_usernames()
-    grouped_users_by_updated_at = dict()
     for user in result:
-        if user.updated_at not in grouped_users_by_updated_at:
-            grouped_users_by_updated_at[user.updated_at] = list()
-        grouped_users_by_updated_at[user.updated_at].append(user)
-    return dict(grouped_users_by_updated_at=grouped_users_by_updated_at)
+        if divmod((datetime.now() - datetime.strptime(user['updated_at'], "%Y-%m-%d")).total_seconds(), 3600)[0] > int(os.environ.get("COLLECTION_CACHE_EXPIRE_HOURS", 0)):
+            user["expired"] = 1
+        else:
+            user["expired"] = 0
+    return dict(result=result)
 
 
 @route("/")
@@ -102,7 +103,7 @@ def bgg(username):
             collection, loading_status = add_user_to_collection(collection, loading_status, user_to_compare)
     collection = calc_ratings(collection)
 
-    loading_status = build_collection_url(loading_status)
+    loading_status = build_collection_url(loading_status, exclude_tags)
     loading_status = sorted(loading_status, key=lambda k: 11 if k.get('mean_diff_rating', 11) is None else k.get('mean_diff_rating', 11))
 
     # Sort collection by rating

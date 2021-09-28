@@ -31,7 +31,6 @@ $(document).ready(function() {
     jQuery.extend( jQuery.fn.dataTableExt.oSort, {
         "non-empty-string-asc": function (str1, str2) {
             if (!isNaN(parseFloat(str1))) {
-                console.log(str1+" -- "+parseFloat(str1));
                 str1 = parseFloat(str1);
             }
             if (!isNaN(parseFloat(str2))) {
@@ -46,7 +45,6 @@ $(document).ready(function() {
 
         "non-empty-string-desc": function (str1, str2) {
             if (!isNaN(parseFloat(str1))) {
-                console.log(str1+" -- "+parseFloat(str1));
                 str1 = parseFloat(str1);
             }
             if (!isNaN(parseFloat(str2))) {

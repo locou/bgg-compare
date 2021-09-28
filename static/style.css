@@ -24,6 +24,14 @@ table#collection_table th {
     background: #a9aec7;
 }
 
+table#cached_users_table tr:nth-child(even) {
+    background-color: #bfc2d1;
+}
+
+table#cached_users_table th.sorting i.fa-sort:before {content: "\f0dc";}
+table#cached_users_table th.sorting_asc i.fa-sort:before {content: "\f0de";}
+table#cached_users_table th.sorting_desc i.fa-sort:before {content: "\f0dd";}
+
 td.dataTables_empty {
     text-align: center;
     margin-bottom: 1.5em;
@@ -232,7 +240,8 @@ ul, li {
 }
 
 select,
-input[type="text"] {
+input[type="text"],
+input[type="search"] {
     border-radius: 5px;
     border: 0;
     padding: .3em .5em;
