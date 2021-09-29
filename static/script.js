@@ -103,6 +103,8 @@ $(document).ready(function() {
            {type: 'non-empty-string', targets: 30},
            {type: 'non-empty-string', targets: 31},
            {type: 'non-empty-string', targets: 32},
+           {type: 'non-empty-string', targets: 33},
+           {type: 'non-empty-string', targets: 34},
         ]
     });
     $(window).scroll(function() {

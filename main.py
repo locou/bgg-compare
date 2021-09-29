@@ -113,6 +113,32 @@ def bgg(username):
     return dict(collection=collection, loading_status=loading_status, main_user=loading_status[0], exclude_tags=exclude_tags)
 
 
+@route("/statistics/<username>")
+@view("views/statistics")
+def statistics(username):
+    exclude_tags = request.GET.getall('exclude')
+    collection, loading_status = create_user_collection(username, exclude_tags)
+    users_to_compare = request.GET.getall('add_user')
+    if users_to_compare:
+        for user_to_compare in users_to_compare:
+            collection, loading_status = add_user_to_collection(collection, loading_status, user_to_compare)
+    collection = calc_ratings(collection)
+
+    loading_status = build_collection_url(loading_status, exclude_tags)
+    loading_status = sorted(loading_status, key=lambda k: 11 if k.get('mean_diff_rating', 11) is None else k.get('mean_diff_rating', 11))
+
+    collection_statistics = dict()
+    collection_statistics["plays-rating"] = dict()
+    for game_id, item in collection.items():
+        for username, stats in item["users"].items():
+            if username not in collection_statistics.get("plays-rating"):
+                collection_statistics["plays-rating"][username] = {n: 0 for n in range(0, 11)}
+            collection_statistics["plays-rating"][username][round(stats["rating"] or 0)] += int(stats["numplays"])
+
+    return dict(collection_statistics=collection_statistics, loading_status=loading_status, main_user=loading_status[0],
+                exclude_tags=exclude_tags)
+
+
 if os.environ.get('APP_LOCATION') == 'heroku':
     run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 else:

@@ -33,7 +33,9 @@
         <th data-column="29">my_tag_wishlist4</th>
         <th data-column="30">my_tag_wishlist5</th>
         <th data-column="31">my_tags_list</th>
-        <th data-column="32">user info</th>
+        <th data-column="32">boardgame_categories</th>
+        <th data-column="33">boardgame_mechanics</th>
+        <th data-column="34">user info</th>
     </tr>
     </thead>
     <tbody>
@@ -133,8 +135,10 @@
         <td class="hidden" data-column="my_tags_list">
             {{' '.join(item['user']['tags'].keys())}}
         </td>
+        <td class="hidden" data-column="boardgame_categories">{{item['stats']['categories']}}</td>
+        <td class="hidden" data-column="boardgame_mechanics">{{item['stats']['mechanics']}}</td>
 
-        <td colspan="33">
+        <td colspan="35">
             <div class="wrapper">
                 <div class="bg_img">
                     <img src="{{item['thumbnail']}}">
@@ -254,6 +258,14 @@
                         </div>
                         % end
                     </div>
+                    % end
+                </div>
+                <div class="bg_categories_mechanics">
+                    % for category in item['stats']['categories']:
+                    <div class="tag tag-category tooltip" data-tooltip="Category">{{category}}</div>
+                    % end
+                    % for mechanic in item['stats']['mechanics']:
+                    <div class="tag tag-mechanic tooltip" data-tooltip="Mechanic">{{mechanic}}</div>
                     % end
                 </div>
             </div>

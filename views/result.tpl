@@ -225,7 +225,6 @@
                     <button class="button" type="submit"><i class="fas fa-cubes"></i> Submit</button>
                     <button id="reset_fields" class="button reverse-color" type="reset"><i class="fas fa-redo-alt"></i> Reset</button>
                 </div>
-
             </form>
         % if main_user['status'] == 1 and main_user['match_items'] > 0:
         <h3><i class="fas fa-filter"></i> Soft Filter</h3>
@@ -290,6 +289,8 @@
             Search by text
             <div class="filter_input"><input type="text" class="global_filter" id="global_filter" placeholder="Global"></div>
             <div class="filter_input"><input type="text" class="column_filter" id="col5_filter" data-column="5" placeholder="Boardgame title"></div>
+            <div class="filter_input"><input type="text" class="column_filter" id="col32_filter" data-column="32" placeholder="Boardgame Category"></div>
+            <div class="filter_input"><input type="text" class="column_filter" id="col33_filter" data-column="33" placeholder="Boardgame Mechanic"></div>
         </div>
         <h3><i class="fas fa-sort-amount-down"></i> Sort</h3>
         <div>

@@ -348,6 +348,11 @@ input[type="search"] {
     display: inline-block;
 }
 
+.tag-category,
+.tag-mechanic {
+    background-color: var(--primary-color);
+}
+
 .tag-expansion {color: var(--light-color); background: var(--body-bg-color);}
 
 .tag-own         {color: var(--dark-color); background: var(--primary-color-lighter);}
@@ -565,8 +570,14 @@ i.fas.fa-check-circle {
 .weight-heavy {
     transition: color .2s;
 }
+.tag-category,
+.tag-mechanic {
+    transition: background-color .2s;
+}
 .wrapper:hover .weight-light {color: var(--rating-color-best);}
 .wrapper:hover .weight-heavy {color: var(--highlight-color);}
+.wrapper:hover .bg_categories_mechanics .tag-category {background-color: var(--primary-color-lighter);}
+.wrapper:hover .bg_categories_mechanics .tag-mechanic {background-color: var(--primary-color-light);}
 
 #toggle_combined_slider {
     background: var(--primary-color-lighter);
@@ -674,6 +685,11 @@ i.fas.fa-check-circle {
     grid-column: 1;
     grid-row: 4;
     background: var(--secondary-color);
+}
+
+.bg_categories_mechanics {
+    grid-column: 1/4;
+    font-size: .8em;
 }
 
 .wrapper_user_stats {

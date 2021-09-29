@@ -163,6 +163,8 @@ def create_user_collection(username, paramenters):
                             "numrating": make_int(game.get("stats").get("numrating", None)),
                             "average": make_float(game.get("stats").get("average", None)),
                             "bayesaverage": make_float(game.get("stats").get("bayesaverage", None)),
+                            "categories": game.get("stats").get("categories"),
+                            "mechanics": game.get("stats").get("mechanics"),
                         },
                         "users": {
                             username: {
@@ -261,6 +263,9 @@ def add_user_to_collection(collection, loading_status, username):
 
     return collection, loading_status
 
+
+def calc_mechanic_category():
+    pass
 
 def calc_ratings(collection):
     for _, item in collection.items():

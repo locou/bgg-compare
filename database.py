@@ -243,6 +243,8 @@ def get_or_create_games(collection_game_ids):
                                    "average": game[6]["statistics"]["ratings"]["average"]["@value"],
                                    "bayesaverage": game[6]["statistics"]["ratings"]["bayesaverage"][
                                        "@value"],
+                                   "categories": [link["@value"] for link in game[6].get("link", None) if link["@type"] == "boardgamecategory"],
+                                   "mechanics": [link["@value"] for link in game[6].get("link", None) if link["@type"] == "boardgamemechanic"],
                                },
                                }
     # update_game_colours(update_colors_values)
