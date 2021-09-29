@@ -128,12 +128,16 @@ def statistics(username):
     loading_status = sorted(loading_status, key=lambda k: 11 if k.get('mean_diff_rating', 11) is None else k.get('mean_diff_rating', 11))
 
     collection_statistics = dict()
-    collection_statistics["plays-rating"] = dict()
+    collection_statistics["rating"] = dict()
     for game_id, item in collection.items():
         for username, stats in item["users"].items():
-            if username not in collection_statistics.get("plays-rating"):
-                collection_statistics["plays-rating"][username] = {n: 0 for n in range(0, 11)}
-            collection_statistics["plays-rating"][username][round(stats["rating"] or 0)] += int(stats["numplays"])
+            if username not in collection_statistics.get("rating"):
+                collection_statistics["rating"][username] = {
+                    "plays": {n: 0 for n in range(0, 11)},
+                    "sum_games": {n: 0 for n in range(0, 11)}
+                }
+            collection_statistics["rating"][username]["plays"][round(stats["rating"] or 0)] += int(stats["numplays"])
+            collection_statistics["rating"][username]["sum_games"][round(stats["rating"] or 0)] += 1
 
     return dict(collection_statistics=collection_statistics, loading_status=loading_status, main_user=loading_status[0],
                 exclude_tags=exclude_tags)

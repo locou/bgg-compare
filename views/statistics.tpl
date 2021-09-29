@@ -235,7 +235,7 @@
 <div class="container">
     <script>
         $(document).ready(function() {
-            var options = {
+            var plays_rating_options = {
                 title: {
                     text: "Sum of plays per rating"
                 },
@@ -254,62 +254,59 @@
                       opacityFrom: 0.7,
                       opacityTo: 0.9,
                       colorStops: [
-                        {
-                          offset: 0,
-                          color: "#666e75",
-                          opacity: 1
-                        },
-                        {
-                          offset: 9,
-                          color: "#db303b",
-                          opacity: 1
-                        },
-                        {
-                          offset: 27,
-                          color: "#df4751",
-                          opacity: 1
-                        },
-                        {
-                          offset: 54,
-                          color: "#5369a2",
-                          opacity: 1
-                        },
-                        {
-                          offset: 72,
-                          color: "#1d8acd",
-                          opacity: 1
-                        },
-                        {
-                          offset: 81,
-                          color: "#2fc482",
-                          opacity: 1
-                        },
-                        {
-                          offset: 100,
-                          color: "#249563",
-                          opacity: 1
-                        }
+                        {offset: 0,color: "#666e75" },
+                        {offset: 9,color: "#db303b"},
+                        {offset: 27,color: "#df4751"},
+                        {offset: 54,color: "#5369a2"},
+                        {offset: 72,color: "#1d8acd"},
+                        {offset: 81,color: "#2fc482"},
+                        {offset: 100,color: "#249563"}
                       ]
                     }
                   },
                 series: [
-                % for user, stats in collection_statistics.get("plays-rating").items():
+                % for user, stats in collection_statistics.get("rating").items():
                 {
                     name: 'plays by {{user}}',
-                    data: [{{",".join([str(v) for v in stats.values()])}}]
+                    data: [{{",".join([str(v) for v in stats["plays"].values()])}}]
                 },
                 % end
                 ],
                 xaxis: {
-                    categories: ["unrated",{{",".join([str(k) for k in collection_statistics.get("plays-rating").get(main_user["username"]).keys()][1:])}}]
+                    categories: ["unrated",{{",".join([str(k) for k in collection_statistics.get("rating").get(main_user["username"]).get("plays").keys()][1:])}}]
                 }
             }
-
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
+            new ApexCharts(document.querySelector("#plays-rating"), plays_rating_options).render();
         });
     </script>
-    <div id="chart"></div>
+    <div id="plays-rating"></div>
+    <script>
+        $(document).ready(function() {
+            var sum_games_rating_options = {
+                title: {
+                    text: "Number of games per rating"
+                },
+                chart: {
+                    type: 'bar',
+                    height: '300px',
+                    width: '40%'
+                },
+                series: [
+                % for user, stats in collection_statistics.get("rating").items():
+                {
+                    name: '{{user}} number of games',
+                    data: [{{",".join([str(v) for v in stats["sum_games"].values()])}}]
+                },
+                % end
+                ],
+                xaxis: {
+                    categories: ["unrated",{{",".join([str(k) for k in collection_statistics.get("rating").get(main_user["username"]).get("sum_games").keys()][1:])}}]
+                }
+            }
+            new ApexCharts(document.querySelector("#sum-games-rating"), sum_games_rating_options).render();
+        });
+    </script>
+    <div id="sum-games-rating"></div>
 </div>
 
 % include('footer.tpl')
