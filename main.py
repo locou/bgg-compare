@@ -137,8 +137,12 @@ def statistics(username):
                     "sum_games": {n: 0 for n in range(0, 11)}
                 }
             collection_statistics["rating"][username]["plays"][round(stats["rating"] or 0)] += int(stats["numplays"])
+            # TODO: stacked bar chart for own / not own
             collection_statistics["rating"][username]["sum_games"][round(stats["rating"] or 0)] += 1
-
+    # TODO: cache statistics, so create_user_collection does not need to be called
+    # TODO: top 10 categories, mechanics
+    # TODO: flop 10 categories, mechanics
+    # TODO: genotype https://ekung.shinyapps.io/user_genotypes/
     return dict(collection_statistics=collection_statistics, loading_status=loading_status, main_user=loading_status[0],
                 exclude_tags=exclude_tags)
 
